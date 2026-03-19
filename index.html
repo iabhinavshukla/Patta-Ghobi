@@ -15,46 +15,34 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%;background:#080808;overscroll-behavior:none}
     body{color:#F0F0F0;font-family:'Syne',sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow:hidden}
-    input,select,button{-webkit-appearance:none;appearance:none;font-family:'Syne',sans-serif}
+    input,select,button,textarea{-webkit-appearance:none;appearance:none;font-family:'Syne',sans-serif}
     input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
-    input::placeholder{color:#333}
+    input::placeholder,textarea::placeholder{color:#333}
     select option{background:#111}
     ::-webkit-scrollbar{display:none}
 
-    #wrap{
-      max-width:430px;margin:0 auto;
-      position:fixed;top:0;left:0;right:0;bottom:0;
-      display:flex;flex-direction:column;background:#080808;overflow:hidden;
-    }
+    #wrap{max-width:430px;margin:0 auto;position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;background:#080808;overflow:hidden}
 
-    /* HEADER */
-    #hdr{
-      flex-shrink:0;
-      padding-top:max(52px,env(safe-area-inset-top,20px));
-      padding-left:18px;padding-right:18px;padding-bottom:12px;
-      border-bottom:1px solid #252525;background:#080808;
-    }
+    #hdr{flex-shrink:0;padding-top:max(52px,env(safe-area-inset-top,20px));padding-left:18px;padding-right:18px;padding-bottom:12px;border-bottom:1px solid #252525;background:#080808}
     .hrow{display:flex;justify-content:space-between;align-items:flex-start}
     .logo{font-family:'Bebas Neue',cursive;font-size:32px;color:#C8FF00;letter-spacing:.04em;line-height:1}
     .sub{color:#555;font-size:10px;letter-spacing:.08em;margin-top:2px;text-transform:uppercase}
-    .wpill{background:#181818;border:1px solid #252525;border-radius:10px;padding:8px 14px;text-align:center;cursor:pointer;min-width:80px}
+    .hright{display:flex;align-items:flex-start;gap:10px}
+    .wpill{background:#181818;border:1px solid #252525;border-radius:10px;padding:8px 14px;text-align:center;cursor:pointer;min-width:76px}
     .wv{font-family:'Bebas Neue',cursive;font-size:26px;color:#C8FF00;line-height:1}
     .wl{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.06em}
+    .settings-btn{background:#181818;border:1px solid #252525;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;min-height:52px;min-width:44px}
 
-    /* NAV */
     #nav{flex-shrink:0;display:flex;border-bottom:1px solid #252525;background:#080808}
     .ntab{flex:1;background:none;border:none;padding:11px 0 9px;color:#555;cursor:pointer;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
     .ntab.on{color:#C8FF00;border-bottom-color:#C8FF00}
     .ni{font-size:18px;line-height:1}
 
-    /* SCROLL */
     #scr{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:16px 18px 40px}
 
-    /* CARDS */
     .card{background:#111;border:1px solid #252525;border-radius:14px;padding:16px;margin-bottom:12px}
     .csm{background:#111;border:1px solid #252525;border-radius:12px;padding:13px 15px;margin-bottom:9px}
 
-    /* STATS */
     .sg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:12px}
     .st{background:#111;border:1px solid #252525;border-radius:12px;padding:12px 10px}
     .stl{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
@@ -63,7 +51,6 @@
 
     .sh{font-family:'Bebas Neue',cursive;font-size:11px;color:#555;letter-spacing:.14em;margin-bottom:10px;margin-top:4px}
 
-    /* GOAL BANNER */
     .gbanner{background:linear-gradient(135deg,rgba(200,255,0,.09),rgba(200,255,0,.02));border:1px solid rgba(200,255,0,.22);border-radius:14px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
     .gnum{font-family:'Bebas Neue',cursive;font-size:36px;color:#C8FF00;line-height:1;text-align:right}
 
@@ -75,7 +62,6 @@
     .macv{font-family:'Bebas Neue',cursive;font-size:22px;line-height:1}
     .macl{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 
-    /* BUTTONS */
     .btnp{background:#C8FF00;color:#000;font-family:'Bebas Neue',cursive;font-size:18px;letter-spacing:.06em;border:none;border-radius:10px;padding:15px 20px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px}
     .btnp:disabled{opacity:.6}
     .btns{background:#181818;border:1px solid #252525;border-radius:8px;padding:12px;color:#555;font-size:13px;cursor:pointer;width:100%;text-align:center;min-height:44px}
@@ -84,7 +70,6 @@
     .btndel{background:rgba(255,77,77,.1);border:1px solid rgba(255,77,77,.28);color:#FF4D4D;border-radius:6px;padding:7px 10px;cursor:pointer;font-size:13px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center}
     .btnout{background:#181818;color:#555;border:1px solid #252525;border-radius:10px;padding:14px;cursor:pointer;font-size:13px;flex:1;text-align:center;min-height:48px}
 
-    /* INPUTS */
     .inp{background:#181818;border:1px solid #252525;border-radius:8px;padding:12px 13px;color:#F0F0F0;font-family:'Syne';font-size:15px;outline:none;width:100%;min-height:46px}
     .inp:focus{border-color:rgba(200,255,0,.35)}
     .inpbig{font-family:'Bebas Neue',cursive;font-size:36px;text-align:center}
@@ -100,19 +85,21 @@
     .setrow{display:grid;grid-template-columns:44px 1fr 1fr;gap:8px;padding:9px 0;border-top:1px solid rgba(37,37,37,.6)}
     .setrow:first-child{border-top:none}
 
-    /* WEIGHT HISTORY */
-    .whr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(37,37,37,.5)}
+    /* Weight history dropdown */
+    .wh-summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0}
+    .wh-arrow{color:#C8FF00;font-family:'Bebas Neue',cursive;font-size:18px;transition:transform .2s}
+    .wh-arrow.open{transform:rotate(180deg)}
+    .wh-list{margin-top:12px;border-top:1px solid #252525;padding-top:8px}
+    .whr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(37,37,37,.5)}
     .whr:last-child{border-bottom:none}
 
-    /* CHART */
+    /* Chart */
     .chw{width:100%;overflow:hidden}
     .chw svg{width:100%;display:block}
 
-    /* TARGET */
     .trow{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
     .tcbtn{background:#181818;border:1px solid #252525;border-radius:8px;width:40px;height:40px;color:#C8FF00;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
 
-    /* CHAT */
     .chatbox{background:#111;border:1px solid #252525;border-radius:14px;padding:13px;min-height:190px;max-height:280px;overflow-y:auto;margin-bottom:11px;-webkit-overflow-scrolling:touch}
     .msg{margin-bottom:11px;display:flex;flex-direction:column}
     .msg.u{align-items:flex-end}
@@ -129,7 +116,18 @@
     .rtxt{font-size:13px;color:#F0F0F0;line-height:1.8;white-space:pre-wrap}
     .rfbtn{background:none;border:1px solid rgba(200,255,0,.3);border-radius:6px;padding:8px 14px;color:#C8FF00;cursor:pointer;font-size:12px;min-height:36px}
 
-    /* MODAL */
+    /* API key warning banner */
+    .apibanner{background:rgba(255,77,77,.1);border:1px solid rgba(255,77,77,.3);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px}
+    .apibanner-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+    .apibanner-btn{background:#FF4D4D;color:#000;border:none;border-radius:8px;padding:9px 16px;font-family:'Bebas Neue',cursive;font-size:14px;cursor:pointer;white-space:nowrap;margin-top:8px;min-height:38px}
+
+    /* Settings panel */
+    .settings-panel{background:#111;border:1px solid #252525;border-radius:14px;padding:16px;margin-bottom:12px}
+    .api-status{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-top:8px}
+    .api-ok{background:rgba(200,255,0,.12);color:#C8FF00;border:1px solid rgba(200,255,0,.3)}
+    .api-no{background:rgba(255,77,77,.1);color:#FF4D4D;border:1px solid rgba(255,77,77,.3)}
+    .api-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:flex;align-items:flex-end;justify-content:center}
     .sheet{background:#111;border-radius:22px 22px 0 0;padding:0 18px;padding-bottom:max(32px,env(safe-area-inset-bottom,20px));width:100%;max-width:430px;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 -8px 60px rgba(200,255,0,.08)}
     .shtop{padding:14px 0 16px;position:sticky;top:0;background:#111;z-index:1}
@@ -152,8 +150,9 @@
     .divr{text-align:center;color:#444;font-size:11px;margin:11px 0}
     .flx{display:flex;justify-content:space-between;align-items:center}
 
-    /* LEGEND DOT */
-    .ldot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+    /* Password eye toggle */
+    .inp-wrap{position:relative}
+    .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#555;cursor:pointer;font-size:16px;padding:4px}
   </style>
 </head>
 <body>
@@ -170,44 +169,25 @@
 </div>
 
 <script>
-// ── COLORS (no CSS vars — Safari SVG fix) ─────────────────────────────────────
+// ── HARDCODED COLORS (no CSS vars — Safari SVG fix) ───────────────────────────
 const A="#C8FF00",BG="#080808",CARD="#111111",CARD2="#181818",
       BD="#252525",TEXT="#F0F0F0",MUTED="#555",
       RED="#FF4D4D",TEAL="#00E5CC",YEL="#FFD166";
-
-// Extra chart line colors for multi-line chart
 const LINE_COLORS=["#C8FF00","#00E5CC","#FF6B6B","#FFD166","#BF5AF2","#FF9F43","#48DBF0","#FF6B81"];
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const S={
-  workouts:[
-    {id:1,date:"Mar 10",name:"Bench Press",sets:[{reps:8,weight:50},{reps:8,weight:50},{reps:6,weight:50}]},
-    {id:2,date:"Mar 10",name:"Squat",      sets:[{reps:10,weight:80},{reps:8,weight:85}]},
-    {id:3,date:"Mar 13",name:"Bench Press",sets:[{reps:8,weight:52},{reps:7,weight:52}]},
-    {id:4,date:"Mar 13",name:"Deadlift",   sets:[{reps:5,weight:100},{reps:5,weight:105}]},
-    {id:5,date:"Mar 16",name:"Bench Press",sets:[{reps:8,weight:55},{reps:7,weight:55},{reps:6,weight:55}]},
-    {id:6,date:"Mar 16",name:"Squat",      sets:[{reps:10,weight:90},{reps:8,weight:90}]},
-    {id:7,date:"Mar 19",name:"Bench Press",sets:[{reps:8,weight:57},{reps:8,weight:57}]},
-    {id:8,date:"Mar 19",name:"Overhead Press",sets:[{reps:10,weight:40},{reps:8,weight:42}]},
-  ],
-  foods:[
-    {id:1,date:"Mar 19",name:"Chicken Breast",cal:330,protein:62,carbs:0,fat:8},
-    {id:2,date:"Mar 19",name:"Oats",          cal:389,protein:17,carbs:66,fat:7},
-    {id:3,date:"Mar 19",name:"Protein Shake", cal:120,protein:25,carbs:5,fat:2},
-  ],
-  weights:[
-    {date:"Mar 1",w:82.5},{date:"Mar 3",w:82.1},{date:"Mar 5",w:81.8},
-    {date:"Mar 8",w:81.5},{date:"Mar 10",w:81.9},{date:"Mar 12",w:81.2},
-    {date:"Mar 15",w:80.8},{date:"Mar 17",w:80.5},{date:"Mar 19",w:80.2},
-  ],
-  goal:"muscle", target:75, tab:"home",
-  expanded:null, modal:null,
+  // Start with empty data — user logs their own
+  workouts:[], foods:[], weights:[],
+  target:75, tab:"home",
+  expanded:null, modal:null, whOpen:false,
   useCustom:false, newEx:"Bench Press", customEx:"",
   newSets:[{reps:"",weight:""}],
   newFood:"", newGrams:"100", newWt:"",
   chat:[], chatIn:"", chatLoad:false,
   report:"", repLoad:false,
   photoLoad:false, photoRes:null,
+  apiKey:"", showApiKey:false,
 };
 
 const PRESETS=["Bench Press","Squat","Deadlift","Pull-ups","Overhead Press","Barbell Row",
@@ -216,14 +196,29 @@ const PRESETS=["Bench Press","Squat","Deadlift","Pull-ups","Overhead Press","Bar
 const TODAY="Mar 19";
 
 // ── PERSIST ───────────────────────────────────────────────────────────────────
-function sv(){try{localStorage.setItem("pg5",JSON.stringify({w:S.workouts,f:S.foods,wt:S.weights,g:S.goal,t:S.target,c:S.chat,r:S.report}));}catch(e){}}
-function ld(){try{const d=JSON.parse(localStorage.getItem("pg5")||"null");if(!d)return;if(d.w)S.workouts=d.w;if(d.f)S.foods=d.f;if(d.wt)S.weights=d.wt;if(d.g)S.goal=d.g;if(d.t)S.target=d.t;if(d.c)S.chat=d.c;if(d.r)S.report=d.r;}catch(e){}}
+function sv(){
+  try{localStorage.setItem("pg6",JSON.stringify({
+    w:S.workouts,f:S.foods,wt:S.weights,t:S.target,
+    c:S.chat,r:S.report,k:S.apiKey
+  }));}catch(e){}
+}
+function ld(){
+  try{
+    const d=JSON.parse(localStorage.getItem("pg6")||"null");
+    if(!d)return;
+    if(d.w)S.workouts=d.w;
+    if(d.f)S.foods=d.f;
+    if(d.wt)S.weights=d.wt;
+    if(d.t)S.target=d.t;
+    if(d.c)S.chat=d.c;
+    if(d.r)S.report=d.r;
+    if(d.k)S.apiKey=d.k;
+  }catch(e){}
+}
 
 // ── COMPUTED ──────────────────────────────────────────────────────────────────
 const tw=()=>S.workouts.filter(w=>w.date===TODAY);
 const tf=()=>S.foods.filter(f=>f.date===TODAY);
-
-// FIX: nut() correctly sums today's foods only
 function nut(){
   return tf().reduce((a,f)=>({
     cal:a.cal+(+f.cal||0),
@@ -232,16 +227,12 @@ function nut(){
     fat:a.fat+(+f.fat||0)
   }),{cal:0,protein:0,carbs:0,fat:0});
 }
-
-// FIX: vol() correctly sums today's workout volume
 function vol(){
   return tw().reduce((a,w)=>a+w.sets.reduce((b,s)=>b+(+s.reps||0)*(+s.weight||0),0),0);
 }
-
-const lw=()=>S.weights.length?S.weights[S.weights.length-1].w:80;
-const cg=()=>2500; // single calorie goal, no muscle/cut distinction
+const lw=()=>S.weights.length?S.weights[S.weights.length-1].w:0;
+const cg=()=>2500;
 const uniq=()=>[...new Set(S.workouts.map(w=>w.name))];
-
 function wtg(){
   if(S.weights.length<2)return"?";
   const last=S.weights[S.weights.length-1].w,first=S.weights[0].w;
@@ -253,97 +244,9 @@ function wtg(){
 }
 
 // ── CHARTS ────────────────────────────────────────────────────────────────────
-function mkLine(data,key,color,H){
-  H=H||110;
-  if(!data||data.length<2)return"";
-  const vals=data.map(d=>d[key]).filter(v=>v!=null);
-  if(!vals.length)return"";
-  const mn=Math.min(...vals)-2,mx=Math.max(...vals)+2,rng=mx-mn||1;
-  const W=360,pl=36,pr=8,pt=8,pb=20,iW=W-pl-pr,iH=H-pt-pb;
-  const xs=data.map((_,i)=>pl+i*(iW/Math.max(data.length-1,1)));
-  const fy=v=>pt+iH-((v-mn)/rng)*iH;
-  let path="",dots="",st=false;
-  data.forEach((d,i)=>{
-    const v=d[key];if(v==null){st=false;return;}
-    path+=(st?"L":"M")+xs[i].toFixed(1)+","+fy(v).toFixed(1)+" ";st=true;
-    dots+=`<circle cx="${xs[i].toFixed(1)}" cy="${fy(v).toFixed(1)}" r="4" fill="${color}" stroke="${CARD}" stroke-width="2"/>`;
-  });
-  const step=Math.max(1,Math.ceil(data.length/5));
-  let xlabs="";data.forEach((d,i)=>{if(i%step===0||i===data.length-1)xlabs+=`<text x="${xs[i].toFixed(1)}" y="${H-3}" fill="#444" font-size="9" text-anchor="middle" font-family="Syne,sans-serif">${d.date}</text>`;});
-  const yv=[mn,mn+(mx-mn)/2,mx];
-  let ygr="";yv.forEach(v=>{const y=fy(v).toFixed(1);ygr+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#1E1E1E" stroke-width="1"/><text x="${pl-3}" y="${y}" fill="#444" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="Syne,sans-serif">${v.toFixed(1)}</text>`;});
-  return`<svg viewBox="0 0 ${W} ${H}">${ygr}<path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}${xlabs}</svg>`;
-}
-
-// Multi-line exercise progress chart — all exercises on ONE chart
-function mkMultiExChart(){
-  const names=uniq();
-  if(!names.length)return"";
-
-  // Build per-exercise max weight by date
-  const allDates=[];
-  const exData={};
-  names.forEach(name=>{
-    const map={};
-    S.workouts.filter(w=>w.name===name).forEach(w=>{
-      const mx=Math.max(...w.sets.map(s=>+s.weight||0));
-      if(!map[w.date]||map[w.date]<mx)map[w.date]=mx;
-    });
-    exData[name]=map;
-    Object.keys(map).forEach(d=>{if(!allDates.includes(d))allDates.push(d);});
-  });
-
-  // Sort dates
-  const dateOrder=["Mar 1","Mar 3","Mar 5","Mar 8","Mar 10","Mar 12","Mar 13","Mar 15","Mar 16","Mar 17","Mar 19","Mar 20","Mar 21","Mar 22","Mar 23","Mar 24","Mar 25","Mar 26","Mar 27","Mar 28","Mar 29","Mar 30","Mar 31","Apr 1","Apr 8","Apr 15"];
-  allDates.sort((a,b)=>{const ia=dateOrder.indexOf(a),ib=dateOrder.indexOf(b);if(ia===-1&&ib===-1)return 0;if(ia===-1)return 1;if(ib===-1)return-1;return ia-ib;});
-
-  if(allDates.length<2)return"";
-
-  // Get all values for scale
-  const allVals=[];
-  names.forEach(n=>Object.values(exData[n]).forEach(v=>allVals.push(v)));
-  if(!allVals.length)return"";
-  const mn=Math.max(0,Math.min(...allVals)-10),mx=Math.max(...allVals)+10,rng=mx-mn||1;
-
-  const W=360,H=200,pl=36,pr=8,pt=10,pb=20,iW=W-pl-pr,iH=H-pt-pb;
-  const N=allDates.length;
-  const xOf=i=>pl+i*(iW/Math.max(N-1,1));
-  const fy=v=>pt+iH-((v-mn)/rng)*iH;
-
-  let lines="",dotsAll="";
-  names.forEach((name,ni)=>{
-    const color=LINE_COLORS[ni%LINE_COLORS.length];
-    let path="",dots="",st=false;
-    allDates.forEach((date,i)=>{
-      const v=exData[name][date];
-      if(v==null){st=false;return;}
-      path+=(st?"L":"M")+xOf(i).toFixed(1)+","+fy(v).toFixed(1)+" ";st=true;
-      dots+=`<circle cx="${xOf(i).toFixed(1)}" cy="${fy(v).toFixed(1)}" r="3.5" fill="${color}" stroke="${CARD}" stroke-width="2"/>`;
-    });
-    if(path){
-      lines+=`<path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-      dotsAll+=dots;
-    }
-  });
-
-  const step=Math.max(1,Math.ceil(N/5));
-  let xlabs="";allDates.forEach((d,i)=>{if(i%step===0||i===N-1)xlabs+=`<text x="${xOf(i).toFixed(1)}" y="${H-3}" fill="#444" font-size="9" text-anchor="middle" font-family="Syne,sans-serif">${d}</text>`;});
-
-  const yv=[mn,+(mn+(mx-mn)/2).toFixed(0),mx];
-  let ygr="";yv.forEach(v=>{const y=fy(v).toFixed(1);ygr+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#1E1E1E" stroke-width="1"/><text x="${pl-3}" y="${y}" fill="#444" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="Syne,sans-serif">${Math.round(v)}</text>`;});
-
-  const svg=`<svg viewBox="0 0 ${W} ${H}">${ygr}${lines}${dotsAll}${xlabs}</svg>`;
-
-  // Legend
-  const legend=names.map((n,i)=>`<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px"><div style="width:22px;height:3px;background:${LINE_COLORS[i%LINE_COLORS.length]};border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;color:${TEXT}">${n}</span></div>`).join("");
-
-  return`<div class="chw">${svg}</div><div style="display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px;padding-top:12px;border-top:1px solid ${BD}">${legend}</div>`;
-}
-
-// Weight projection chart
 function mkWtChart(){
   const actual=S.weights.map(w=>({date:w.date,actual:w.w}));
-  if(S.weights.length<2)return mkLine(actual,"actual",A);
+  if(S.weights.length<2)return`<div style="color:${MUTED};font-size:12px;text-align:center;padding:20px 0">Log at least 2 weight entries to see your chart</div>`;
   const last=S.weights[S.weights.length-1].w,first=S.weights[0].w;
   const rate=(last-first)/Math.max(S.weights.length-1,1);
   const pDates=["Apr 1","Apr 8","Apr 15","Apr 22","May 1","May 8","Jun 1"];
@@ -351,7 +254,7 @@ function mkWtChart(){
   const all=[...actual,...proj];
   const allV=[...S.weights.map(w=>w.w),...proj.map(p=>p.projected),S.target];
   const mn=Math.min(...allV)-1,mx=Math.max(...allV)+1,rng=mx-mn||1;
-  const W=360,H=155,pl=36,pr=8,pt=10,pb=20,iW=W-pl-pr,iH=H-pt-pb,N=all.length;
+  const W=360,H=150,pl=36,pr=8,pt=10,pb=20,iW=W-pl-pr,iH=H-pt-pb,N=all.length;
   const xs=all.map((_,i)=>pl+i*(iW/Math.max(N-1,1)));
   const fy=v=>pt+iH-((v-mn)/rng)*iH;
   let aP="",pP="",ast=false,pst=false;
@@ -365,21 +268,68 @@ function mkWtChart(){
   let xlabs="";all.forEach((d,i)=>{if(i%step===0||i===N-1)xlabs+=`<text x="${xs[i].toFixed(1)}" y="${H-3}" fill="#444" font-size="9" text-anchor="middle" font-family="Syne,sans-serif">${d.date}</text>`;});
   const yv=[+mn.toFixed(1),+(mn+(mx-mn)/2).toFixed(1),+mx.toFixed(1)];
   let ygr="";yv.forEach(v=>{const y=fy(v).toFixed(1);ygr+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#1E1E1E" stroke-width="1"/><text x="${pl-3}" y="${y}" fill="#444" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="Syne,sans-serif">${v}</text>`;});
-  return`<svg viewBox="0 0 ${W} ${H}">${ygr}
+  return`<div class="chw"><svg viewBox="0 0 ${W} ${H}">${ygr}
     <line x1="${pl}" y1="${ty}" x2="${W-pr}" y2="${ty}" stroke="${RED}" stroke-width="1.5" stroke-dasharray="5 3"/>
     <text x="${W-pr-2}" y="${+ty-5}" fill="${RED}" font-size="9" text-anchor="end" font-family="Syne,sans-serif">Target ${S.target}kg</text>
     <path d="${aP}" fill="none" stroke="${A}" stroke-width="2.5" stroke-linecap="round"/>
     <path d="${pP}" fill="none" stroke="${A}" stroke-width="2" stroke-dasharray="6 4" opacity=".55"/>
-    ${dots}${xlabs}</svg>`;
+    ${dots}${xlabs}</svg></div>`;
 }
 
-// ── API — FIXED: added required browser header ────────────────────────────────
+function mkMultiExChart(){
+  const names=uniq();
+  if(!names.length)return`<div style="color:${MUTED};font-size:12px;text-align:center;padding:20px 0">Log workouts to see progress charts</div>`;
+  const dateOrder=[];
+  const exData={};
+  names.forEach(name=>{
+    const map={};
+    S.workouts.filter(w=>w.name===name).forEach(w=>{
+      const mx=Math.max(...w.sets.map(s=>+s.weight||0));
+      if(!map[w.date]||map[w.date]<mx)map[w.date]=mx;
+      if(!dateOrder.includes(w.date))dateOrder.push(w.date);
+    });
+    exData[name]=map;
+  });
+  if(dateOrder.length<2)return`<div style="color:${MUTED};font-size:12px;text-align:center;padding:20px 0">Log workouts on 2+ dates to see progress</div>`;
+  const allVals=[];
+  names.forEach(n=>Object.values(exData[n]).forEach(v=>allVals.push(v)));
+  if(!allVals.length)return"";
+  const mn=Math.max(0,Math.min(...allVals)-10),mx=Math.max(...allVals)+10,rng=mx-mn||1;
+  const W=360,H=200,pl=36,pr=8,pt=10,pb=20,iW=W-pl-pr,iH=H-pt-pb,N=dateOrder.length;
+  const xOf=i=>pl+i*(iW/Math.max(N-1,1));
+  const fy=v=>pt+iH-((v-mn)/rng)*iH;
+  let lines="",dotsAll="";
+  names.forEach((name,ni)=>{
+    const color=LINE_COLORS[ni%LINE_COLORS.length];
+    let path="",dots="",st=false;
+    dateOrder.forEach((date,i)=>{
+      const v=exData[name][date];
+      if(v==null){st=false;return;}
+      path+=(st?"L":"M")+xOf(i).toFixed(1)+","+fy(v).toFixed(1)+" ";st=true;
+      dots+=`<circle cx="${xOf(i).toFixed(1)}" cy="${fy(v).toFixed(1)}" r="3.5" fill="${color}" stroke="${CARD}" stroke-width="2"/>`;
+    });
+    if(path){lines+=`<path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;dotsAll+=dots;}
+  });
+  const step=Math.max(1,Math.ceil(N/5));
+  let xlabs="";dateOrder.forEach((d,i)=>{if(i%step===0||i===N-1)xlabs+=`<text x="${xOf(i).toFixed(1)}" y="${H-3}" fill="#444" font-size="9" text-anchor="middle" font-family="Syne,sans-serif">${d}</text>`;});
+  const yv=[+mn.toFixed(0),+(mn+(mx-mn)/2).toFixed(0),+mx.toFixed(0)];
+  let ygr="";yv.forEach(v=>{const y=fy(v).toFixed(1);ygr+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#1E1E1E" stroke-width="1"/><text x="${pl-3}" y="${y}" fill="#444" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="Syne,sans-serif">${v}</text>`;});
+  const legend=names.map((n,i)=>`<div style="display:flex;align-items:center;gap:5px"><div style="width:20px;height:3px;background:${LINE_COLORS[i%LINE_COLORS.length]};border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;color:${TEXT}">${n}</span></div>`).join("");
+  return`<div class="chw"><svg viewBox="0 0 ${W} ${H}">${ygr}${lines}${dotsAll}${xlabs}</svg></div><div style="display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px;padding-top:12px;border-top:1px solid ${BD}">${legend}</div>`;
+}
+
+// ── API ───────────────────────────────────────────────────────────────────────
 async function claude(messages,sys){
+  if(!S.apiKey){
+    return"⚠️ No API key set. Tap the ⚙️ button in the top-right corner, enter your Anthropic API key, and try again.";
+  }
   try{
     const r=await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST",
       headers:{
         "Content-Type":"application/json",
+        "x-api-key":S.apiKey,
+        "anthropic-version":"2023-06-01",
         "anthropic-dangerous-direct-browser-access":"true"
       },
       body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys||"",messages})
@@ -388,13 +338,11 @@ async function claude(messages,sys){
     if(d.error)return"AI error: "+d.error.message;
     return d.content?.map(b=>b.text||"").join("")||"No response.";
   }catch(e){
-    return"Could not connect to AI. Please check your internet connection and try again.";
+    return"Could not connect. Please check your internet connection.";
   }
 }
-
 function ctx(){
   return JSON.stringify({
-    goal:S.goal==="muscle"?"Build Muscle":"Lose Weight",
     currentWeight:lw(),targetWeight:S.target,
     recentWorkouts:S.workouts.slice(-8).map(w=>({name:w.name,date:w.date,sets:w.sets})),
     todayNutrition:nut(),weightTrend:S.weights.slice(-5)
@@ -404,16 +352,18 @@ function ctx(){
 // ── RENDER ────────────────────────────────────────────────────────────────────
 function R(){
   const lv=lw();
-
   document.getElementById("hdr").innerHTML=`
     <div class="hrow">
       <div>
         <div class="logo">PATTA GHOBI</div>
         <div class="sub">AI Fitness Coach · Thu 19 Mar 2026</div>
       </div>
-      <div class="wpill" onclick="M('weight')">
-        <div class="wv">${lv}</div>
-        <div class="wl">kg · log</div>
+      <div class="hright">
+        <div class="wpill" onclick="M('weight')">
+          <div class="wv">${lv||"—"}</div>
+          <div class="wl">kg · log</div>
+        </div>
+        <button class="settings-btn" onclick="M('settings')" title="Settings">⚙️</button>
       </div>
     </div>`;
 
@@ -435,33 +385,37 @@ function rTab(){
   return rHome();
 }
 
+function apiWarning(){
+  if(S.apiKey)return"";
+  return`<div class="apibanner">
+    <div class="apibanner-icon">🔑</div>
+    <div style="flex:1">
+      <div style="font-weight:700;font-size:14px;margin-bottom:3px">API Key Required for AI</div>
+      <div style="font-size:12px;color:${MUTED};line-height:1.5">The AI coach needs your Anthropic API key to work. Get one free at console.anthropic.com</div>
+      <button class="apibanner-btn" onclick="M('settings')">⚙️ ADD API KEY</button>
+    </div>
+  </div>`;
+}
+
 // ── HOME ──────────────────────────────────────────────────────────────────────
 function rHome(){
-  // Recalculate fresh every render
-  const n=nut();
-  const tvol=vol();
-  const lv=lw();
-  const twl=tw();
-
+  const n=nut(),tvol=vol(),lv=lw(),twl=tw();
   return`<div class="fade">
+  ${apiWarning()}
   <div class="sg">
     <div class="st"><div class="stl">Calories</div><div class="stv" style="color:${YEL}">${Math.round(n.cal)}<span class="stu">kcal</span></div></div>
-    <div class="st"><div class="stl">Volume</div><div class="stv" style="color:${A}">${tvol>=1000?(tvol/1000).toFixed(1)+"k":tvol}<span class="stu">kg</span></div></div>
+    <div class="st"><div class="stl">Volume</div><div class="stv" style="color:${A}">${tvol>=1000?(tvol/1000).toFixed(1)+"k":tvol||0}<span class="stu">kg</span></div></div>
     <div class="st"><div class="stl">Protein</div><div class="stv" style="color:${TEAL}">${Math.round(n.protein)}<span class="stu">g</span></div></div>
   </div>
 
   <div class="gbanner">
     <div>
       <div style="font-size:10px;color:${A};text-transform:uppercase;letter-spacing:.1em">YOUR GOAL</div>
-      <div style="font-family:'Bebas Neue',cursive;font-size:21px;margin-top:4px">
-        ${S.goal==="muscle"?"BUILD MUSCLE 💪":"LOSE WEIGHT 🔥"}
-      </div>
-      <div style="color:${MUTED};font-size:12px;margin-top:4px">
-        Target: <span style="color:${A}">${S.target}kg</span> · Est. <span style="color:${A}">${wtg()} weeks</span>
-      </div>
+      <div style="font-family:'Bebas Neue',cursive;font-size:21px;margin-top:4px">LOSE WEIGHT & BUILD MUSCLE 💪</div>
+      <div style="color:${MUTED};font-size:12px;margin-top:4px">Target: <span style="color:${A}">${S.target}kg</span> · Est. <span style="color:${A}">${wtg()} weeks</span></div>
     </div>
     <div>
-      <div class="gnum">${Math.abs((lv-S.target).toFixed(1))}</div>
+      <div class="gnum">${lv?(Math.abs((lv-S.target).toFixed(1))):"—"}</div>
       <div style="font-size:10px;color:${MUTED};text-align:right">kg to go</div>
     </div>
   </div>
@@ -480,7 +434,6 @@ function rHome(){
       </div>
     </div>
   </div>`).join("")}
-
   <button class="btnp" onclick="M('workout')" style="margin-top:4px">+ LOG WORKOUT</button>
 
   <div class="rcard" style="margin-top:16px">
@@ -492,37 +445,28 @@ function rHome(){
     </div>
     ${S.report
       ?`<div class="rtxt">${S.report}</div><button class="rfbtn" onclick="doRep()" style="margin-top:12px;width:100%" ${S.repLoad?"disabled":""}>↺ Refresh Report</button>`
-      :`<button class="btnp" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin"></div><span class="pulse">Analyzing...</span>`:"✨ Generate My Coach Report"}</button>`
-    }
+      :`<button class="btnp" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin"></div><span class="pulse">Analyzing...</span>`:"✨ Generate My Coach Report"}</button>`}
   </div>
   </div>`;
 }
 
 // ── LIFT ──────────────────────────────────────────────────────────────────────
 function rLift(){
-  const twl=tw();
-  const prev=S.workouts.filter(w=>w.date!==TODAY);
-  const hasProgress=uniq().some(name=>{
-    const map={};S.workouts.filter(w=>w.name===name).forEach(w=>{const mx=Math.max(...w.sets.map(s=>+s.weight||0));if(!map[w.date]||map[w.date]<mx)map[w.date]=mx;});
+  const twl=tw(),prev=S.workouts.filter(w=>w.date!==TODAY);
+  const hasProgress=uniq().length>0&&S.workouts.some(w=>{
+    const map={};S.workouts.filter(x=>x.name===w.name).forEach(x=>{const mx=Math.max(...x.sets.map(s=>+s.weight||0));if(!map[x.date]||map[x.date]<mx)map[x.date]=mx;});
     return Object.keys(map).length>=2;
   });
-
   return`<div class="fade">
   <div class="flx" style="margin-bottom:14px">
     <div class="sh" style="margin:0">WORKOUT LOG</div>
     <button class="btnadd" onclick="M('workout')">+ ADD</button>
   </div>
-
   <div class="sh">TODAY</div>
   ${twl.length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:12px 0;margin-bottom:10px">No lifts today yet</div>`:""}
   ${twl.map(w=>wCard(w,true)).join("")}
-
   ${prev.length>0?`<div class="sh" style="margin-top:6px">PREVIOUS SESSIONS</div>${prev.map(w=>wCard(w,false)).join("")}`:""}
-
-  ${hasProgress?`
-    <div class="sh" style="margin-top:8px">ALL EXERCISE PROGRESS</div>
-    <div class="card">${mkMultiExChart()}</div>
-  `:""}
+  ${hasProgress?`<div class="sh" style="margin-top:8px">ALL EXERCISE PROGRESS</div><div class="card">${mkMultiExChart()}</div>`:""}
   </div>`;
 }
 
@@ -540,7 +484,7 @@ function wCard(w,canDel){
     </div>
     ${S.expanded===w.id?`<div style="border-top:1px solid ${BD};padding:11px 15px 13px">
       ${w.sets.map((s,i)=>`<div class="setrow"><div style="color:${MUTED};font-size:12px;align-self:center">Set ${i+1}</div><div style="text-align:center;font-weight:600;font-size:14px;align-self:center">${s.reps} reps</div><div style="text-align:right;font-family:'Bebas Neue',cursive;font-size:20px;color:${A};align-self:center">${s.weight}kg</div></div>`).join("")}
-      <div style="margin-top:9px;background:${CARD2};border-radius:8px;padding:9px 13px;display:flex;justify-content:space-between;align-items:center">
+      <div style="margin-top:9px;background:${CARD2};border-radius:8px;padding:9px 13px;display:flex;justify-content:space-between">
         <span style="color:${MUTED};font-size:12px">Volume</span>
         <span style="font-family:'Bebas Neue',cursive;font-size:18px;color:${A}">${w.sets.reduce((a,s)=>a+(+s.reps||0)*(+s.weight||0),0)} kg</span>
       </div>
@@ -572,11 +516,7 @@ function rEat(){
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div style="flex:1">
         <div style="font-weight:700;font-size:14px">${f.name}</div>
-        <div style="font-size:11px;color:${MUTED};margin-top:3px">
-          <span style="color:${RED}">${Math.round(+f.protein||0)}g P</span> ·
-          <span style="color:${TEAL}">${Math.round(+f.carbs||0)}g C</span> ·
-          <span style="color:${YEL}">${Math.round(+f.fat||0)}g F</span>
-        </div>
+        <div style="font-size:11px;color:${MUTED};margin-top:3px"><span style="color:${RED}">${Math.round(+f.protein||0)}g P</span> · <span style="color:${TEAL}">${Math.round(+f.carbs||0)}g C</span> · <span style="color:${YEL}">${Math.round(+f.fat||0)}g F</span></div>
       </div>
       <div style="display:flex;align-items:center;gap:9px">
         <div style="font-family:'Bebas Neue',cursive;font-size:20px;color:${YEL}">${Math.round(+f.cal||0)}<span style="font-size:11px;color:${MUTED};font-family:'Syne'"> kcal</span></div>
@@ -584,12 +524,15 @@ function rEat(){
       </div>
     </div>
   </div>`).join("")}
+  ${tf().length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:14px 0">Nothing logged today — tap ADD to track your meals</div>`:""}
   </div>`;
 }
 
 // ── GROW ──────────────────────────────────────────────────────────────────────
 function rGrow(){
   const lv=lw();
+  const userExercises=uniq(); // only exercises user has logged
+
   return`<div class="fade">
   <div class="sh">WEIGHT PROGRESS & GOAL</div>
   <div class="card">
@@ -597,7 +540,7 @@ function rGrow(){
       <div>
         <div style="font-size:10px;color:${MUTED};text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Current → Target</div>
         <div style="font-family:'Bebas Neue',cursive;font-size:26px;line-height:1">
-          ${lv} <span style="color:${MUTED}">→</span> <span style="color:${A}">${S.target}</span>
+          ${lv||"—"} <span style="color:${MUTED}">→</span> <span style="color:${A}">${S.target}</span>
           <span style="font-size:12px;color:${MUTED};font-family:'Syne';margin-left:4px">kg</span>
         </div>
         <div style="color:${TEAL};font-size:12px;margin-top:6px">⏱ ~${wtg()} weeks at current pace</div>
@@ -608,51 +551,62 @@ function rGrow(){
         <button class="tcbtn" onclick="TG(-.5)">－</button>
       </div>
     </div>
-    <div class="chw">${mkWtChart()}</div>
+    ${mkWtChart()}
   </div>
 
   <div class="sh">WEIGHT HISTORY</div>
   <div class="card">
-    <div class="flx" style="margin-bottom:12px">
-      <span style="font-size:13px;color:${MUTED}">${S.weights.length} entries</span>
-      <button class="btnadd" onclick="M('weight')" style="font-size:13px;padding:8px 14px">+ Log Today</button>
+    <div class="wh-summary" onclick="WHT()">
+      <div>
+        <div style="font-weight:600;font-size:14px">${S.weights.length} entries logged</div>
+        ${lv?`<div style="font-size:12px;color:${MUTED};margin-top:2px">Latest: ${lv} kg on ${S.weights[S.weights.length-1]?.date||""}</div>`:`<div style="font-size:12px;color:${MUTED};margin-top:2px">No entries yet — tap + Log Today</div>`}
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="btnadd" onclick="event.stopPropagation();M('weight')" style="font-size:12px;padding:7px 12px">+ LOG</button>
+        <div class="wh-arrow ${S.whOpen?"open":""}">▼</div>
+      </div>
     </div>
-    ${S.weights.slice().reverse().map((e,i)=>`
-      <div class="whr">
-        <div>
-          <div style="color:${MUTED};font-size:13px">${e.date}</div>
-          ${i===0?`<div style="font-size:10px;color:${A};margin-top:1px">Latest</div>`:""}
-        </div>
-        <div style="display:flex;align-items:center;gap:11px">
-          <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${A}">${e.w}<span style="font-size:12px;color:${MUTED};font-family:'Syne';margin-left:2px">kg</span></div>
-          <button class="btndel" style="padding:6px 9px;font-size:11px" onclick="DWT(${S.weights.length-1-i})">✕</button>
-        </div>
-      </div>`).join("")}
+    ${S.whOpen&&S.weights.length>0?`<div class="wh-list">
+      ${S.weights.slice().reverse().map((e,i)=>`
+        <div class="whr">
+          <div>
+            <div style="color:${MUTED};font-size:13px">${e.date}</div>
+            ${i===0?`<div style="font-size:10px;color:${A};margin-top:1px">Latest</div>`:""}
+          </div>
+          <div style="display:flex;align-items:center;gap:11px">
+            <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${A}">${e.w}<span style="font-size:12px;color:${MUTED};font-family:'Syne';margin-left:2px">kg</span></div>
+            <button class="btndel" style="padding:6px 9px;font-size:11px" onclick="DWT(${S.weights.length-1-i})">✕</button>
+          </div>
+        </div>`).join("")}
+    </div>`:""}
+    ${S.whOpen&&S.weights.length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:16px 0">No weight entries yet</div>`:""}
   </div>
 
   <div class="sh">PERSONAL RECORDS</div>
-  ${uniq().map(name=>{
-    // Only show exercises the user has actually logged
-    const sets=S.workouts.filter(w=>w.name===name).flatMap(w=>w.sets);
-    if(!sets.length)return"";
-    const best=Math.max(...sets.map(s=>+s.weight||0));
-    const bestDate=S.workouts.filter(w=>w.name===name).slice(-1)[0]?.date||"";
-    return`<div class="csm">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div style="font-weight:600;font-size:14px">${name}</div>
-          <div style="font-size:11px;color:${MUTED};margin-top:2px">${bestDate}</div>
+  ${userExercises.length===0
+    ?`<div class="csm"><div style="color:${MUTED};font-size:13px;text-align:center;padding:8px 0">No workouts logged yet — go to Lift to add your exercises</div></div>`
+    :userExercises.map(name=>{
+      const allSets=S.workouts.filter(w=>w.name===name).flatMap(w=>w.sets);
+      if(!allSets.length)return"";
+      const best=Math.max(...allSets.map(s=>+s.weight||0));
+      const lastDate=S.workouts.filter(w=>w.name===name).slice(-1)[0]?.date||"";
+      return`<div class="csm">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:600;font-size:14px">${name}</div>
+            <div style="font-size:11px;color:${MUTED};margin-top:2px">${lastDate}</div>
+          </div>
+          <div style="font-family:'Bebas Neue',cursive;font-size:25px;color:${A}">${best}<span style="font-size:11px;color:${MUTED};font-family:'Syne';margin-left:3px">kg</span></div>
         </div>
-        <div style="font-family:'Bebas Neue',cursive;font-size:25px;color:${A}">${best}<span style="font-size:11px;color:${MUTED};font-family:'Syne';margin-left:3px">kg</span></div>
-      </div>
-    </div>`;
-  }).join("")}
+      </div>`;
+    }).join("")}
   </div>`;
 }
 
 // ── COACH ─────────────────────────────────────────────────────────────────────
 function rCoach(){
   return`<div class="fade">
+  ${apiWarning()}
   <div class="sh">AI COACH · FULL ANALYSIS</div>
   <div class="rcard">
     <div class="rhead">
@@ -664,10 +618,8 @@ function rCoach(){
     </div>
     ${S.report
       ?`<div class="rtxt">${S.report}</div>`
-      :`<button class="btnp" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin"></div><span class="pulse">Analyzing...</span>`:"✨ Generate My Coach Report"}</button>`
-    }
+      :`<button class="btnp" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin"></div><span class="pulse">Analyzing...</span>`:"✨ Generate My Coach Report"}</button>`}
   </div>
-
   <div class="sh">CHAT WITH YOUR COACH</div>
   <div class="chatbox" id="cb">
     ${S.chat.length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:28px 10px;line-height:1.7">Ask anything 👇<br>"Should I increase bench weight?"<br>"What should I eat today?"</div>`:""}
@@ -689,10 +641,51 @@ function rCoach(){
 // ── MODALS ────────────────────────────────────────────────────────────────────
 function rModal(){
   if(!S.modal)return"";
-  if(S.modal==="workout")return mWorkout();
-  if(S.modal==="food")   return mFood();
-  if(S.modal==="weight") return mWeight();
+  if(S.modal==="workout")  return mWorkout();
+  if(S.modal==="food")     return mFood();
+  if(S.modal==="weight")   return mWeight();
+  if(S.modal==="settings") return mSettings();
   return"";
+}
+
+function mSettings(){
+  const hasKey=!!S.apiKey;
+  return`<div class="overlay" onclick="M(null)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="shtop"><div class="hdl"></div><div class="stitle">⚙️ SETTINGS</div></div>
+
+    <div class="settings-panel">
+      <div style="font-family:'Bebas Neue',cursive;font-size:16px;color:${A};letter-spacing:.08em;margin-bottom:8px">🔑 ANTHROPIC API KEY</div>
+      <div style="font-size:12px;color:${MUTED};line-height:1.6;margin-bottom:12px">
+        Required for AI Coach to work. Get your free key at:<br>
+        <span style="color:${A}">console.anthropic.com → API Keys</span>
+      </div>
+      <label class="lbl" style="margin-top:0">Your API Key</label>
+      <div class="inp-wrap">
+        <input class="inp" id="apiinp" type="${S.showApiKey?"text":"password"}" placeholder="sk-ant-api03-..." value="${S.apiKey||""}" oninput="S.apiKey=this.value" style="padding-right:48px"/>
+        <button class="eye-btn" onclick="S.showApiKey=!S.showApiKey;R();setTimeout(()=>{const el=document.getElementById('apiinp');if(el)el.focus();},50)">${S.showApiKey?"🙈":"👁️"}</button>
+      </div>
+      <div class="api-status ${hasKey?"api-ok":"api-no"}" style="margin-top:10px">
+        <div class="api-dot" style="background:${hasKey?"#C8FF00":"#FF4D4D"}"></div>
+        ${hasKey?"API Key saved — AI is ready ✓":"No API key — AI features disabled"}
+      </div>
+      <button class="btnp" style="margin-top:14px" onclick="saveKey()">SAVE API KEY</button>
+    </div>
+
+    <div class="settings-panel">
+      <div style="font-family:'Bebas Neue',cursive;font-size:16px;color:${A};letter-spacing:.08em;margin-bottom:8px">🎯 TARGET WEIGHT</div>
+      <label class="lbl" style="margin-top:0">Goal Weight (kg)</label>
+      <input class="inp inpbig" type="number" inputmode="decimal" step="0.5" id="tginp" value="${S.target}" oninput="S.target=+this.value" style="margin-bottom:10px"/>
+      <button class="btnp" onclick="sv();M(null)">SAVE TARGET</button>
+    </div>
+
+    <div class="settings-panel" style="border-color:rgba(255,77,77,.25)">
+      <div style="font-family:'Bebas Neue',cursive;font-size:16px;color:${RED};letter-spacing:.08em;margin-bottom:8px">⚠️ CLEAR ALL DATA</div>
+      <div style="font-size:12px;color:${MUTED};margin-bottom:12px">This will delete all your workouts, food logs, and weight history.</div>
+      <button onclick="clearAll()" style="background:rgba(255,77,77,.1);border:1px solid rgba(255,77,77,.3);color:${RED};border-radius:8px;padding:12px;font-size:13px;cursor:pointer;width:100%;min-height:44px">Delete All My Data</button>
+    </div>
+  </div>
+  </div>`;
 }
 
 function mWorkout(){
@@ -771,7 +764,6 @@ function mWeight(){
 
 // ── ACTIONS ───────────────────────────────────────────────────────────────────
 window.T    = t  => { S.tab=t; R(); };
-window.G    = g  => { S.goal=g; sv(); R(); };
 window.EX   = id => { S.expanded=S.expanded===id?null:id; R(); };
 window.M    = m  => { S.modal=m; if(!m)S.photoRes=null; R(); };
 window.TG   = d  => { S.target=+(S.target+d).toFixed(1); sv(); R(); };
@@ -780,6 +772,19 @@ window.RS   = i  => { if(S.newSets.length>1)S.newSets.splice(i,1); R(); };
 window.DW   = id => { S.workouts=S.workouts.filter(w=>w.id!==id); sv(); R(); };
 window.DF   = id => { S.foods=S.foods.filter(f=>f.id!==id); sv(); R(); };
 window.DWT  = idx=> { S.weights.splice(idx,1); sv(); R(); };
+window.WHT  = ()=> { S.whOpen=!S.whOpen; R(); };
+
+window.saveKey = () => {
+  const v=document.getElementById("apiinp")?.value||S.apiKey;
+  S.apiKey=v.trim(); sv(); M(null);
+};
+
+window.clearAll = () => {
+  if(!confirm("Delete ALL your data? This cannot be undone."))return;
+  S.workouts=[]; S.foods=[]; S.weights=[];
+  S.chat=[]; S.report=""; S.whOpen=false;
+  sv(); M(null); R();
+};
 
 window.SW = () => {
   const s0=S.newSets[0]; if(!s0.reps||!s0.weight)return;
@@ -822,17 +827,15 @@ window.PH = async (inp) => {
 window.AP = () => {
   if(!S.photoRes?.totals)return;
   const t=S.photoRes.totals;
-  S.foods.push({id:Date.now(),date:TODAY,
-    name:(S.photoRes.items||[]).map(i=>i.name).join(", ")||"Photo Meal",
-    cal:t.calories,protein:t.protein,carbs:t.carbs,fat:t.fat});
+  S.foods.push({id:Date.now(),date:TODAY,name:(S.photoRes.items||[]).map(i=>i.name).join(", ")||"Photo Meal",cal:t.calories,protein:t.protein,carbs:t.carbs,fat:t.fat});
   S.photoRes=null; S.modal=null; sv(); R();
 };
 
 window.doRep = async () => {
   S.repLoad=true; S.report=""; R();
   S.report=await claude(
-    [{role:"user",content:`My fitness data: ${ctx()}\n\nGive me a personalized coach report:\n1. Analysis of my current progress\n2. Specific weight targets to hit next session for each exercise I've logged\n3. Diet adjustments for my goal\n4. One motivational line\nBe direct, specific, under 250 words. Use bullet points.`}],
-    "You are an expert personal trainer and nutritionist. Give precise, actionable advice based only on the data provided. Do not mention anything not in the data."
+    [{role:"user",content:`My fitness data: ${ctx()}\n\nGive me a personalized coach report:\n1. Analysis of my current progress based on the data\n2. Specific weight targets to aim for next session on each of my exercises\n3. Diet suggestions based on my nutrition data\n4. One motivational insight\nBe direct, specific, under 250 words. Use bullet points.`}],
+    "You are an expert personal trainer and nutritionist. Give precise, actionable advice based only on the user's data."
   );
   S.repLoad=false; sv(); R();
 };
@@ -844,7 +847,7 @@ window.CH = async () => {
   setTimeout(()=>document.getElementById("ce")?.scrollIntoView({behavior:"smooth"}),60);
   const reply=await claude(
     S.chat.map(m=>({role:m.role,content:m.content})),
-    `You are PATTA GHOBI's AI fitness coach. User data: ${ctx()}. Be concise and always reference their actual numbers when relevant.`
+    `You are PATTA GHOBI's AI fitness coach. User data: ${ctx()}. Be concise and reference their actual numbers.`
   );
   S.chat.push({role:"assistant",content:reply}); S.chatLoad=false; sv(); R();
   setTimeout(()=>document.getElementById("ce")?.scrollIntoView({behavior:"smooth"}),100);
