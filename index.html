@@ -1,729 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
   <title>PATTA GHOBI</title>
-
-  <!-- PWA -->
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#080808" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="PATTA GHOBI" />
-  <link rel="apple-touch-icon" href="/icon-192.png" />
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- React + Recharts -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
-
+  <link rel="manifest" href="/manifest.json"/>
+  <meta name="theme-color" content="#080808"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="PATTA GHOBI"/>
+  <link rel="apple-touch-icon" href="/icon-192.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: #080808; overscroll-behavior: none; }
-    body { -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
-    #root { height: 100%; }
-    ::-webkit-scrollbar { display: none; }
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-    input::placeholder, textarea::placeholder { color: #333; }
-    select option { background: #101010; }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes spin { to { transform:rotate(360deg); } }
-    @keyframes shimmer { 0%{opacity:.6}50%{opacity:1}100%{opacity:.6} }
-    .fade { animation: fadeUp .3s ease forwards; }
-    .spin { animation: spin 1s linear infinite; }
-    .shimmer { animation: shimmer 1.5s ease infinite; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#080808;overflow-x:hidden;overscroll-behavior:none}
+    body{font-family:'Syne',sans-serif;color:#F0F0F0;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+    ::-webkit-scrollbar{display:none}
+    input,select,button{-webkit-appearance:none;font-family:'Syne',sans-serif}
+    input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+    input::placeholder{color:#333}
+    select option{background:#111}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .fade{animation:fadeUp .3s ease forwards}
+    .spin{animation:spin 1s linear infinite}
+    .pulse{animation:pulse 1.5s ease infinite}
+    #app{max-width:430px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;background:#080808}
+    header{padding:max(52px,calc(env(safe-area-inset-top)+16px)) 18px 14px;border-bottom:1px solid #222;background:#080808}
+    .hrow{display:flex;justify-content:space-between;align-items:flex-start}
+    .logo{font-family:'Bebas Neue',cursive;font-size:36px;color:#C8FF00;letter-spacing:.04em;line-height:1}
+    .sub{color:#555;font-size:10px;letter-spacing:.1em;margin-top:3px;text-transform:uppercase}
+    .wt-btn{background:#161616;border:1px solid #222;border-radius:10px;padding:8px 14px;text-align:center;cursor:pointer}
+    .wt-val{font-family:'Bebas Neue',cursive;font-size:26px;color:#C8FF00;line-height:1}
+    .wt-lab{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.08em}
+    .goal-btns{display:flex;gap:6px;margin-top:8px}
+    .gbtn{border:1px solid #222;border-radius:6px;padding:5px 10px;cursor:pointer;font-family:'Bebas Neue',cursive;font-size:12px;letter-spacing:.04em;transition:all .2s}
+    .gbtn.active{background:#C8FF00;color:#000;border-color:#C8FF00}
+    .gbtn:not(.active){background:#161616;color:#555}
+    nav{display:flex;border-bottom:1px solid #222;background:#080808;position:sticky;top:0;z-index:50}
+    .tab{flex:1;background:none;border:none;padding:12px 0 10px;color:#555;cursor:pointer;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .2s}
+    .tab.on{color:#C8FF00;border-bottom-color:#C8FF00}
+    .tab-icon{font-size:18px;display:block;margin-bottom:3px}
+    main{flex:1;overflow-y:auto;padding:18px;padding-bottom:40px}
+    .card{background:#101010;border:1px solid #222;border-radius:14px;padding:18px;margin-bottom:14px}
+    .card-sm{background:#101010;border:1px solid #222;border-radius:12px;padding:14px 16px;margin-bottom:10px}
+    .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+    .stat{background:#101010;border:1px solid #222;border-radius:12px;padding:14px 12px}
+    .stat-l{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+    .stat-v{font-family:'Bebas Neue',cursive;font-size:26px;line-height:1}
+    .stat-u{font-size:11px;color:#555;font-family:'Syne',sans-serif;margin-left:2px}
+    .sh{font-family:'Bebas Neue',cursive;font-size:12px;color:#555;letter-spacing:.14em;margin-bottom:14px}
+    .bar-bg{height:6px;background:#222;border-radius:99px}
+    .bar-fill{height:100%;border-radius:99px;background:#C8FF00;transition:width .6s ease}
+    .macros{display:flex;gap:12px;margin-top:14px}
+    .macro{flex:1;text-align:center}
+    .macro-v{font-family:'Bebas Neue',cursive;font-size:22px;line-height:1}
+    .macro-l{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+    .goal-banner{background:linear-gradient(135deg,rgba(200,255,0,.1),rgba(200,255,0,.03));border:1px solid rgba(200,255,0,.25);border-radius:14px;padding:16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+    .goal-num{font-family:'Bebas Neue',cursive;font-size:40px;color:#C8FF00;line-height:1;text-align:right}
+    .chart-wrap{width:100%;overflow:hidden}
+    svg.chart{width:100%;display:block}
+    .target-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .target-ctrl{display:flex;flex-direction:column;gap:6px;align-items:center}
+    .ctrl-btn{background:#161616;border:1px solid #222;border-radius:6px;width:36px;height:36px;color:#C8FF00;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .pr-row{display:flex;justify-content:space-between;align-items:center}
+    .streak-grid{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+    .streak-day{width:22px;height:22px;border-radius:4px}
+    .chat-box{background:#101010;border:1px solid #222;border-radius:14px;padding:14px;min-height:200px;max-height:320px;overflow-y:auto;margin-bottom:12px}
+    .msg{margin-bottom:14px;display:flex;flex-direction:column}
+    .msg.user{align-items:flex-end}
+    .msg.bot{align-items:flex-start}
+    .bubble{border-radius:14px;padding:10px 14px;max-width:88%;font-size:13px;line-height:1.7}
+    .bubble.user{background:#C8FF00;color:#000;border-radius:14px 14px 4px 14px}
+    .bubble.bot{background:#161616;color:#F0F0F0;border-radius:14px 14px 14px 4px}
+    .chat-input-row{display:flex;gap:10px;margin-bottom:12px}
+    .quick-btns{display:flex;gap:8px;flex-wrap:wrap}
+    .quick-btn{background:#161616;border:1px solid #222;border-radius:20px;padding:7px 13px;color:#555;font-size:11px;cursor:pointer}
+    .report-card{background:#101010;border:1px solid rgba(200,255,0,.25);border-radius:14px;padding:16px;margin-bottom:18px}
+    .report-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .report-text{font-size:13px;color:#F0F0F0;line-height:1.85;white-space:pre-wrap}
+    .refresh-btn{background:none;border:1px solid rgba(200,255,0,.35);border-radius:6px;padding:5px 14px;color:#C8FF00;cursor:pointer;font-size:12px}
+    .btn-primary{background:#C8FF00;color:#000;font-family:'Bebas Neue',cursive;font-size:18px;letter-spacing:.06em;border:none;border-radius:10px;padding:14px 24px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px}
+    .btn-secondary{background:#161616;border:1px solid #222;border-radius:8px;padding:10px;color:#555;font-size:13px;cursor:pointer;width:100%;text-align:center}
+    .btn-send{background:#C8FF00;color:#000;border:none;border-radius:8px;padding:11px 18px;cursor:pointer;font-family:'Bebas Neue',cursive;font-size:16px;white-space:nowrap}
+    .btn-add{background:#C8FF00;color:#000;border:none;border-radius:8px;padding:9px 18px;font-family:'Bebas Neue',cursive;font-size:15px;cursor:pointer}
+    .inp{background:#161616;border:1px solid #222;border-radius:8px;padding:11px 14px;color:#F0F0F0;font-family:'Syne',sans-serif;font-size:15px;outline:none;width:100%}
+    label.lbl{color:#555;font-size:11px;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:6px}
+    .row2{display:flex;gap:10px;margin-bottom:10px}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+    .sheet{background:#101010;border-radius:20px 20px 0 0;padding:24px 20px 44px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;box-shadow:0 -4px 60px rgba(200,255,0,.1)}
+    .sheet-handle{width:40px;height:4px;background:#222;border-radius:99px;margin:0 auto 20px}
+    .sheet-title{font-family:'Bebas Neue',cursive;font-size:26px;color:#C8FF00;letter-spacing:.04em;margin-bottom:18px}
+    .photo-btn{background:#161616;border:2px dashed rgba(200,255,0,.4);border-radius:14px;padding:28px 16px;cursor:pointer;color:#F0F0F0;font-size:14px;width:100%;margin-bottom:16px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+    .photo-item{background:#161616;border-radius:10px;padding:10px 14px;margin-bottom:8px}
+    .photo-total{background:rgba(200,255,0,.08);border:1px solid rgba(200,255,0,.25);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+    .photo-tip{font-size:12px;color:#555;line-height:1.6;margin-bottom:14px;padding:10px 14px;background:#161616;border-radius:10px}
+    .photo-actions{display:flex;gap:10px}
+    .btn-outline{background:#161616;color:#555;border:1px solid #222;border-radius:10px;padding:14px;cursor:pointer;font-size:13px;flex:1;text-align:center}
+    .loader{width:18px;height:18px;border:2px solid #222;border-top-color:#C8FF00;border-radius:50%;display:inline-block}
+    .sets-table{border-top:1px solid #222;padding:12px 16px 14px}
+    .set-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:8px 0;border-top:1px solid rgba(34,34,34,.5)}
+    .set-row:first-child{border-top:none}
+    .set-wt{text-align:right;font-family:'Bebas Neue',cursive;font-size:18px;color:#C8FF00}
+    .vol-row{margin-top:10px;background:#161616;border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between}
   </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="app">
+  <div id="boot" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100dvh;gap:16px">
+    <div style="font-family:'Bebas Neue',cursive;font-size:48px;color:#C8FF00">PATTA GHOBI</div>
+    <div class="loader spin"></div>
+    <div style="color:#555;font-size:12px;letter-spacing:.1em">LOADING YOUR COACH...</div>
+  </div>
+</div>
 <script>
-const { useState, useEffect, useRef, useCallback } = React;
-const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, Bar, CartesianGrid, Legend } = Recharts;
-
-// ─── THEME ────────────────────────────────────────────────────────────────────
-const C = {
-  bg:"#080808", card:"#101010", card2:"#161616",
-  border:"#222", accent:"#C8FF00", red:"#FF4D4D",
-  teal:"#00E5CC", yellow:"#FFD166", muted:"#555", text:"#F0F0F0",
+const S={
+  workouts:[
+    {id:1,date:"Mar 10",name:"Bench Press",sets:[{reps:8,weight:50},{reps:8,weight:50},{reps:6,weight:50}]},
+    {id:2,date:"Mar 10",name:"Squat",sets:[{reps:10,weight:80},{reps:8,weight:85}]},
+    {id:3,date:"Mar 13",name:"Bench Press",sets:[{reps:8,weight:52},{reps:7,weight:52}]},
+    {id:4,date:"Mar 13",name:"Deadlift",sets:[{reps:5,weight:100},{reps:5,weight:105}]},
+    {id:5,date:"Mar 16",name:"Bench Press",sets:[{reps:8,weight:55},{reps:7,weight:55},{reps:6,weight:55}]},
+    {id:6,date:"Mar 16",name:"Squat",sets:[{reps:10,weight:90},{reps:8,weight:90}]},
+    {id:7,date:"Mar 19",name:"Bench Press",sets:[{reps:8,weight:57},{reps:8,weight:57}]},
+    {id:8,date:"Mar 19",name:"Overhead Press",sets:[{reps:10,weight:40},{reps:8,weight:42}]},
+  ],
+  foods:[
+    {id:1,date:"Mar 19",name:"Chicken Breast",cal:330,protein:62,carbs:0,fat:8},
+    {id:2,date:"Mar 19",name:"Oats",cal:389,protein:17,carbs:66,fat:7},
+    {id:3,date:"Mar 19",name:"Protein Shake",cal:120,protein:25,carbs:5,fat:2},
+  ],
+  weights:[
+    {date:"Mar 1",w:82.5},{date:"Mar 3",w:82.1},{date:"Mar 5",w:81.8},
+    {date:"Mar 8",w:81.5},{date:"Mar 10",w:81.9},{date:"Mar 12",w:81.2},
+    {date:"Mar 15",w:80.8},{date:"Mar 17",w:80.5},{date:"Mar 19",w:80.2},
+  ],
+  goal:"muscle",target:75,tab:"home",expanded:null,modal:null,
+  newEx:"Bench Press",newSets:[{reps:"",weight:""}],
+  newFood:"",newGrams:"100",newWt:"",
+  chat:[],chatIn:"",chatLoad:false,report:"",repLoad:false,
+  photoLoad:false,photoRes:null,
 };
+const EXES=["Bench Press","Squat","Deadlift","Pull-ups","Overhead Press","Barbell Row","Dumbbell Curl","Tricep Pushdown","Leg Press","Romanian Deadlift","Lat Pulldown"];
+const TODAY="Mar 19";
 
-// ─── DATA ────────────────────────────────────────────────────────────────────
-const INIT_WORKOUTS = [
-  { id:1, date:"Mar 10", name:"Bench Press", sets:[{reps:8,weight:50},{reps:8,weight:50},{reps:6,weight:50}] },
-  { id:2, date:"Mar 10", name:"Squat",       sets:[{reps:10,weight:80},{reps:8,weight:85}] },
-  { id:3, date:"Mar 13", name:"Bench Press", sets:[{reps:8,weight:52},{reps:7,weight:52}] },
-  { id:4, date:"Mar 13", name:"Deadlift",    sets:[{reps:5,weight:100},{reps:5,weight:105}] },
-  { id:5, date:"Mar 16", name:"Bench Press", sets:[{reps:8,weight:55},{reps:7,weight:55},{reps:6,weight:55}] },
-  { id:6, date:"Mar 16", name:"Squat",       sets:[{reps:10,weight:90},{reps:8,weight:90}] },
-  { id:7, date:"Mar 19", name:"Bench Press", sets:[{reps:8,weight:57},{reps:8,weight:57}] },
-  { id:8, date:"Mar 19", name:"Overhead Press", sets:[{reps:10,weight:40},{reps:8,weight:42}] },
-];
-const INIT_FOODS = [
-  { id:1, date:"Mar 19", name:"Chicken Breast", cal:330, protein:62, carbs:0,  fat:8  },
-  { id:2, date:"Mar 19", name:"Oats",           cal:389, protein:17, carbs:66, fat:7  },
-  { id:3, date:"Mar 19", name:"Protein Shake",  cal:120, protein:25, carbs:5,  fat:2  },
-];
-const INIT_WEIGHTS = [
-  {date:"Mar 1",weight:82.5},{date:"Mar 3",weight:82.1},{date:"Mar 5",weight:81.8},
-  {date:"Mar 8",weight:81.5},{date:"Mar 10",weight:81.9},{date:"Mar 12",weight:81.2},
-  {date:"Mar 15",weight:80.8},{date:"Mar 17",weight:80.5},{date:"Mar 19",weight:80.2},
-];
-const EXERCISES = ["Bench Press","Squat","Deadlift","Pull-ups","Overhead Press","Barbell Row",
-  "Dumbbell Curl","Tricep Pushdown","Leg Press","Romanian Deadlift","Lat Pulldown"];
+function sv(){try{localStorage.setItem("pg2",JSON.stringify({w:S.workouts,f:S.foods,wt:S.weights,g:S.goal,t:S.target,c:S.chat,r:S.report}));}catch(e){}}
+function ld(){try{const d=JSON.parse(localStorage.getItem("pg2")||"{}");if(d.w)S.workouts=d.w;if(d.f)S.foods=d.f;if(d.wt)S.weights=d.wt;if(d.g)S.goal=d.g;if(d.t)S.target=d.t;if(d.c)S.chat=d.c;if(d.r)S.report=d.r;}catch(e){}}
 
-// ─── HELPERS ────────────────────────────────────────────────────────────────
-function saveData(key, val) { try { localStorage.setItem("pg_"+key, JSON.stringify(val)); } catch(e){} }
-function loadData(key, def) { try { const v = localStorage.getItem("pg_"+key); return v ? JSON.parse(v) : def; } catch(e){ return def; } }
+const tw=()=>S.workouts.filter(w=>w.date===TODAY);
+const tf=()=>S.foods.filter(f=>f.date===TODAY);
+const nut=()=>tf().reduce((a,f)=>({cal:a.cal+f.cal,protein:a.protein+f.protein,carbs:a.carbs+f.carbs,fat:a.fat+f.fat}),{cal:0,protein:0,carbs:0,fat:0});
+const vol=()=>tw().reduce((a,w)=>a+w.sets.reduce((b,s)=>b+s.reps*s.weight,0),0);
+const lw=()=>S.weights[S.weights.length-1]?.w||80;
+const cg=()=>S.goal==="muscle"?2800:2000;
+const uniq=()=>[...new Set(S.workouts.map(w=>w.name))];
+function wtg(){
+  if(S.weights.length<2)return"?";
+  const last=S.weights[S.weights.length-1].w,first=S.weights[0].w;
+  const rate=(last-first)/((S.weights.length-1)/2);
+  if(rate===0)return"∞";
+  const diff=S.target-last;
+  if((diff>0&&rate<0)||(diff<0&&rate>0))return"∞";
+  return Math.abs(Math.ceil(diff/rate));
+}
 
-async function callClaude(messages, system="") {
-  const r = await fetch("https://api.anthropic.com/v1/messages", {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, system, messages })
+function mkLine(data,key,color,H=120){
+  if(!data||data.length<2)return"";
+  const vals=data.map(d=>d[key]).filter(v=>v!=null);
+  if(!vals.length)return"";
+  const mn=Math.min(...vals)-2,mx=Math.max(...vals)+2;
+  const W=400,pl=36,pr=10,pt=10,pb=24,iW=W-pl-pr,iH=H-pt-pb;
+  const xs=data.map((_,i)=>pl+i*(iW/(data.length-1)));
+  const fy=v=>pt+iH-(((v-mn)/(mx-mn))*iH);
+  let path="",dots="";
+  let st=false;
+  for(let i=0;i<data.length;i++){
+    const v=data[i][key];
+    if(v==null){st=false;continue;}
+    path+=(st?"L":"M")+xs[i].toFixed(1)+","+fy(v).toFixed(1)+" ";
+    st=true;
+    dots+=`<circle cx="${xs[i].toFixed(1)}" cy="${fy(v).toFixed(1)}" r="4" fill="${color}"/>`;
+  }
+  let xlabs="";
+  const step=Math.ceil(data.length/5);
+  data.forEach((d,i)=>{if(i%step===0||i===data.length-1)xlabs+=`<text x="${xs[i].toFixed(1)}" y="${H-4}" fill="#444" font-size="9" text-anchor="middle" font-family="Syne,sans-serif">${d.date}</text>`;});
+  const yv=[mn,+(mn+(mx-mn)/2).toFixed(1),mx];
+  let ylabs="";
+  yv.forEach(v=>{const y=fy(v);ylabs+=`<line x1="${pl}" y1="${y.toFixed(1)}" x2="${W-pr}" y2="${y.toFixed(1)}" stroke="#1e1e1e" stroke-width="1"/><text x="${pl-4}" y="${y.toFixed(1)}" fill="#444" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="Syne,sans-serif">${v.toFixed?v.toFixed(1):v}</text>`;});
+  return`<svg viewBox="0 0 ${W} ${H}" class="chart">${ylabs}<path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}${xlabs}</svg>`;
+}
+
+function mkWtChart(){
+  const actual=S.weights.map(w=>({date:w.date,actual:w.w}));
+  if(S.weights.length<2)return mkLine(actual,"actual","#C8FF00");
+  const last=S.weights[S.weights.length-1].w,first=S.weights[0].w;
+  const rate=(last-first)/(S.weights.length-1);
+  const pDates=["Apr 1","Apr 8","Apr 15","Apr 22","May 1","May 8","Jun 1"];
+  const proj=pDates.map((date,i)=>({date,projected:+(last+rate*(i+2)*1.5).toFixed(1)}));
+  const all=[...actual,...proj];
+  const allV=[...all.map(d=>d.actual||null),...all.map(d=>d.projected||null),S.target].filter(v=>v);
+  const mn=Math.min(...allV)-1,mx=Math.max(...allV)+1;
+  const W=400,H=160,pl=36,pr=10,pt=10,pb=24,iW=W-pl-pr,iH=H-pt-pb;
+  const N=all.length;
+  const xs=all.map((_,i)=>pl+i*(iW/(N-1)));
+  const fy=v=>pt+iH-(((v-mn)/(mx-mn))*iH);
+  let aP="",pP="";let ast=false,pst=false;
+  all.forEach((d,i)=>{
+    if(d.actual!=null){aP+=(ast?"L":"M")+xs[i].toFixed(1)+","+fy(d.actual).toFixed(1)+" ";ast=true;}
+    if(d.projected!=null){pP+=(pst?"L":"M")+xs[i].toFixed(1)+","+fy(d.projected).toFixed(1)+" ";pst=true;}
   });
-  const d = await r.json();
-  return d.content?.map(b=>b.text||"").join("") || "No response.";
+  const ty=fy(S.target);
+  let dots="";actual.forEach((d,i)=>dots+=`<circle cx="${xs[i].toFixed(1)}" cy="${fy(d.actual).toFixed(1)}" r="3.5" fill="#C8FF00"/>`);
+  const step=Math.ceil(N/5);
+  let xlabs="";all.forEach((d,i)=>{if(i%step===0||i===N-1)xlabs+=`<text x="${xs[i].toFixed(1)}" y="${H-4}" fill="#444" font-size="9" text-anchor="middle" font-family="Syne,sans-serif">${d.date}</text>`;});
+  const yv=[+mn.toFixed(1),+(mn+(mx-mn)/2).toFixed(1),+mx.toFixed(1)];
+  let ylabs="";yv.forEach(v=>{const y=fy(v);ylabs+=`<line x1="${pl}" y1="${y.toFixed(1)}" x2="${W-pr}" y2="${y.toFixed(1)}" stroke="#1e1e1e" stroke-width="1"/><text x="${pl-4}" y="${y.toFixed(1)}" fill="#444" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="Syne,sans-serif">${v}</text>`;});
+  return`<svg viewBox="0 0 ${W} ${H}" class="chart">${ylabs}<line x1="${pl}" y1="${ty.toFixed(1)}" x2="${W-pr}" y2="${ty.toFixed(1)}" stroke="#FF4D4D" stroke-width="1.5" stroke-dasharray="4 3"/><text x="${W-pr-2}" y="${ty-5}" fill="#FF4D4D" font-size="9" text-anchor="end" font-family="Syne,sans-serif">Target ${S.target}kg</text><path d="${aP}" fill="none" stroke="#C8FF00" stroke-width="2.5" stroke-linecap="round"/><path d="${pP}" fill="none" stroke="#C8FF00" stroke-width="2" stroke-dasharray="6 4" opacity=".6"/>${dots}${xlabs}</svg>`;
 }
 
-// ─── ATOMS ────────────────────────────────────────────────────────────────────
-const INP = { background:C.card2, border:`1px solid ${C.border}`, borderRadius:8,
-  padding:"11px 14px", color:C.text, fontFamily:"Syne", fontSize:15,
-  outline:"none", width:"100%", WebkitAppearance:"none" };
-
-function Loader() {
-  return React.createElement("div",{className:"spin",style:{width:18,height:18,border:`2px solid ${C.border}`,borderTopColor:C.accent,borderRadius:"50%",display:"inline-block"}});
-}
-function Label({children}) {
-  return React.createElement("div",{style:{color:C.muted,fontSize:11,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:6,fontFamily:"Syne"}},children);
-}
-function SHead({children,style:s={}}) {
-  return React.createElement("div",{style:{fontFamily:"Bebas Neue",fontSize:12,color:C.muted,letterSpacing:"0.14em",marginBottom:14,...s}},children);
-}
-function Modal({children,onClose}) {
-  return React.createElement("div",{
-    onClick:onClose,
-    style:{position:"fixed",inset:0,background:"#000000cc",zIndex:200,display:"flex",
-      alignItems:"flex-end",justifyContent:"center",padding:"0 0 0 0"}
-  }, React.createElement("div",{
-    onClick:e=>e.stopPropagation(),
-    style:{background:C.card,borderRadius:"20px 20px 0 0",padding:"24px 20px 40px",
-      width:"100%",maxHeight:"90vh",overflowY:"auto",
-      boxShadow:`0 -4px 60px ${C.accent}18`}
-  }, React.createElement("div",{style:{width:40,height:4,background:C.border,borderRadius:99,margin:"0 auto 20px"}}),
-  children));
+function exChart(name){
+  const map={};S.workouts.filter(w=>w.name===name).forEach(w=>{const mx=Math.max(...w.sets.map(s=>s.weight));if(!map[w.date]||map[w.date]<mx)map[w.date]=mx;});
+  const data=Object.entries(map).map(([date,maxKg])=>({date,maxKg}));
+  return data.length<2?"":mkLine(data,"maxKg","#C8FF00",90);
 }
 
-// ─── MAIN APP ─────────────────────────────────────────────────────────────────
-function App() {
-  const [tab, setTab] = useState("home");
-  const [workouts, setWorkouts] = useState(()=>loadData("workouts",INIT_WORKOUTS));
-  const [foods, setFoods]       = useState(()=>loadData("foods",INIT_FOODS));
-  const [wLog, setWLog]         = useState(()=>loadData("weights",INIT_WEIGHTS));
-  const [goal, setGoal]         = useState(()=>loadData("goal","muscle"));
-  const [target, setTarget]     = useState(()=>loadData("target",75));
-  const [expanded, setExpanded] = useState(null);
+async function claude(messages,sys=""){
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages})});
+    const d=await r.json();
+    return d.content?.map(b=>b.text||"").join("")||"No response.";
+  }catch(e){return"Could not connect to AI. Check your internet connection.";}
+}
+function ctx(){return JSON.stringify({goal:S.goal==="muscle"?"Build Muscle":"Lose Weight",currentWeight:lw(),targetWeight:S.target,recentWorkouts:S.workouts.slice(-6).map(w=>({name:w.name,date:w.date,sets:w.sets})),todayNutrition:nut(),weightTrend:S.weights.slice(-5)});}
 
-  // modals
-  const [wModal, setWModal] = useState(false);
-  const [fModal, setFModal] = useState(false);
-  const [wtModal,setWtModal]= useState(false);
-  const [newEx,  setNewEx]  = useState(EXERCISES[0]);
-  const [newSets,setNewSets]= useState([{reps:"",weight:""}]);
-  const [newFN,  setNewFN]  = useState("");
-  const [newGrams,setNewGrams]=useState("100");
-  const [newWt,  setNewWt]  = useState("");
-
-  // AI
-  const [chat,    setChat]    = useState([]);
-  const [chatIn,  setChatIn]  = useState("");
-  const [chatLoad,setChatLoad]= useState(false);
-  const [report,  setReport]  = useState("");
-  const [repLoad, setRepLoad] = useState(false);
-  const [photoLoad,setPhotoLoad]=useState(false);
-  const [photoRes, setPhotoRes]=useState(null);
-  const fileRef = useRef();
-  const chatEnd = useRef();
-
-  // persist
-  useEffect(()=>saveData("workouts",workouts),[workouts]);
-  useEffect(()=>saveData("foods",foods),[foods]);
-  useEffect(()=>saveData("weights",wLog),[wLog]);
-  useEffect(()=>saveData("goal",goal),[goal]);
-  useEffect(()=>saveData("target",target),[target]);
-  useEffect(()=>{ chatEnd.current?.scrollIntoView({behavior:"smooth"}); },[chat]);
-
-  const TODAY = "Mar 19";
-  const todayW = workouts.filter(w=>w.date===TODAY);
-  const todayF = foods.filter(f=>f.date===TODAY);
-  const todayNut = todayF.reduce((a,f)=>({cal:a.cal+f.cal,protein:a.protein+f.protein,carbs:a.carbs+f.carbs,fat:a.fat+f.fat}),{cal:0,protein:0,carbs:0,fat:0});
-  const todayVol = todayW.reduce((a,w)=>a+w.sets.reduce((b,s)=>b+s.reps*s.weight,0),0);
-  const latestW  = wLog[wLog.length-1]?.weight || 80;
-  const calGoal  = goal==="muscle"?2800:2000;
-
-  function getExProgress(name) {
-    const map={};
-    workouts.filter(w=>w.name===name).forEach(w=>{
-      const mx=Math.max(...w.sets.map(s=>s.weight));
-      if(!map[w.date]||map[w.date]<mx) map[w.date]=mx;
-    });
-    return Object.entries(map).map(([date,maxKg])=>({date,maxKg}));
-  }
-
-  function getWeightChart() {
-    const actual = wLog.map(w=>({date:w.date,actual:w.weight,target}));
-    if(wLog.length<2) return actual;
-    const last=wLog[wLog.length-1].weight, first=wLog[0].weight;
-    const rate=(last-first)/(wLog.length-1);
-    const proj=["Apr 1","Apr 8","Apr 15","Apr 22","May 1","May 8","May 15","Jun 1"].map((date,i)=>({
-      date, projected:+(last+rate*(i+2)*1.8).toFixed(1), target
-    }));
-    return [...actual,...proj];
-  }
-
-  function weeksToGoal() {
-    if(wLog.length<2) return "?";
-    const last=wLog[wLog.length-1].weight, first=wLog[0].weight;
-    const rate=(last-first)/((wLog.length-1)/2);
-    if(rate===0) return "∞";
-    const diff=target-last;
-    if((diff>0&&rate<0)||(diff<0&&rate>0)) return "∞";
-    return Math.abs(Math.ceil(diff/rate));
-  }
-
-  function buildCtx() {
-    return JSON.stringify({
-      goal:goal==="muscle"?"Build Muscle":"Lose Weight", currentWeight:latestW, targetWeight:target,
-      recentWorkouts:workouts.slice(-6).map(w=>({name:w.name,date:w.date,sets:w.sets})),
-      todayNutrition:todayNut, weightTrend:wLog.slice(-5)
-    });
-  }
-
-  async function genReport() {
-    setRepLoad(true); setReport("");
-    const r = await callClaude(
-      [{role:"user",content:`My fitness data: ${buildCtx()}\n\nGive me a coach report with:\n1. Progress analysis\n2. Specific weight targets for my exercises next session\n3. Diet tweaks for my goal\n4. One motivational line\nBe direct, specific, under 250 words, use bullet points.`}],
-      "You are an expert personal trainer and nutritionist. Give precise, actionable advice based on the data."
-    );
-    setReport(r); setRepLoad(false);
-  }
-
-  async function sendChat() {
-    if(!chatIn.trim()) return;
-    const msg=chatIn.trim();
-    const hist=[...chat,{role:"user",content:msg}];
-    setChat(hist); setChatIn(""); setChatLoad(true);
-    const reply=await callClaude(
-      hist.map(m=>({role:m.role,content:m.content})),
-      `You are PATTA GHOBI's AI fitness coach. User data: ${buildCtx()}. Answer concisely, reference their actual numbers.`
-    );
-    setChat([...hist,{role:"assistant",content:reply}]); setChatLoad(false);
-  }
-
-  async function analyzePhoto(file) {
-    setPhotoLoad(true); setPhotoRes(null);
-    const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});
-    const reply=await callClaude([{role:"user",content:[
-      {type:"image",source:{type:"base64",media_type:file.type||"image/jpeg",data:b64}},
-      {type:"text",text:`Identify all food items. For each: name, grams_estimated, calories, protein, carbs, fat. Give totals and a 1-sentence health tip for someone trying to ${goal==="muscle"?"build muscle":"lose weight"}. Respond ONLY in JSON: {"items":[{"name":"","grams_estimated":0,"calories":0,"protein":0,"carbs":0,"fat":0}],"totals":{"calories":0,"protein":0,"carbs":0,"fat":0},"tip":""}`}
-    ]}]);
-    try { const clean=reply.replace(/```json|```/g,"").trim(); setPhotoRes(JSON.parse(clean)); }
-    catch { setPhotoRes({raw:reply}); }
-    setPhotoLoad(false);
-  }
-
-  function addPhotoFood() {
-    if(!photoRes?.totals) return;
-    const t=photoRes.totals;
-    setFoods(p=>[...p,{id:Date.now(),date:TODAY,name:photoRes.items?.map(i=>i.name).join(", ")||"Photo Meal",cal:t.calories,protein:t.protein,carbs:t.carbs,fat:t.fat}]);
-    setPhotoRes(null); setFModal(false);
-  }
-
-  function addWorkout() {
-    if(!newSets[0].reps||!newSets[0].weight) return;
-    setWorkouts(p=>[...p,{id:Date.now(),date:TODAY,name:newEx,sets:newSets.map(s=>({reps:+s.reps,weight:+s.weight}))}]);
-    setWModal(false); setNewSets([{reps:"",weight:""}]);
-  }
-  function addWeight() {
-    if(!newWt) return;
-    setWLog(p=>[...p,{date:TODAY,weight:+newWt}]);
-    setWtModal(false); setNewWt("");
-  }
-
-  const uniqEx = [...new Set(workouts.map(w=>w.name))];
-  const chartData = getWeightChart();
-
-  // ── SAFE ICON SVG (no emoji render issues) ───────────────────────────────
-  const TABS = [
-    {id:"home",   label:"Home",     emoji:"⚡"},
-    {id:"lift",   label:"Lift",     emoji:"🏋️"},
-    {id:"eat",    label:"Eat",      emoji:"🥗"},
-    {id:"grow",   label:"Grow",     emoji:"📈"},
-    {id:"coach",  label:"Coach",    emoji:"🤖"},
-  ];
-
-  const h = React.createElement;
-  const safe = (children) => h("div",{style:{paddingBottom:"env(safe-area-inset-bottom,0px)"}},children);
-
-  // ─── SHARED STYLES ─────────────────────────────────────────────────────────
-  const card = (extra={}) => ({background:C.card,border:`1px solid ${C.border}`,borderRadius:14,padding:18,...extra});
-  const btnPrimary = {background:C.accent,color:"#000",fontFamily:"Bebas Neue",fontSize:18,
-    letterSpacing:"0.06em",border:"none",borderRadius:10,padding:"14px 24px",cursor:"pointer",width:"100%",WebkitAppearance:"none"};
-
-  // ─── RENDER ────────────────────────────────────────────────────────────────
-  return h("div",{style:{background:C.bg,minHeight:"100dvh",color:C.text,fontFamily:"Syne",
-    maxWidth:430,margin:"0 auto",display:"flex",flexDirection:"column"}},
-
-    // HEADER
-    h("div",{style:{padding:"52px 18px 14px",borderBottom:`1px solid ${C.border}`,background:C.bg,
-      paddingTop:"max(52px, calc(env(safe-area-inset-top,0px) + 16px))"}},
-      h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}},
-        h("div",null,
-          h("div",{style:{fontFamily:"Bebas Neue",fontSize:36,color:C.accent,letterSpacing:"0.04em",lineHeight:1}},"PATTA GHOBI"),
-          h("div",{style:{color:C.muted,fontSize:10,letterSpacing:"0.1em",marginTop:3,textTransform:"uppercase"}},
-            "AI Fitness Coach · Thu 19 Mar 2026")
-        ),
-        h("div",{style:{display:"flex",flexDirection:"column",gap:8,alignItems:"flex-end"}},
-          h("div",{onClick:()=>setWtModal(true),style:{background:C.card2,border:`1px solid ${C.border}`,
-            borderRadius:10,padding:"8px 14px",textAlign:"center",cursor:"pointer"}},
-            h("div",{style:{fontFamily:"Bebas Neue",fontSize:26,color:C.accent,lineHeight:1}},latestW),
-            h("div",{style:{fontSize:9,color:C.muted,textTransform:"uppercase",letterSpacing:"0.08em"}},"kg · log")
-          ),
-          h("div",{style:{display:"flex",gap:6}},
-            ["muscle","loss"].map(g=>h("button",{key:g,onClick:()=>setGoal(g),
-              style:{background:goal===g?C.accent:C.card2,color:goal===g?"#000":C.muted,
-                border:`1px solid ${goal===g?C.accent:C.border}`,borderRadius:6,
-                padding:"5px 10px",cursor:"pointer",fontFamily:"Bebas Neue",fontSize:12,
-                letterSpacing:"0.04em",WebkitAppearance:"none"}},
-              g==="muscle"?"💪 MUSCLE":"🔥 CUT"
-            ))
-          )
-        )
-      )
-    ),
-
-    // TAB BAR
-    h("div",{style:{display:"flex",borderBottom:`1px solid ${C.border}`,background:C.bg,
-      position:"sticky",top:0,zIndex:50}},
-      TABS.map(t=>h("button",{key:t.id,onClick:()=>setTab(t.id),
-        style:{flex:1,background:"none",border:"none",padding:"12px 0 10px",
-          color:tab===t.id?C.accent:C.muted,cursor:"pointer",fontFamily:"Syne",
-          fontSize:9,fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase",
-          borderBottom:`2px solid ${tab===t.id?C.accent:"transparent"}`,transition:"color .2s",
-          WebkitAppearance:"none"}},
-        h("div",{style:{fontSize:18,marginBottom:3}},t.emoji), t.label
-      ))
-    ),
-
-    // CONTENT
-    h("div",{style:{flex:1,overflowY:"auto",padding:18,paddingBottom:40}},
-
-      // ── HOME ────────────────────────────────────────────────────────────
-      tab==="home" && h("div",{className:"fade"},
-        // Stats
-        h("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:16}},
-          [{l:"Calories",v:Math.round(todayNut.cal),u:"kcal",c:C.yellow},
-           {l:"Volume",  v:(todayVol/1000).toFixed(1)+"k",u:"kg",c:C.accent},
-           {l:"Protein", v:Math.round(todayNut.protein),u:"g",c:C.teal}
-          ].map(s=>h("div",{key:s.l,style:{...card({padding:"14px 12px"})},},
-            h("div",{style:{fontSize:9,color:C.muted,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:4}},s.l),
-            h("div",{style:{fontFamily:"Bebas Neue",fontSize:26,color:s.c,lineHeight:1}},s.v,
-              h("span",{style:{fontSize:11,color:C.muted,fontFamily:"Syne",marginLeft:2}},s.u))
-          ))
-        ),
-
-        // Goal banner
-        h("div",{style:{background:`linear-gradient(135deg,${C.accent}18,${C.accent}05)`,
-          border:`1px solid ${C.accent}33`,borderRadius:14,padding:16,marginBottom:16}},
-          h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center"}},
-            h("div",null,
-              h("div",{style:{fontSize:10,color:C.accent,textTransform:"uppercase",letterSpacing:"0.1em",marginBottom:4}},"YOUR GOAL"),
-              h("div",{style:{fontFamily:"Bebas Neue",fontSize:22,color:C.text}},
-                goal==="muscle"?"BUILD MUSCLE 💪":"LOSE WEIGHT 🔥"),
-              h("div",{style:{color:C.muted,fontSize:12,marginTop:4}},
-                "Target: ",h("span",{style:{color:C.accent}},target," kg"),
-                " · Est. ",h("span",{style:{color:C.accent}},weeksToGoal()," weeks"))
-            ),
-            h("div",{style:{textAlign:"right"}},
-              h("div",{style:{fontFamily:"Bebas Neue",fontSize:38,color:C.accent,lineHeight:1}},
-                Math.abs((latestW-target).toFixed(1))),
-              h("div",{style:{fontSize:10,color:C.muted}},"kg to go")
-            )
-          )
-        ),
-
-        // Today's lifts
-        h(SHead,null,"TODAY'S LIFTS"),
-        todayW.length===0 && h("div",{style:{color:C.muted,fontSize:13,textAlign:"center",padding:"16px 0",marginBottom:12}},"No lifts logged yet today — crush it! 💥"),
-        ...todayW.map(w=>h("div",{key:w.id,style:{...card({padding:"12px 16px",marginBottom:10})},},
-          h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center"}},
-            h("div",null,
-              h("div",{style:{fontWeight:700,fontSize:15}},w.name),
-              h("div",{style:{color:C.muted,fontSize:12,marginTop:2}},w.sets.length," sets · ",w.sets.reduce((a,s)=>a+s.reps*s.weight,0)," kg vol")
-            ),
-            h("div",{style:{fontFamily:"Bebas Neue",fontSize:24,color:C.accent}},
-              Math.max(...w.sets.map(s=>s.weight)),
-              h("span",{style:{fontSize:11,color:C.muted,fontFamily:"Syne"}},"kg"))
-          )
-        )),
-        h("button",{onClick:()=>setWModal(true),style:{...btnPrimary,marginTop:4}},"+ LOG WORKOUT"),
-
-        // AI Coach card
-        h("div",{style:{...card(),marginTop:18}},
-          h("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:12}},
-            h("span",{style:{fontSize:22}},"🤖"),
-            h("span",{style:{fontFamily:"Bebas Neue",fontSize:14,color:C.muted,letterSpacing:"0.1em"}},"AI COACH")
-          ),
-          report
-            ? h("div",{style:{fontSize:13,color:C.text,lineHeight:1.8,whiteSpace:"pre-wrap"}},report)
-            : h("button",{onClick:genReport,disabled:repLoad,
-                style:{background:C.card2,color:C.accent,border:`1px solid ${C.accent}44`,
-                  borderRadius:8,padding:"12px 16px",cursor:"pointer",fontFamily:"Syne",
-                  fontSize:13,fontWeight:600,width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:10,WebkitAppearance:"none"}},
-                repLoad ? h(React.Fragment,null,h(Loader),h("span",{className:"shimmer"}," Analyzing your data...")) : "✨ Generate My Coach Report"
-              )
-        )
-      ),
-
-      // ── LIFT ───────────────────────────────────────────────────────────
-      tab==="lift" && h("div",{className:"fade"},
-        h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}},
-          h(SHead,{style:{marginBottom:0}},"WORKOUT LOG"),
-          h("button",{onClick:()=>setWModal(true),style:{background:C.accent,color:"#000",border:"none",
-            borderRadius:8,padding:"9px 18px",fontFamily:"Bebas Neue",fontSize:15,cursor:"pointer",WebkitAppearance:"none"}},"+ ADD")
-        ),
-
-        h(SHead,null,"PROGRESS GRAPHS"),
-        ...uniqEx.map(name=>{
-          const data=getExProgress(name);
-          if(data.length<2) return null;
-          const latest=data[data.length-1].maxKg, prev=data[data.length-2].maxKg, diff=latest-prev;
-          return h("div",{key:name,style:{...card(),marginBottom:14}},
-            h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:10}},
-              h("div",null,
-                h("div",{style:{fontWeight:700,fontSize:15}},name),
-                h("div",{style:{fontSize:11,color:diff>=0?C.teal:C.red,marginTop:2}},
-                  diff>=0?"▲":"▼"," ",Math.abs(diff)," kg vs last session")
-              ),
-              h("div",{style:{fontFamily:"Bebas Neue",fontSize:28,color:C.accent,lineHeight:1}},latest,
-                h("span",{style:{fontSize:11,color:C.muted,fontFamily:"Syne",marginLeft:3}},"kg"))
-            ),
-            h(ResponsiveContainer,{width:"100%",height:90},
-              h(LineChart,{data},
-                h(XAxis,{dataKey:"date",tick:{fill:C.muted,fontSize:9,fontFamily:"Syne"},axisLine:false,tickLine:false}),
-                h(YAxis,{domain:["dataMin - 2","dataMax + 2"],tick:{fill:C.muted,fontSize:9},axisLine:false,tickLine:false,width:28}),
-                h(Tooltip,{contentStyle:{background:C.card2,border:`1px solid ${C.border}`,borderRadius:8,color:C.text,fontFamily:"Syne",fontSize:12}}),
-                h(Line,{type:"monotone",dataKey:"maxKg",stroke:C.accent,strokeWidth:2.5,dot:{fill:C.accent,r:4,strokeWidth:0},activeDot:{r:6}})
-              )
-            )
-          );
-        }),
-
-        h(SHead,{style:{marginTop:8}},"ALL SESSIONS"),
-        ...workouts.map(w=>h("div",{key:w.id,style:{...card({padding:0}),marginBottom:10,overflow:"hidden"}},
-          h("div",{onClick:()=>setExpanded(expanded===w.id?null:w.id),
-            style:{padding:"14px 16px",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}},
-            h("div",null,
-              h("div",{style:{fontWeight:700}},w.name),
-              h("div",{style:{color:C.muted,fontSize:11,marginTop:2}},w.date," · ",w.sets.length," sets")
-            ),
-            h("div",{style:{color:C.accent,fontFamily:"Bebas Neue",fontSize:20}},expanded===w.id?"▲":"▼")
-          ),
-          expanded===w.id && h("div",{style:{borderTop:`1px solid ${C.border}`,padding:"12px 16px 14px"}},
-            ...w.sets.map((s,i)=>h("div",{key:i,style:{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",
-              padding:"8px 0",borderTop:i>0?`1px solid ${C.border}22`:"none"}},
-              h("div",{style:{color:C.muted,fontSize:12}},"Set ",i+1),
-              h("div",{style:{textAlign:"center",fontWeight:600}},s.reps," reps"),
-              h("div",{style:{textAlign:"right",fontFamily:"Bebas Neue",fontSize:18,color:C.accent}},s.weight," kg")
-            )),
-            h("div",{style:{marginTop:10,background:C.card2,borderRadius:8,padding:"10px 14px",
-              display:"flex",justifyContent:"space-between"}},
-              h("span",{style:{color:C.muted,fontSize:12}},"Volume"),
-              h("span",{style:{fontFamily:"Bebas Neue",fontSize:18,color:C.accent}},
-                w.sets.reduce((a,s)=>a+s.reps*s.weight,0)," kg")
-            )
-          )
-        ))
-      ),
-
-      // ── EAT ────────────────────────────────────────────────────────────
-      tab==="eat" && h("div",{className:"fade"},
-        h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}},
-          h(SHead,{style:{marginBottom:0}},"FOOD INTAKE"),
-          h("button",{onClick:()=>setFModal(true),style:{background:C.accent,color:"#000",border:"none",
-            borderRadius:8,padding:"9px 16px",fontFamily:"Bebas Neue",fontSize:14,cursor:"pointer",WebkitAppearance:"none"}},"📸 ADD FOOD")
-        ),
-
-        // Calorie bar
-        h("div",{style:card()},
-          h("div",{style:{display:"flex",justifyContent:"space-between",marginBottom:8}},
-            h("div",{style:{fontFamily:"Bebas Neue",fontSize:32,color:C.accent}},Math.round(todayNut.cal),
-              h("span",{style:{fontSize:13,color:C.muted,fontFamily:"Syne",marginLeft:4}},"kcal")),
-            h("div",{style:{color:C.muted,fontSize:12,alignSelf:"flex-end",marginBottom:5}},
-              "/ ",calGoal," goal")
-          ),
-          h("div",{style:{height:6,background:C.border,borderRadius:99}},
-            h("div",{style:{height:"100%",width:`${Math.min(todayNut.cal/calGoal*100,100)}%`,
-              background:C.accent,borderRadius:99,transition:"width .6s ease"}})
-          ),
-          h("div",{style:{display:"flex",gap:12,marginTop:14}},
-            [{l:"Protein",v:todayNut.protein,c:C.red},{l:"Carbs",v:todayNut.carbs,c:C.teal},{l:"Fat",v:todayNut.fat,c:C.yellow}]
-            .map(m=>h("div",{key:m.l,style:{flex:1,textAlign:"center"}},
-              h("div",{style:{fontFamily:"Bebas Neue",fontSize:22,color:m.c}},Math.round(m.v),"g"),
-              h("div",{style:{fontSize:10,color:C.muted,textTransform:"uppercase",letterSpacing:"0.08em"}},m.l)
-            ))
-          )
-        ),
-
-        // Food items
-        h("div",{style:{marginTop:16}},
-          ...todayF.map(f=>h("div",{key:f.id,style:{...card({padding:"14px 16px",marginBottom:10})},},
-            h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}},
-              h("div",null,
-                h("div",{style:{fontWeight:700,fontSize:14}},f.name),
-                h("div",{style:{fontSize:11,color:C.muted,marginTop:3}},
-                  h("span",{style:{color:C.red}},Math.round(f.protein),"g P"),
-                  " · ",h("span",{style:{color:C.teal}},Math.round(f.carbs),"g C"),
-                  " · ",h("span",{style:{color:C.yellow}},Math.round(f.fat),"g F")
-                )
-              ),
-              h("div",{style:{fontFamily:"Bebas Neue",fontSize:20,color:C.yellow}},Math.round(f.cal),
-                h("span",{style:{fontSize:11,color:C.muted,fontFamily:"Syne"}}," kcal"))
-            )
-          ))
-        )
-      ),
-
-      // ── GROW ───────────────────────────────────────────────────────────
-      tab==="grow" && h("div",{className:"fade"},
-        h(SHead,null,"WEIGHT PROGRESS & GOAL"),
-
-        h("div",{style:card()},
-          h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}},
-            h("div",null,
-              h("div",{style:{fontSize:11,color:C.muted,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:4}},"Current → Target"),
-              h("div",{style:{fontFamily:"Bebas Neue",fontSize:28,color:C.text,lineHeight:1}},
-                latestW," ",h("span",{style:{color:C.muted}},"→")," ",h("span",{style:{color:C.accent}},target),
-                h("span",{style:{fontSize:13,color:C.muted,fontFamily:"Syne",marginLeft:4}},"kg")),
-              h("div",{style:{color:C.teal,fontSize:12,marginTop:6}},"⏱ ~",weeksToGoal()," weeks at current pace")
-            ),
-            h("div",{style:{display:"flex",flexDirection:"column",gap:6,alignItems:"center"}},
-              h("button",{onClick:()=>setTarget(t=>+(t+0.5).toFixed(1)),
-                style:{background:C.card2,border:`1px solid ${C.border}`,borderRadius:6,
-                  width:36,height:36,color:C.accent,fontSize:20,cursor:"pointer",fontWeight:700,WebkitAppearance:"none"}},"＋"),
-              h("div",{style:{fontFamily:"Bebas Neue",fontSize:22,color:C.accent}},target),
-              h("button",{onClick:()=>setTarget(t=>+(t-0.5).toFixed(1)),
-                style:{background:C.card2,border:`1px solid ${C.border}`,borderRadius:6,
-                  width:36,height:36,color:C.accent,fontSize:20,cursor:"pointer",fontWeight:700,WebkitAppearance:"none"}},"－")
-            )
-          ),
-          h(ResponsiveContainer,{width:"100%",height:180},
-            h(LineChart,{data:chartData},
-              h(CartesianGrid,{stroke:C.border,vertical:false}),
-              h(XAxis,{dataKey:"date",tick:{fill:C.muted,fontSize:9,fontFamily:"Syne"},axisLine:false,tickLine:false,interval:3}),
-              h(YAxis,{domain:["dataMin - 1","dataMax + 1"],tick:{fill:C.muted,fontSize:9},axisLine:false,tickLine:false,width:30}),
-              h(Tooltip,{contentStyle:{background:C.card2,border:`1px solid ${C.border}`,borderRadius:8,color:C.text,fontFamily:"Syne",fontSize:12}}),
-              h(Legend,{wrapperStyle:{fontSize:10,fontFamily:"Syne",color:C.muted}}),
-              h(Line,{type:"monotone",dataKey:"actual",stroke:C.accent,strokeWidth:2.5,dot:{fill:C.accent,r:3,strokeWidth:0},connectNulls:false,name:"Actual"}),
-              h(Line,{type:"monotone",dataKey:"projected",stroke:C.accent,strokeWidth:2,strokeDasharray:"5 4",dot:false,name:"Projected"}),
-              h(Line,{type:"monotone",dataKey:"target",stroke:C.red,strokeWidth:1.5,strokeDasharray:"3 3",dot:false,name:`Target ${target}kg`})
-            )
-          )
-        ),
-
-        h(SHead,{style:{marginTop:18}},"PERSONAL RECORDS"),
-        ...uniqEx.map(name=>{
-          const best=Math.max(...workouts.filter(w=>w.name===name).flatMap(w=>w.sets.map(s=>s.weight)));
-          return h("div",{key:name,style:{...card({padding:"12px 16px"}),marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center"}},
-            h("div",{style:{fontWeight:600,fontSize:14}},name),
-            h("div",{style:{fontFamily:"Bebas Neue",fontSize:26,color:C.accent}},best,
-              h("span",{style:{fontSize:11,color:C.muted,fontFamily:"Syne",marginLeft:3}},"kg"))
-          );
-        }),
-
-        h(SHead,{style:{marginTop:18}},"28-DAY STREAK"),
-        h("div",{style:{...card()}},
-          h("div",{style:{display:"flex",gap:5,flexWrap:"wrap",marginBottom:14}},
-            Array.from({length:28},(_,i)=>{
-              const on=[0,2,3,5,7,8,10,12,13,15,16,17,19,20,22,23,25,26,27].includes(i);
-              return h("div",{key:i,style:{width:22,height:22,borderRadius:4,
-                background:on?C.accent:C.border,opacity:on?1:0.35}});
-            })
-          ),
-          h("div",{style:{display:"flex",gap:20}},
-            h("div",null,h("span",{style:{fontFamily:"Bebas Neue",fontSize:26,color:C.accent}},"12"),
-              h("span",{style:{color:C.muted,fontSize:12,marginLeft:4}},"day streak")),
-            h("div",null,h("span",{style:{fontFamily:"Bebas Neue",fontSize:26,color:C.accent}},"19"),
-              h("span",{style:{color:C.muted,fontSize:12,marginLeft:4}},"this month"))
-          )
-        )
-      ),
-
-      // ── COACH ──────────────────────────────────────────────────────────
-      tab==="coach" && h("div",{className:"fade"},
-        h(SHead,null,"AI COACH · PERSONALIZED REPORT"),
-        h("div",{style:{...card({border:`1px solid ${C.accent}33`}),marginBottom:18}},
-          h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}},
-            h("div",{style:{display:"flex",alignItems:"center",gap:8}},
-              h("span",{style:{fontSize:22}},"🤖"),
-              h("span",{style:{fontFamily:"Bebas Neue",fontSize:14,color:C.accent,letterSpacing:"0.1em"}},"FULL ANALYSIS")
-            ),
-            h("button",{onClick:genReport,disabled:repLoad,
-              style:{background:"none",border:`1px solid ${C.accent}44`,borderRadius:6,
-                padding:"5px 14px",color:C.accent,cursor:"pointer",fontFamily:"Syne",fontSize:12,WebkitAppearance:"none"}},
-              repLoad ? h(Loader) : "↺ Refresh")
-          ),
-          report
-            ? h("div",{style:{fontSize:13,color:C.text,lineHeight:1.85,whiteSpace:"pre-wrap"}},report)
-            : h("button",{onClick:genReport,disabled:repLoad,style:{...btnPrimary,fontSize:16,
-                display:"flex",alignItems:"center",justifyContent:"center",gap:10}},
-                repLoad ? h(React.Fragment,null,h(Loader),h("span",{className:"shimmer"}," Analyzing...")) : "✨ Generate My Coach Report"
-              )
-        ),
-
-        h(SHead,null,"CHAT WITH COACH"),
-        h("div",{style:{...card(),minHeight:220,maxHeight:320,overflowY:"auto",marginBottom:12}},
-          chat.length===0 && h("div",{style:{color:C.muted,fontSize:13,textAlign:"center",padding:"30px 10px",lineHeight:1.7}},
-            "Ask anything 👇\n\"Should I increase my bench?\"\n\"What should I eat today?\""),
-          ...chat.map((m,i)=>h("div",{key:i,style:{marginBottom:14,display:"flex",
-            flexDirection:"column",alignItems:m.role==="user"?"flex-end":"flex-start"}},
-            h("div",{style:{background:m.role==="user"?C.accent:C.card2,
-              color:m.role==="user"?"#000":C.text,
-              borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",
-              padding:"10px 14px",maxWidth:"88%",fontSize:13,lineHeight:1.7}},m.content)
-          )),
-          chatLoad && h("div",{style:{display:"flex",alignItems:"center",gap:8,color:C.muted,fontSize:13}},
-            h(Loader)," Thinking..."),
-          h("div",{ref:chatEnd})
-        ),
-
-        h("div",{style:{display:"flex",gap:10,marginBottom:12}},
-          h("input",{value:chatIn,onChange:e=>setChatIn(e.target.value),
-            onKeyDown:e=>e.key==="Enter"&&sendChat(),
-            placeholder:"Ask your coach...",style:{...INP,flex:1}}),
-          h("button",{onClick:sendChat,disabled:chatLoad||!chatIn.trim(),
-            style:{background:C.accent,color:"#000",border:"none",borderRadius:8,
-              padding:"11px 18px",cursor:"pointer",fontFamily:"Bebas Neue",fontSize:16,
-              whiteSpace:"nowrap",WebkitAppearance:"none"}},"SEND")
-        ),
-
-        h("div",{style:{display:"flex",gap:8,flexWrap:"wrap"}},
-          ["Increase bench weight?","What to eat today?","Am I losing weight?","Best exercises for my goal?"]
-          .map(q=>h("button",{key:q,onClick:()=>setChatIn(q),
-            style:{background:C.card2,border:`1px solid ${C.border}`,borderRadius:20,
-              padding:"7px 13px",color:C.muted,fontFamily:"Syne",fontSize:11,
-              cursor:"pointer",WebkitAppearance:"none"}},q))
-        )
-      )
-    ),
-
-    // ── MODALS ─────────────────────────────────────────────────────────────
-    wModal && h(Modal,{onClose:()=>setWModal(false)},
-      h("div",{style:{fontFamily:"Bebas Neue",fontSize:26,color:C.accent,letterSpacing:"0.04em",marginBottom:18}},"LOG EXERCISE"),
-      h(Label,null,"Exercise"),
-      h("select",{value:newEx,onChange:e=>setNewEx(e.target.value),style:{...INP,marginBottom:16}},
-        EXERCISES.map(e=>h("option",{key:e},e))),
-      h(Label,null,"Sets"),
-      ...newSets.map((s,i)=>h("div",{key:i,style:{display:"flex",gap:10,marginBottom:10}},
-        h("input",{type:"number",placeholder:"Reps",value:s.reps,
-          onChange:e=>setNewSets(p=>p.map((x,j)=>j===i?{...x,reps:e.target.value}:x)),style:INP}),
-        h("input",{type:"number",placeholder:"kg",value:s.weight,
-          onChange:e=>setNewSets(p=>p.map((x,j)=>j===i?{...x,weight:e.target.value}:x)),style:INP})
-      )),
-      h("button",{onClick:()=>setNewSets(p=>[...p,{reps:"",weight:""}]),
-        style:{background:"none",border:`1px solid ${C.border}`,borderRadius:8,padding:"10px",
-          color:C.muted,fontFamily:"Syne",fontSize:13,cursor:"pointer",marginBottom:16,width:"100%",WebkitAppearance:"none"}},
-        "+ Add Another Set"),
-      h("button",{onClick:addWorkout,style:btnPrimary},"SAVE EXERCISE")
-    ),
-
-    fModal && h(Modal,{onClose:()=>{setFModal(false);setPhotoRes(null);}},
-      h("div",{style:{fontFamily:"Bebas Neue",fontSize:26,color:C.accent,letterSpacing:"0.04em",marginBottom:6}},"LOG FOOD"),
-      h("div",{style:{color:C.muted,fontSize:12,marginBottom:18}},"📸 Upload a photo — AI identifies food & estimates all macros automatically"),
-      h("input",{ref:fileRef,type:"file",accept:"image/*",capture:"environment",style:{display:"none"},
-        onChange:e=>e.target.files[0]&&analyzePhoto(e.target.files[0])}),
-      !photoRes && h("button",{onClick:()=>fileRef.current?.click(),
-        style:{background:C.card2,border:`2px dashed ${C.accent}55`,borderRadius:14,
-          padding:"28px 16px",cursor:"pointer",color:C.text,fontFamily:"Syne",
-          fontSize:14,width:"100%",marginBottom:16,display:"flex",
-          flexDirection:"column",alignItems:"center",gap:8,WebkitAppearance:"none"}},
-        photoLoad
-          ? h(React.Fragment,null,h(Loader),h("span",{className:"shimmer",style:{color:C.muted,fontSize:13}},"AI is analyzing your food..."))
-          : h(React.Fragment,null,
-              h("span",{style:{fontSize:40}},"📸"),
-              h("span",null,"Take a photo of your meal"),
-              h("span",{style:{color:C.muted,fontSize:11}},"AI will identify every item & estimate macros")
-            )
-      ),
-      photoRes && !photoRes.raw && h("div",null,
-        ...( photoRes.items||[]).map((item,i)=>h("div",{key:i,style:{background:C.card2,borderRadius:10,padding:"10px 14px",marginBottom:8}},
-          h("div",{style:{fontWeight:700,fontSize:14}},item.name," ",h("span",{style:{color:C.muted,fontSize:12}},"~",item.grams_estimated,"g")),
-          h("div",{style:{fontSize:12,color:C.muted,marginTop:3}},
-            h("span",{style:{color:C.yellow}},item.calories," kcal")," · ",
-            h("span",{style:{color:C.red}},item.protein,"g P")," · ",
-            h("span",{style:{color:C.teal}},item.carbs,"g C")
-          )
-        )),
-        photoRes.totals && h("div",{style:{background:`${C.accent}15`,border:`1px solid ${C.accent}33`,
-          borderRadius:10,padding:"12px 14px",marginBottom:10}},
-          h("div",{style:{fontFamily:"Bebas Neue",fontSize:13,color:C.accent,marginBottom:6}},"TOTAL"),
-          h("div",{style:{fontSize:14}},
-            h("span",{style:{color:C.yellow,fontFamily:"Bebas Neue",fontSize:22}},photoRes.totals.calories),
-            h("span",{style:{color:C.muted}}," kcal · "),
-            h("span",{style:{color:C.red}},photoRes.totals.protein,"g P")," · ",
-            h("span",{style:{color:C.teal}},photoRes.totals.carbs,"g C")
-          )
-        ),
-        photoRes.tip && h("div",{style:{fontSize:12,color:C.muted,lineHeight:1.6,marginBottom:14,
-          padding:"10px 14px",background:C.card2,borderRadius:10}},"🤖 ",photoRes.tip),
-        h("div",{style:{display:"flex",gap:10}},
-          h("button",{onClick:addPhotoFood,style:{...btnPrimary,flex:2}},"ADD TO LOG"),
-          h("button",{onClick:()=>setPhotoRes(null),
-            style:{background:C.card2,color:C.muted,border:`1px solid ${C.border}`,
-              borderRadius:10,padding:"14px",cursor:"pointer",fontFamily:"Syne",fontSize:13,flex:1,WebkitAppearance:"none"}},
-            "Retry")
-        )
-      ),
-      photoRes?.raw && h("div",{style:{fontSize:13,color:C.text,lineHeight:1.7,marginBottom:14}},photoRes.raw),
-      !photoRes && !photoLoad && h("div",null,
-        h("div",{style:{textAlign:"center",color:C.muted,fontSize:12,margin:"12px 0"}},"— or enter manually —"),
-        h(Label,null,"Food Name"),
-        h("input",{value:newFN,onChange:e=>setNewFN(e.target.value),placeholder:"e.g. Rice & Chicken",style:{...INP,marginBottom:10}}),
-        h(Label,null,"Grams"),
-        h("input",{type:"number",value:newGrams,onChange:e=>setNewGrams(e.target.value),style:{...INP,marginBottom:16}}),
-        h("button",{onClick:()=>{
-          if(!newFN) return;
-          setFoods(p=>[...p,{id:Date.now(),date:TODAY,name:newFN,cal:Math.round(newGrams*1.5),
-            protein:Math.round(newGrams*0.2),carbs:Math.round(newGrams*0.3),fat:Math.round(newGrams*0.05)}]);
-          setFModal(false); setNewFN(""); setNewGrams("100");
-        },style:btnPrimary},"SAVE FOOD")
-      )
-    ),
-
-    wtModal && h(Modal,{onClose:()=>setWtModal(false)},
-      h("div",{style:{fontFamily:"Bebas Neue",fontSize:26,color:C.accent,letterSpacing:"0.04em",marginBottom:18}},"LOG WEIGHT"),
-      h(Label,null,"Today's Weight (kg)"),
-      h("input",{type:"number",step:"0.1",placeholder:"e.g. 79.8",value:newWt,
-        onChange:e=>setNewWt(e.target.value),
-        style:{...INP,fontFamily:"Bebas Neue",fontSize:36,textAlign:"center",marginBottom:20}}),
-      h("button",{onClick:addWeight,style:btnPrimary},"SAVE")
-    )
-  );
+function R(){
+  const app=document.getElementById("app");
+  const n=nut(),lv=lw(),cgl=cg();
+  app.innerHTML=`
+  <header>
+    <div class="hrow">
+      <div><div class="logo">PATTA GHOBI</div><div class="sub">AI Fitness Coach · Thu 19 Mar 2026</div></div>
+      <div>
+        <div class="wt-btn" onclick="doWt()"><div class="wt-val">${lv}</div><div class="wt-lab">kg · log</div></div>
+        <div class="goal-btns">
+          <button class="gbtn ${S.goal==="muscle"?"active":""}" onclick="doGoal('muscle')">💪 MUSCLE</button>
+          <button class="gbtn ${S.goal==="loss"?"active":""}" onclick="doGoal('loss')">🔥 CUT</button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav>
+    ${[["home","⚡","Home"],["lift","🏋️","Lift"],["eat","🥗","Eat"],["grow","📈","Grow"],["coach","🤖","Coach"]].map(([id,ic,lb])=>`<button class="tab ${S.tab===id?"on":""}" onclick="doTab('${id}')"><span class="tab-icon">${ic}</span>${lb}</button>`).join("")}
+  </nav>
+  <main>${rTab()}</main>
+  ${rModal()}`;
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
-
-// ── SERVICE WORKER ──────────────────────────────────────────────────────────
-if("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js").then(r => console.log("SW registered")).catch(e => console.log("SW error", e));
-  });
+function rTab(){
+  if(S.tab==="home")return rHome();
+  if(S.tab==="lift")return rLift();
+  if(S.tab==="eat")return rEat();
+  if(S.tab==="grow")return rGrow();
+  if(S.tab==="coach")return rCoach();
+  return rHome();
 }
+
+function rHome(){
+  const n=nut(),lv=lw();
+  const twl=tw();
+  return`<div class="fade">
+  <div class="stats">
+    <div class="stat"><div class="stat-l">Calories</div><div class="stat-v" style="color:#FFD166">${Math.round(n.cal)}<span class="stat-u">kcal</span></div></div>
+    <div class="stat"><div class="stat-l">Volume</div><div class="stat-v" style="color:#C8FF00">${(vol()/1000).toFixed(1)}k<span class="stat-u">kg</span></div></div>
+    <div class="stat"><div class="stat-l">Protein</div><div class="stat-v" style="color:#00E5CC">${Math.round(n.protein)}<span class="stat-u">g</span></div></div>
+  </div>
+  <div class="goal-banner">
+    <div>
+      <div style="font-size:10px;color:#C8FF00;text-transform:uppercase;letter-spacing:.1em">YOUR GOAL</div>
+      <div style="font-family:'Bebas Neue',cursive;font-size:22px;margin-top:4px">${S.goal==="muscle"?"BUILD MUSCLE 💪":"LOSE WEIGHT 🔥"}</div>
+      <div style="color:#555;font-size:12px;margin-top:4px">Target: <span style="color:#C8FF00">${S.target} kg</span> · Est. <span style="color:#C8FF00">${wtg()} weeks</span></div>
+    </div>
+    <div><div class="goal-num">${Math.abs((lv-S.target).toFixed(1))}</div><div style="font-size:10px;color:#555;text-align:right">kg to go</div></div>
+  </div>
+  <div class="sh">TODAY'S LIFTS</div>
+  ${twl.length===0?'<div style="color:#555;font-size:13px;text-align:center;padding:16px 0;margin-bottom:12px">No lifts yet today — crush it! 💥</div>':""}
+  ${twl.map(w=>`<div class="card-sm"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:700;font-size:15px">${w.name}</div><div style="color:#555;font-size:12px;margin-top:2px">${w.sets.length} sets · ${w.sets.reduce((a,s)=>a+s.reps*s.weight,0)} kg vol</div></div><div style="font-family:'Bebas Neue',cursive;font-size:24px;color:#C8FF00">${Math.max(...w.sets.map(s=>s.weight))}<span style="font-size:11px;color:#555;font-family:'Syne',sans-serif">kg</span></div></div></div>`).join("")}
+  <button class="btn-primary" onclick="doModal('workout')">+ LOG WORKOUT</button>
+  <div class="report-card" style="margin-top:18px">
+    <div class="report-head"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px">🤖</span><span style="font-family:'Bebas Neue',cursive;font-size:14px;color:#C8FF00;letter-spacing:.1em">AI COACH</span></div></div>
+    ${S.report?`<div class="report-text">${S.report}</div>`:`<button class="btn-primary" onclick="doReport()" ${S.repLoad?"disabled":""}>${S.repLoad?'<div class="loader spin"></div><span class="pulse">Analyzing...</span>':"✨ Generate My Coach Report"}</button>`}
+  </div>
+  </div>`;
+}
+
+function rLift(){
+  return`<div class="fade">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px"><div class="sh" style="margin-bottom:0">WORKOUT LOG</div><button class="btn-add" onclick="doModal('workout')">+ ADD</button></div>
+  <div class="sh">EXERCISE PROGRESS</div>
+  ${uniq().map(name=>{
+    const map={};S.workouts.filter(w=>w.name===name).forEach(w=>{const mx=Math.max(...w.sets.map(s=>s.weight));if(!map[w.date]||map[w.date]<mx)map[w.date]=mx;});
+    const pts=Object.entries(map).map(([d,v])=>({date:d,maxKg:v}));
+    if(pts.length<2)return"";
+    const lt=pts[pts.length-1].maxKg,pv=pts[pts.length-2].maxKg,df=lt-pv;
+    return`<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px"><div><div style="font-weight:700;font-size:15px">${name}</div><div style="font-size:11px;color:${df>=0?"#00E5CC":"#FF4D4D"};margin-top:2px">${df>=0?"▲":"▼"} ${Math.abs(df)} kg vs last session</div></div><div style="font-family:'Bebas Neue',cursive;font-size:28px;color:#C8FF00;line-height:1">${lt}<span style="font-size:11px;color:#555;font-family:'Syne',sans-serif;margin-left:3px">kg</span></div></div><div class="chart-wrap">${exChart(name)}</div></div>`;
+  }).join("")}
+  <div class="sh" style="margin-top:8px">ALL SESSIONS</div>
+  ${S.workouts.map(w=>`<div class="card" style="padding:0;margin-bottom:10px;overflow:hidden">
+    <div style="padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center" onclick="doExpand(${w.id})">
+      <div><div style="font-weight:700">${w.name}</div><div style="color:#555;font-size:11px;margin-top:2px">${w.date} · ${w.sets.length} sets</div></div>
+      <div style="color:#C8FF00;font-family:'Bebas Neue',cursive;font-size:20px">${S.expanded===w.id?"▲":"▼"}</div>
+    </div>
+    ${S.expanded===w.id?`<div class="sets-table">${w.sets.map((s,i)=>`<div class="set-row"><div style="color:#555;font-size:12px">Set ${i+1}</div><div style="text-align:center;font-weight:600">${s.reps} reps</div><div class="set-wt">${s.weight} kg</div></div>`).join("")}<div class="vol-row"><span style="color:#555;font-size:12px">Volume</span><span style="font-family:'Bebas Neue',cursive;font-size:18px;color:#C8FF00">${w.sets.reduce((a,s)=>a+s.reps*s.weight,0)} kg</span></div></div>`:""}
+  </div>`).join("")}
+  </div>`;
+}
+
+function rEat(){
+  const n=nut(),cgl=cg(),pct=Math.min(n.cal/cgl*100,100);
+  return`<div class="fade">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><div class="sh" style="margin-bottom:0">FOOD INTAKE</div><button class="btn-add" onclick="doModal('food')">📸 ADD FOOD</button></div>
+  <div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><div style="font-family:'Bebas Neue',cursive;font-size:32px;color:#C8FF00">${Math.round(n.cal)}<span style="font-size:13px;color:#555;font-family:'Syne',sans-serif;margin-left:4px">kcal</span></div><div style="color:#555;font-size:12px;align-self:flex-end;margin-bottom:5px">/ ${cgl} goal</div></div><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div><div class="macros"><div class="macro"><div class="macro-v" style="color:#FF4D4D">${Math.round(n.protein)}g</div><div class="macro-l">Protein</div></div><div class="macro"><div class="macro-v" style="color:#00E5CC">${Math.round(n.carbs)}g</div><div class="macro-l">Carbs</div></div><div class="macro"><div class="macro-v" style="color:#FFD166">${Math.round(n.fat)}g</div><div class="macro-l">Fat</div></div></div></div>
+  ${tf().map(f=>`<div class="card-sm"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-weight:700;font-size:14px">${f.name}</div><div style="font-size:11px;color:#555;margin-top:3px"><span style="color:#FF4D4D">${Math.round(f.protein)}g P</span> · <span style="color:#00E5CC">${Math.round(f.carbs)}g C</span> · <span style="color:#FFD166">${Math.round(f.fat)}g F</span></div></div><div style="font-family:'Bebas Neue',cursive;font-size:20px;color:#FFD166">${Math.round(f.cal)}<span style="font-size:11px;color:#555;font-family:'Syne',sans-serif"> kcal</span></div></div></div>`).join("")}
+  </div>`;
+}
+
+function rGrow(){
+  const lv=lw();
+  return`<div class="fade">
+  <div class="sh">WEIGHT PROGRESS & GOAL</div>
+  <div class="card">
+    <div class="target-row">
+      <div>
+        <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Current → Target</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:28px;line-height:1">${lv} <span style="color:#555">→</span> <span style="color:#C8FF00">${S.target}</span><span style="font-size:13px;color:#555;font-family:'Syne',sans-serif;margin-left:4px">kg</span></div>
+        <div style="color:#00E5CC;font-size:12px;margin-top:6px">⏱ ~${wtg()} weeks at current pace</div>
+      </div>
+      <div class="target-ctrl">
+        <button class="ctrl-btn" onclick="doTarget(.5)">＋</button>
+        <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:#C8FF00">${S.target}</div>
+        <button class="ctrl-btn" onclick="doTarget(-.5)">－</button>
+      </div>
+    </div>
+    <div class="chart-wrap">${mkWtChart()}</div>
+  </div>
+  <div class="sh" style="margin-top:8px">PERSONAL RECORDS</div>
+  ${uniq().map(name=>{const best=Math.max(...S.workouts.filter(w=>w.name===name).flatMap(w=>w.sets.map(s=>s.weight)));return`<div class="card-sm"><div class="pr-row"><div style="font-weight:600;font-size:14px">${name}</div><div style="font-family:'Bebas Neue',cursive;font-size:26px;color:#C8FF00">${best}<span style="font-size:11px;color:#555;font-family:'Syne',sans-serif;margin-left:3px">kg</span></div></div></div>`;}).join("")}
+  <div class="sh" style="margin-top:8px">28-DAY STREAK</div>
+  <div class="card"><div class="streak-grid">${Array.from({length:28},(_,i)=>{const on=[0,2,3,5,7,8,10,12,13,15,16,17,19,20,22,23,25,26,27].includes(i);return`<div class="streak-day" style="background:${on?"#C8FF00":"#222"};opacity:${on?1:.35}"></div>`;}).join("")}</div><div style="display:flex;gap:20px"><div><span style="font-family:'Bebas Neue',cursive;font-size:26px;color:#C8FF00">12</span><span style="color:#555;font-size:12px;margin-left:4px">day streak</span></div><div><span style="font-family:'Bebas Neue',cursive;font-size:26px;color:#C8FF00">19</span><span style="color:#555;font-size:12px;margin-left:4px">this month</span></div></div></div>
+  </div>`;
+}
+
+function rCoach(){
+  return`<div class="fade">
+  <div class="sh">AI COACH · FULL ANALYSIS</div>
+  <div class="report-card">
+    <div class="report-head"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px">🤖</span><span style="font-family:'Bebas Neue',cursive;font-size:14px;color:#C8FF00;letter-spacing:.1em">PERSONALIZED REPORT</span></div><button class="refresh-btn" onclick="doReport()" ${S.repLoad?"disabled":""}>${S.repLoad?'<div class="loader spin" style="display:inline-block"></div>':"↺ Refresh"}</button></div>
+    ${S.report?`<div class="report-text">${S.report}</div>`:`<button class="btn-primary" onclick="doReport()" ${S.repLoad?"disabled":""}>${S.repLoad?'<div class="loader spin"></div><span class="pulse">Analyzing your data...</span>':"✨ Generate My Coach Report"}</button>`}
+  </div>
+  <div class="sh">CHAT WITH YOUR COACH</div>
+  <div class="chat-box" id="cb">
+    ${S.chat.length===0?'<div style="color:#555;font-size:13px;text-align:center;padding:30px 10px;line-height:1.7">Ask anything 👇<br>"Should I increase my bench?"<br>"What should I eat today?"</div>':""}
+    ${S.chat.map(m=>`<div class="msg ${m.role==="user"?"user":"bot"}"><div class="bubble ${m.role==="user"?"user":"bot"}">${m.content}</div></div>`).join("")}
+    ${S.chatLoad?'<div style="display:flex;align-items:center;gap:8px;color:#555;font-size:13px"><div class="loader spin"></div> Thinking...</div>':""}
+    <div id="ce"></div>
+  </div>
+  <div class="chat-input-row">
+    <input class="inp" id="ci" placeholder="Ask your coach..." value="${S.chatIn.replace(/"/g,"&quot;")}" oninput="S.chatIn=this.value" onkeydown="if(event.key==='Enter')doChat()"/>
+    <button class="btn-send" onclick="doChat()" ${S.chatLoad?"disabled":""}>SEND</button>
+  </div>
+  <div class="quick-btns">
+    ${["Increase bench weight?","What to eat today?","Am I on track?","Best exercises for my goal?"].map(q=>`<button class="quick-btn" onclick="doQuick(this.textContent)">${q}</button>`).join("")}
+  </div>
+  </div>`;
+}
+
+function rModal(){
+  if(!S.modal)return"";
+  if(S.modal==="workout")return`<div class="overlay" onclick="doModal(null)"><div class="sheet" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-title">LOG EXERCISE</div><label class="lbl">Exercise</label><select class="inp" id="es" style="margin-bottom:16px">${EXES.map(e=>`<option ${S.newEx===e?"selected":""}>${e}</option>`).join("")}</select><label class="lbl">Sets</label>${S.newSets.map((s,i)=>`<div class="row2"><input class="inp" type="number" placeholder="Reps" value="${s.reps}" oninput="S.newSets[${i}].reps=this.value"/><input class="inp" type="number" placeholder="kg" value="${s.weight}" oninput="S.newSets[${i}].weight=this.value"/></div>`).join("")}<button class="btn-secondary" style="margin-bottom:16px" onclick="doAddSet()">+ Add Another Set</button><button class="btn-primary" onclick="doSaveWorkout()">SAVE EXERCISE</button></div></div>`;
+  if(S.modal==="food")return`<div class="overlay" onclick="doModal(null)"><div class="sheet" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-title">LOG FOOD</div><div style="color:#555;font-size:12px;margin-bottom:16px">📸 Upload a photo — AI identifies food & estimates all macros</div><input type="file" accept="image/*" capture="environment" id="pf" style="display:none" onchange="doPhoto(this)"/>${!S.photoRes?`<button class="photo-btn" onclick="document.getElementById('pf').click()">${S.photoLoad?'<div class="loader spin"></div><span class="pulse" style="color:#555;font-size:13px">AI is analyzing your food...</span>':"<div style='font-size:40px'>📸</div><div>Take a photo of your meal</div><div style='color:#555;font-size:11px'>AI identifies every item & estimates macros</div>"}</button><div style="text-align:center;color:#555;font-size:12px;margin-bottom:12px">— or enter manually —</div><label class="lbl">Food Name</label><input class="inp" id="fn" placeholder="e.g. Rice & Chicken" style="margin-bottom:10px" value="${S.newFood}" oninput="S.newFood=this.value"/><label class="lbl">Grams</label><input class="inp" type="number" style="margin-bottom:16px" value="${S.newGrams}" oninput="S.newGrams=this.value"/><button class="btn-primary" onclick="doSaveFood()">SAVE FOOD</button>`:""} ${S.photoRes&&!S.photoRes.raw?`${(S.photoRes.items||[]).map(it=>`<div class="photo-item"><div style="font-weight:700;font-size:14px">${it.name} <span style="color:#555;font-size:12px">~${it.grams_estimated}g</span></div><div style="font-size:12px;color:#555;margin-top:3px"><span style="color:#FFD166">${it.calories} kcal</span> · <span style="color:#FF4D4D">${it.protein}g P</span> · <span style="color:#00E5CC">${it.carbs}g C</span></div></div>`).join("")}${S.photoRes.totals?`<div class="photo-total"><div style="font-family:'Bebas Neue',cursive;font-size:13px;color:#C8FF00;margin-bottom:6px">TOTAL</div><div><span style="color:#FFD166;font-family:'Bebas Neue',cursive;font-size:22px">${S.photoRes.totals.calories}</span><span style="color:#555"> kcal · </span><span style="color:#FF4D4D">${S.photoRes.totals.protein}g P</span> · <span style="color:#00E5CC">${S.photoRes.totals.carbs}g C</span></div></div>`:""} ${S.photoRes.tip?`<div class="photo-tip">🤖 ${S.photoRes.tip}</div>`:""}<div class="photo-actions"><button class="btn-primary" style="flex:2" onclick="doAddPhoto()">ADD TO LOG</button><button class="btn-outline" onclick="S.photoRes=null;R()">Retry</button></div>`:""} ${S.photoRes?.raw?`<div style="font-size:13px;color:#F0F0F0;line-height:1.7;margin-bottom:14px">${S.photoRes.raw}</div>`:""}</div></div>`;
+  if(S.modal==="weight")return`<div class="overlay" onclick="doModal(null)"><div class="sheet" onclick="event.stopPropagation()"><div class="sheet-handle"></div><div class="sheet-title">LOG WEIGHT</div><label class="lbl">Today's Weight (kg)</label><input class="inp" type="number" step="0.1" placeholder="e.g. 79.8" id="wi" style="font-family:'Bebas Neue',cursive;font-size:36px;text-align:center;margin-bottom:20px" value="${S.newWt}" oninput="S.newWt=this.value"/><button class="btn-primary" onclick="doSaveWt()">SAVE</button></div></div>`;
+  return"";
+}
+
+window.doTab=t=>{S.tab=t;R();};
+window.doGoal=g=>{S.goal=g;sv();R();};
+window.doExpand=id=>{S.expanded=S.expanded===id?null:id;R();};
+window.doModal=m=>{S.modal=m;if(!m)S.photoRes=null;R();};
+window.doWt=()=>{S.modal="weight";R();};
+window.doTarget=d=>{S.target=+(S.target+d).toFixed(1);sv();R();};
+window.doAddSet=()=>{S.newSets.push({reps:"",weight:""});R();};
+
+window.doSaveWorkout=()=>{
+  const s0=S.newSets[0];if(!s0.reps||!s0.weight)return;
+  const ex=document.getElementById("es")?.value||S.newEx;
+  S.workouts.push({id:Date.now(),date:TODAY,name:ex,sets:S.newSets.map(s=>({reps:+s.reps,weight:+s.weight}))});
+  S.newSets=[{reps:"",weight:""}];S.modal=null;sv();R();
+};
+window.doSaveFood=()=>{
+  const name=document.getElementById("fn")?.value||S.newFood;
+  const g=+(S.newGrams||100);if(!name)return;
+  S.foods.push({id:Date.now(),date:TODAY,name,cal:Math.round(g*1.5),protein:Math.round(g*.2),carbs:Math.round(g*.3),fat:Math.round(g*.05)});
+  S.newFood="";S.modal=null;sv();R();
+};
+window.doSaveWt=()=>{
+  const v=+(document.getElementById("wi")?.value||S.newWt);if(!v)return;
+  S.weights.push({date:TODAY,w:v});S.newWt="";S.modal=null;sv();R();
+};
+window.doPhoto=async(inp)=>{
+  const file=inp.files[0];if(!file)return;
+  S.photoLoad=true;S.photoRes=null;R();
+  const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});
+  try{
+    const reply=await claude([{role:"user",content:[{type:"image",source:{type:"base64",media_type:file.type||"image/jpeg",data:b64}},{type:"text",text:`Identify all food items. Respond ONLY in valid JSON (no markdown): {"items":[{"name":"","grams_estimated":0,"calories":0,"protein":0,"carbs":0,"fat":0}],"totals":{"calories":0,"protein":0,"carbs":0,"fat":0},"tip":""}`}]}]);
+    const clean=reply.replace(/```json|```/g,"").trim();
+    S.photoRes=JSON.parse(clean);
+  }catch(e){S.photoRes={raw:"Could not analyze photo. Try again or enter manually."};}
+  S.photoLoad=false;R();
+};
+window.doAddPhoto=()=>{
+  if(!S.photoRes?.totals)return;
+  const t=S.photoRes.totals;
+  S.foods.push({id:Date.now(),date:TODAY,name:(S.photoRes.items||[]).map(i=>i.name).join(", ")||"Photo Meal",cal:t.calories,protein:t.protein,carbs:t.carbs,fat:t.fat});
+  S.photoRes=null;S.modal=null;sv();R();
+};
+window.doReport=async()=>{
+  S.repLoad=true;S.report="";R();
+  S.report=await claude([{role:"user",content:`My data: ${ctx()}\n\nCoach report:\n1. Progress analysis\n2. Specific weight targets next session\n3. Diet adjustments for goal\n4. One motivational line\nDirect, specific, under 250 words, bullet points.`}],"You are an expert personal trainer. Give precise, actionable advice.");
+  S.repLoad=false;sv();R();
+};
+window.doChat=async()=>{
+  const msg=(document.getElementById("ci")?.value||S.chatIn).trim();
+  if(!msg||S.chatLoad)return;
+  S.chat.push({role:"user",content:msg});S.chatIn="";S.chatLoad=true;R();
+  setTimeout(()=>document.getElementById("ce")?.scrollIntoView({behavior:"smooth"}),50);
+  const reply=await claude(S.chat.map(m=>({role:m.role,content:m.content})),`You are PATTA GHOBI AI coach. Data: ${ctx()}. Be concise, reference actual numbers.`);
+  S.chat.push({role:"assistant",content:reply});S.chatLoad=false;sv();R();
+  setTimeout(()=>document.getElementById("ce")?.scrollIntoView({behavior:"smooth"}),100);
+};
+window.doQuick=q=>{S.chatIn=q;S.tab="coach";R();setTimeout(()=>{const el=document.getElementById("ci");if(el){el.value=q;el.focus();}},100);};
+
+ld();
+document.getElementById("boot").remove();
+R();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
 </script>
 </body>
 </html>
