@@ -595,19 +595,33 @@ function mkRestRing(remaining,max){
   </svg>`;
 }
 
-// ─── GEMINI API ───────────────────────────────────────────────────────────────
+// ─── NVIDIA NIM API (free) ────────────────────────────────────────────────────
 async function gemini(prompt,sys,imgB64,imgMime){
-  if(!S.apiKey)return"⚠️ No Gemini API key. Tap ⚙️ → enter your free key from aistudio.google.com";
+  if(!S.apiKey)return"⚠️ No API key set. Tap ⚙️ → enter your NVIDIA API key and try again.";
   try{
-    const model="gemini-2.0-flash";
-    const url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.apiKey}`;
-    const parts=[];
-    if(imgB64)parts.push({inline_data:{mime_type:imgMime||"image/jpeg",data:imgB64}});
-    parts.push({text:sys?`${sys}\n\n${prompt}`:prompt});
-    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts}]})});
+    const messages=[];
+    if(sys)messages.push({role:"system",content:sys});
+    if(imgB64){
+      messages.push({role:"user",content:[
+        {type:"text",text:prompt},
+        {type:"image_url",image_url:{url:`data:${imgMime||"image/jpeg"};base64,${imgB64}`}}
+      ]});
+    } else {
+      messages.push({role:"user",content:prompt});
+    }
+    const r=await fetch("https://integrate.api.nvidia.com/v1/chat/completions",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":`Bearer ${S.apiKey}`},
+      body:JSON.stringify({
+        model: imgB64 ? "meta/llama-3.2-11b-vision-instruct" : "meta/llama-3.1-70b-instruct",
+        messages,
+        max_tokens:1024,
+        temperature:0.7
+      })
+    });
     const d=await r.json();
     if(d.error)return"AI error: "+d.error.message;
-    return d.candidates?.[0]?.content?.parts?.[0]?.text||"No response.";
+    return d.choices?.[0]?.message?.content||"No response.";
   }catch(e){return"Could not connect. Check your internet and API key.";}
 }
 function ctx(){
@@ -1473,8 +1487,8 @@ function mSettings(){
     <div class="shtop"><div class="hdl"></div><div class="stitle">⚙️ SETTINGS</div></div>
 
     <div class="card" style="margin-bottom:14px">
-      <div style="font-weight:700;font-size:14px;color:${PA};margin-bottom:6px">🔑 Google Gemini API Key</div>
-      <div style="font-size:12px;color:${M2};line-height:1.6;margin-bottom:12px"><strong>100% Free</strong> — no credit card needed!<br>Get it at: <span style="color:${PA};font-weight:700">aistudio.google.com</span> → Get API Key</div>
+      <div style="font-weight:700;font-size:14px;color:${PA};margin-bottom:6px">🟢 NVIDIA AI API Key</div>
+      <div style="font-size:12px;color:${M2};line-height:1.6;margin-bottom:12px"><strong>Free credits included!</strong><br>Your key starts with <span style="color:${PA};font-weight:700">nvapi-...</span> — paste it below.</div>
       <label class="lbl" style="margin-top:0">Paste Your API Key</label>
       <div class="inp-wrap">
         <input class="inp" id="apiinp" type="${S.showKey?"text":"password"}" placeholder="AIzaSy..." value="${S.apiKey||""}" oninput="S.apiKey=this.value" style="padding-right:48px"/>
