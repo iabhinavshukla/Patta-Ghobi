@@ -599,7 +599,7 @@ function mkRestRing(remaining,max){
 async function gemini(prompt,sys,imgB64,imgMime){
   if(!S.apiKey)return"⚠️ No Gemini API key. Tap ⚙️ → enter your free key from aistudio.google.com";
   try{
-    const model="gemini-1.5-flash";
+    const model="gemini-2.0-flash";
     const url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.apiKey}`;
     const parts=[];
     if(imgB64)parts.push({inline_data:{mime_type:imgMime||"image/jpeg",data:imgB64}});
