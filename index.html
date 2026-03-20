@@ -1,237 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no"/>
-  <title>PATTA GHOBI</title>
-  <link rel="manifest" href="/manifest.json"/>
-  <meta name="theme-color" content="#080808"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="PATTA GHOBI"/>
-  <link rel="apple-touch-icon" href="/icon-192.png"/>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;background:#080808;overscroll-behavior:none}
-    body{color:#F0F0F0;font-family:'Syne',sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow:hidden}
-    input,select,button,textarea{-webkit-appearance:none;appearance:none;font-family:'Syne',sans-serif}
-    input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
-    input::placeholder,textarea::placeholder{color:#333}
-    select option{background:#111}
-    ::-webkit-scrollbar{display:none}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,user-scalable=no"/>
+<title>PATTA GHOBI</title>
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#030305"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="PATTA GHOBI"/>
+<link rel="apple-touch-icon" href="/icon-192.png"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#030305;overscroll-behavior:none}
+body{color:#F1F5F9;font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow:hidden}
+input,select,button,textarea{-webkit-appearance:none;appearance:none;font-family:'DM Sans',sans-serif}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+input::placeholder,textarea::placeholder{color:#334155}
+select option{background:#0f0f18}
+::-webkit-scrollbar{display:none}
 
-    #wrap{max-width:430px;margin:0 auto;position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;background:#080808;overflow:hidden}
+#app{max-width:430px;margin:0 auto;position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;overflow:hidden;isolation:isolate}
 
-    #hdr{flex-shrink:0;padding-top:max(52px,env(safe-area-inset-top,20px));padding-left:18px;padding-right:18px;padding-bottom:12px;border-bottom:1px solid #252525;background:#080808}
-    .hrow{display:flex;justify-content:space-between;align-items:flex-start}
-    .logo{font-family:'Bebas Neue',cursive;font-size:32px;color:#C8FF00;letter-spacing:.04em;line-height:1}
-    .sub{color:#555;font-size:10px;letter-spacing:.08em;margin-top:2px;text-transform:uppercase}
-    .hright{display:flex;align-items:flex-start;gap:10px}
-    .wpill{background:#181818;border:1px solid #252525;border-radius:10px;padding:8px 14px;text-align:center;cursor:pointer;min-width:76px}
-    .wv{font-family:'Bebas Neue',cursive;font-size:26px;color:#C8FF00;line-height:1}
-    .wl{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.06em}
-    .settings-btn{background:#181818;border:1px solid #252525;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;min-height:52px;min-width:44px}
+/* BLOBS */
+#blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.3;animation:blobfloat 22s ease-in-out infinite}
+.b1{width:320px;height:320px;background:radial-gradient(circle,#7C3AED,transparent 70%);top:-100px;left:-80px;animation-delay:0s}
+.b2{width:260px;height:260px;background:radial-gradient(circle,#0EA5E9,transparent 70%);top:35%;right:-80px;animation-delay:-8s}
+.b3{width:220px;height:220px;background:radial-gradient(circle,#059669,transparent 70%);bottom:-70px;left:25%;animation-delay:-16s}
+@keyframes blobfloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-25px) scale(1.04)}66%{transform:translate(-15px,18px) scale(.96)}}
 
-    #nav{flex-shrink:0;display:flex;border-bottom:1px solid #252525;background:#080808}
-    .ntab{flex:1;background:none;border:none;padding:11px 0 9px;color:#555;cursor:pointer;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
-    .ntab.on{color:#C8FF00;border-bottom-color:#C8FF00}
-    .ni{font-size:18px;line-height:1}
+/* HEADER */
+#hdr{flex-shrink:0;position:relative;z-index:10;padding-top:max(52px,env(safe-area-inset-top,20px));padding-left:20px;padding-right:20px;padding-bottom:12px;background:rgba(3,3,5,.75);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(255,255,255,.07)}
+.hrow{display:flex;justify-content:space-between;align-items:center}
+.logo-w{display:flex;align-items:center;gap:10px}
+.logo-ic{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#A3FF4F,#2DD4BF);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 20px rgba(163,255,79,.4)}
+.logo-t{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:.06em;line-height:1}
+.logo-s{font-size:9px;color:#475569;letter-spacing:.07em;margin-top:1px;text-transform:uppercase}
+.hr{display:flex;align-items:center;gap:8px}
+.wpill{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:7px 12px;text-align:center;cursor:pointer;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);transition:background .2s;min-width:72px}
+.wpill:active{background:rgba(255,255,255,.1)}
+.wv{font-family:'Bebas Neue',cursive;font-size:22px;color:#A3FF4F;line-height:1}
+.wl{font-size:9px;color:#475569;text-transform:uppercase;letter-spacing:.06em}
+.ibtn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:9px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;min-width:40px;min-height:40px;transition:background .2s}
+.ibtn:active{background:rgba(255,255,255,.12)}
 
-    #scr{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:16px 18px 40px}
+/* NAV */
+#nav{flex-shrink:0;position:relative;z-index:10;display:flex;background:rgba(3,3,5,.7);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.07)}
+.ntab{flex:1;background:none;border:none;padding:10px 0 8px;color:#475569;cursor:pointer;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;min-height:50px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.ntab.on{color:#A3FF4F;border-bottom-color:#A3FF4F}
+.ni{font-size:17px;line-height:1}
 
-    .card{background:#111;border:1px solid #252525;border-radius:14px;padding:16px;margin-bottom:12px}
-    .csm{background:#111;border:1px solid #252525;border-radius:12px;padding:13px 15px;margin-bottom:9px}
+/* SCROLL */
+#scr{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:16px 18px 48px;position:relative;z-index:5}
 
-    .sg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:12px}
-    .st{background:#111;border:1px solid #252525;border-radius:12px;padding:12px 10px}
-    .stl{font-size:9px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
-    .stv{font-family:'Bebas Neue',cursive;font-size:24px;line-height:1}
-    .stu{font-size:10px;color:#555;font-family:'Syne';margin-left:2px}
+/* GLASS CARDS */
+.card{background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.csm{background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:13px 15px;margin-bottom:9px;transition:background .2s}
+.card-acc{background:linear-gradient(135deg,rgba(163,255,79,.08),rgba(45,212,191,.04));border:1px solid rgba(163,255,79,.18);border-radius:20px;padding:16px;margin-bottom:12px}
+.card-ai{background:linear-gradient(135deg,rgba(167,139,250,.08),rgba(14,165,233,.04));border:1px solid rgba(167,139,250,.18);border-radius:20px;padding:16px;margin-bottom:12px}
+.card-warn{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.2);border-radius:14px;padding:14px 16px;margin-bottom:12px}
 
-    .sh{font-family:'Bebas Neue',cursive;font-size:11px;color:#555;letter-spacing:.14em;margin-bottom:10px;margin-top:4px}
+/* STATS */
+.sg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:12px}
+.st{background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:13px 10px}
+.stl{font-size:9px;color:#475569;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;font-weight:700}
+.stv{font-family:'Bebas Neue',cursive;font-size:26px;line-height:1}
+.stu{font-size:10px;color:#475569;font-family:'DM Sans';margin-left:2px}
 
-    .gbanner{background:linear-gradient(135deg,rgba(200,255,0,.09),rgba(200,255,0,.02));border:1px solid rgba(200,255,0,.22);border-radius:14px;padding:15px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-    .gnum{font-family:'Bebas Neue',cursive;font-size:36px;color:#C8FF00;line-height:1;text-align:right}
+/* SECTION HEAD */
+.sh{font-size:10px;color:#475569;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;margin-top:4px}
 
-    .barbg{height:6px;background:#252525;border-radius:99px}
-    .barfill{height:100%;border-radius:99px;background:#C8FF00;transition:width .5s ease}
+/* BAR */
+.barbg{height:5px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+.barfill{height:100%;border-radius:99px;background:linear-gradient(90deg,#A3FF4F,#2DD4BF);transition:width .5s cubic-bezier(.4,0,.2,1)}
 
-    .macs{display:flex;gap:10px;margin-top:12px}
-    .mac{flex:1;text-align:center}
-    .macv{font-family:'Bebas Neue',cursive;font-size:22px;line-height:1}
-    .macl{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+/* MACROS */
+.macs{display:flex;gap:10px;margin-top:12px}
+.mac{flex:1;text-align:center}
+.macv{font-family:'Bebas Neue',cursive;font-size:24px;line-height:1}
+.macl{font-size:9px;color:#475569;text-transform:uppercase;letter-spacing:.08em;margin-top:3px;font-weight:700}
 
-    .btnp{background:#C8FF00;color:#000;font-family:'Bebas Neue',cursive;font-size:18px;letter-spacing:.06em;border:none;border-radius:10px;padding:15px 20px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px}
-    .btnp:disabled{opacity:.6}
-    .btns{background:#181818;border:1px solid #252525;border-radius:8px;padding:12px;color:#555;font-size:13px;cursor:pointer;width:100%;text-align:center;min-height:44px}
-    .btnadd{background:#C8FF00;color:#000;border:none;border-radius:8px;padding:9px 16px;font-family:'Bebas Neue',cursive;font-size:14px;cursor:pointer;min-height:40px}
-    .btnsend{background:#C8FF00;color:#000;border:none;border-radius:8px;padding:12px 16px;cursor:pointer;font-family:'Bebas Neue',cursive;font-size:16px;white-space:nowrap;min-height:46px;min-width:76px}
-    .btndel{background:rgba(255,77,77,.1);border:1px solid rgba(255,77,77,.28);color:#FF4D4D;border-radius:6px;padding:7px 10px;cursor:pointer;font-size:13px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center}
-    .btnout{background:#181818;color:#555;border:1px solid #252525;border-radius:10px;padding:14px;cursor:pointer;font-size:13px;flex:1;text-align:center;min-height:48px}
+/* BUTTONS */
+.btn-p{background:linear-gradient(135deg,#A3FF4F,#7EE825);color:#000;font-size:15px;font-weight:700;border:none;border-radius:14px;padding:15px 20px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;box-shadow:0 4px 20px rgba(163,255,79,.25);transition:opacity .2s,transform .1s}
+.btn-p:active{transform:scale(.98);opacity:.9}
+.btn-p:disabled{opacity:.5;box-shadow:none}
+.btn-p2{background:linear-gradient(135deg,#A78BFA,#7C3AED);color:#fff;font-size:15px;font-weight:700;border:none;border-radius:14px;padding:15px 20px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;box-shadow:0 4px 20px rgba(167,139,250,.25);transition:opacity .2s,transform .1s}
+.btn-p2:active{transform:scale(.98);opacity:.9}
+.btn-p2:disabled{opacity:.5}
+.btn-g{background:linear-gradient(135deg,#0EA5E9,#0284C7);color:#fff;font-size:14px;font-weight:700;border:none;border-radius:12px;padding:13px 18px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;box-shadow:0 4px 16px rgba(14,165,233,.2);transition:opacity .2s,transform .1s}
+.btn-g:active{transform:scale(.98);opacity:.9}
+.btn-s{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;color:#94A3B8;font-size:13px;font-weight:500;cursor:pointer;width:100%;text-align:center;min-height:44px;transition:background .2s}
+.btn-s:active{background:rgba(255,255,255,.1)}
+.btn-add{background:linear-gradient(135deg,#A3FF4F,#7EE825);color:#000;border:none;border-radius:10px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;min-height:38px;box-shadow:0 2px 12px rgba(163,255,79,.2);transition:opacity .2s,transform .1s}
+.btn-add:active{transform:scale(.97);opacity:.9}
+.btn-send{background:linear-gradient(135deg,#A3FF4F,#7EE825);color:#000;border:none;border-radius:12px;padding:12px 18px;cursor:pointer;font-size:14px;font-weight:700;white-space:nowrap;min-height:46px;min-width:76px;box-shadow:0 4px 16px rgba(163,255,79,.22);transition:opacity .2s,transform .1s}
+.btn-send:active{transform:scale(.97)}
+.btn-send:disabled{opacity:.5}
+.btn-del{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.22);color:#F87171;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:12px;min-width:34px;min-height:34px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.btn-del:active{background:rgba(248,113,113,.2)}
+.btn-edit{background:rgba(163,255,79,.1);border:1px solid rgba(163,255,79,.22);color:#A3FF4F;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:12px;min-width:34px;min-height:34px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.btn-edit:active{background:rgba(163,255,79,.2)}
+.btn-out{background:rgba(255,255,255,.05);color:#94A3B8;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;cursor:pointer;font-size:13px;font-weight:500;flex:1;text-align:center;min-height:48px;transition:background .2s}
+.btn-check{background:rgba(163,255,79,.1);border:2px solid rgba(163,255,79,.3);color:#A3FF4F;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.btn-check.done{background:#A3FF4F;color:#000;border-color:#A3FF4F}
 
-    .inp{background:#181818;border:1px solid #252525;border-radius:8px;padding:12px 13px;color:#F0F0F0;font-family:'Syne';font-size:15px;outline:none;width:100%;min-height:46px}
-    .inp:focus{border-color:rgba(200,255,0,.35)}
-    .inpbig{font-family:'Bebas Neue',cursive;font-size:36px;text-align:center}
-    .lbl{color:#555;font-size:11px;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px;margin-top:13px}
-    .lbl:first-child{margin-top:0}
-    .row2{display:flex;gap:9px;margin-bottom:9px}
+/* INPUTS */
+.inp{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:13px 14px;color:#F1F5F9;font-size:15px;outline:none;width:100%;min-height:48px;transition:border-color .2s,background .2s;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.inp:focus{border-color:rgba(163,255,79,.5);background:rgba(255,255,255,.07)}
+.inp-big{font-family:'Bebas Neue',cursive;font-size:40px;text-align:center;letter-spacing:.04em}
+.lbl{color:#475569;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;display:block;margin-bottom:6px;margin-top:14px}
+.lbl:first-child{margin-top:0}
+.row2{display:flex;gap:8px;margin-bottom:8px}
+.inp-wrap{position:relative}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#475569;cursor:pointer;font-size:15px;padding:4px}
 
-    .toggle{display:flex;gap:8px;margin-bottom:10px}
-    .tglbtn{flex:1;padding:10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;text-align:center;min-height:40px;transition:all .2s;border:1px solid #252525}
-    .tglbtn.on{background:#C8FF00;color:#000;border-color:#C8FF00}
-    .tglbtn:not(.on){background:#181818;color:#555}
+/* TOGGLE */
+.toggle{display:flex;gap:5px;margin-bottom:12px;background:rgba(255,255,255,.04);border-radius:12px;padding:4px}
+.tgl{flex:1;padding:9px;border-radius:9px;cursor:pointer;font-size:12px;font-weight:700;text-align:center;min-height:38px;transition:all .2s;border:none;background:none;color:#475569}
+.tgl.on{background:rgba(163,255,79,.15);color:#A3FF4F;border:1px solid rgba(163,255,79,.28)}
 
-    .setrow{display:grid;grid-template-columns:44px 1fr 1fr;gap:8px;padding:9px 0;border-top:1px solid rgba(37,37,37,.6)}
-    .setrow:first-child{border-top:none}
+/* LEVEL PICKER */
+.level-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0}
+.lvl{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 8px;cursor:pointer;text-align:center;transition:all .2s}
+.lvl.on{background:rgba(163,255,79,.12);border-color:rgba(163,255,79,.4)}
+.lvl-ic{font-size:24px;display:block;margin-bottom:6px}
+.lvl-t{font-size:12px;font-weight:700;color:#F1F5F9}
+.lvl-s{font-size:10px;color:#475569;margin-top:2px}
 
-    /* Weight history dropdown */
-    .wh-summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0}
-    .wh-arrow{color:#C8FF00;font-family:'Bebas Neue',cursive;font-size:18px;transition:transform .2s}
-    .wh-arrow.open{transform:rotate(180deg)}
-    .wh-list{margin-top:12px;border-top:1px solid #252525;padding-top:8px}
-    .whr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(37,37,37,.5)}
-    .whr:last-child{border-bottom:none}
+/* SETROW */
+.setrow{display:grid;grid-template-columns:36px 1fr 1fr 40px;gap:7px;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
+.setrow:first-child{border-top:none}
 
-    /* Chart */
-    .chw{width:100%;overflow:hidden}
-    .chw svg{width:100%;display:block}
+/* WEIGHT HISTORY */
+.whr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.whr:last-child{border-bottom:none}
 
-    .trow{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .tcbtn{background:#181818;border:1px solid #252525;border-radius:8px;width:40px;height:40px;color:#C8FF00;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+/* CHART */
+.chw{width:100%;overflow:hidden}
+.chw svg{width:100%;display:block}
 
-    .chatbox{background:#111;border:1px solid #252525;border-radius:14px;padding:13px;min-height:190px;max-height:280px;overflow-y:auto;margin-bottom:11px;-webkit-overflow-scrolling:touch}
-    .msg{margin-bottom:11px;display:flex;flex-direction:column}
-    .msg.u{align-items:flex-end}
-    .msg.b{align-items:flex-start}
-    .bub{border-radius:14px;padding:10px 13px;max-width:88%;font-size:13px;line-height:1.65}
-    .bub.u{background:#C8FF00;color:#000;border-radius:14px 14px 4px 14px}
-    .bub.b{background:#181818;color:#F0F0F0;border-radius:14px 14px 14px 4px}
-    .cinrow{display:flex;gap:9px;margin-bottom:11px}
-    .qbtns{display:flex;gap:7px;flex-wrap:wrap}
-    .qbtn{background:#181818;border:1px solid #252525;border-radius:20px;padding:8px 13px;color:#555;font-size:11px;cursor:pointer;min-height:36px}
+/* TARGET CTRL */
+.trow{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.tcbtn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:9px;width:40px;height:40px;color:#A3FF4F;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:background .2s}
+.tcbtn:active{background:rgba(255,255,255,.12)}
 
-    .rcard{background:#111;border:1px solid rgba(200,255,0,.22);border-radius:14px;padding:15px;margin-bottom:16px}
-    .rhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
-    .rtxt{font-size:13px;color:#F0F0F0;line-height:1.8;white-space:pre-wrap}
-    .rfbtn{background:none;border:1px solid rgba(200,255,0,.3);border-radius:6px;padding:8px 14px;color:#C8FF00;cursor:pointer;font-size:12px;min-height:36px}
+/* CHAT */
+.chatbox{background:rgba(255,255,255,.03);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:14px;min-height:190px;max-height:280px;overflow-y:auto;margin-bottom:12px;-webkit-overflow-scrolling:touch}
+.msg{margin-bottom:12px;display:flex;flex-direction:column;animation:msgIn .25s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.msg.u{align-items:flex-end}
+.msg.b{align-items:flex-start}
+.bub{border-radius:16px;padding:11px 14px;max-width:88%;font-size:13px;line-height:1.65}
+.bub.u{background:linear-gradient(135deg,#A3FF4F,#7EE825);color:#000;border-radius:16px 16px 4px 16px;font-weight:500}
+.bub.b{background:rgba(167,139,250,.1);color:#F1F5F9;border:1px solid rgba(167,139,250,.18);border-radius:16px 16px 16px 4px}
+.cinrow{display:flex;gap:9px;margin-bottom:12px}
+.qbtns{display:flex;gap:6px;flex-wrap:wrap}
+.qbtn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:8px 13px;color:#94A3B8;font-size:11px;font-weight:500;cursor:pointer;min-height:34px;transition:background .2s}
+.qbtn:active{background:rgba(255,255,255,.1)}
 
-    /* API key warning banner */
-    .apibanner{background:rgba(255,77,77,.1);border:1px solid rgba(255,77,77,.3);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px}
-    .apibanner-icon{font-size:20px;flex-shrink:0;margin-top:1px}
-    .apibanner-btn{background:#FF4D4D;color:#000;border:none;border-radius:8px;padding:9px 16px;font-family:'Bebas Neue',cursive;font-size:14px;cursor:pointer;white-space:nowrap;margin-top:8px;min-height:38px}
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:ovIn .2s ease}
+@keyframes ovIn{from{opacity:0}to{opacity:1}}
+.sheet{background:rgba(8,8,16,.96);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);border-top:1px solid rgba(255,255,255,.1);border-radius:28px 28px 0 0;padding:0 20px;padding-bottom:max(32px,env(safe-area-inset-bottom,20px));width:100%;max-width:430px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 -24px 80px rgba(0,0,0,.9);animation:sheetIn .32s cubic-bezier(.32,.72,0,1)}
+@keyframes sheetIn{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.shtop{padding:14px 0 18px;position:sticky;top:0;background:rgba(8,8,16,.96);z-index:1}
+.hdl{width:40px;height:4px;background:rgba(255,255,255,.12);border-radius:99px;margin:0 auto 16px}
+.stitle{font-family:'Bebas Neue',cursive;font-size:28px;color:#A3FF4F;letter-spacing:.04em}
 
-    /* Settings panel */
-    .settings-panel{background:#111;border:1px solid #252525;border-radius:14px;padding:16px;margin-bottom:12px}
-    .api-status{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-top:8px}
-    .api-ok{background:rgba(200,255,0,.12);color:#C8FF00;border:1px solid rgba(200,255,0,.3)}
-    .api-no{background:rgba(255,77,77,.1);color:#FF4D4D;border:1px solid rgba(255,77,77,.3)}
-    .api-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+/* ONBOARDING */
+#ob{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;background:rgba(3,3,5,.97);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px)}
+.ob-icon{width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#A3FF4F,#2DD4BF);display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:24px;box-shadow:0 0 50px rgba(163,255,79,.35);animation:obPop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes obPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.ob-title{font-family:'Bebas Neue',cursive;font-size:38px;color:#A3FF4F;letter-spacing:.04em;text-align:center;margin-bottom:6px}
+.ob-sub{color:#475569;font-size:14px;text-align:center;margin-bottom:36px;line-height:1.55;font-weight:500}
+.ob-card{background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:24px;width:100%;max-width:360px;margin-bottom:20px}
 
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:flex;align-items:flex-end;justify-content:center}
-    .sheet{background:#111;border-radius:22px 22px 0 0;padding:0 18px;padding-bottom:max(32px,env(safe-area-inset-bottom,20px));width:100%;max-width:430px;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;box-shadow:0 -8px 60px rgba(200,255,0,.08)}
-    .shtop{padding:14px 0 16px;position:sticky;top:0;background:#111;z-index:1}
-    .hdl{width:38px;height:4px;background:#252525;border-radius:99px;margin:0 auto 14px}
-    .stitle{font-family:'Bebas Neue',cursive;font-size:26px;color:#C8FF00;letter-spacing:.04em}
+/* ACTIVE WORKOUT */
+.aw-bar{background:rgba(163,255,79,.1);border-bottom:1px solid rgba(163,255,79,.2);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;position:relative;z-index:10}
+.aw-timer{font-family:'Bebas Neue',cursive;font-size:28px;color:#A3FF4F;letter-spacing:.04em}
+.aw-setbox{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.aw-tip{background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.15);border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#94A3B8;line-height:1.55}
 
-    .photobtn{background:#181818;border:2px dashed rgba(200,255,0,.35);border-radius:14px;padding:28px 14px;cursor:pointer;color:#F0F0F0;width:100%;margin:12px 0 6px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;min-height:130px;font-size:14px}
-    .pi{background:#181818;border-radius:10px;padding:10px 13px;margin-bottom:7px}
-    .ptotal{background:rgba(200,255,0,.07);border:1px solid rgba(200,255,0,.22);border-radius:10px;padding:11px 13px;margin:9px 0}
-    .ptip{font-size:12px;color:#555;line-height:1.6;margin-bottom:12px;padding:10px 13px;background:#181818;border-radius:10px}
-    .pact{display:flex;gap:9px;margin-top:4px}
+/* REST TIMER MODAL */
+.rest-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);z-index:250;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rest-ring{position:relative;width:200px;height:200px;margin-bottom:24px}
+.rest-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',cursive;font-size:72px;color:#A3FF4F;letter-spacing:.04em}
 
-    .spin{display:inline-block;width:18px;height:18px;border:2px solid #252525;border-top-color:#C8FF00;border-radius:50%;animation:spin 1s linear infinite}
-    .spin-lg{width:26px;height:26px;border-width:3px}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
-    .fade{animation:fadeUp .28s ease forwards}
-    .pulse{animation:pulse 1.4s ease infinite}
-    .divr{text-align:center;color:#444;font-size:11px;margin:11px 0}
-    .flx{display:flex;justify-content:space-between;align-items:center}
+/* CALENDAR */
+.cal-strip{display:flex;gap:6px;margin-bottom:16px}
+.cal-day{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.cal-label{font-size:9px;color:#475569;font-weight:700;text-transform:uppercase}
+.cal-dot{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:all .2s}
+.cal-dot.trained{background:rgba(163,255,79,.2);color:#A3FF4F;border:1px solid rgba(163,255,79,.3)}
+.cal-dot.today{background:linear-gradient(135deg,#A3FF4F,#7EE825);color:#000}
+.cal-dot.rest{background:rgba(255,255,255,.04);color:#334155;border:1px solid rgba(255,255,255,.05)}
 
-    /* Password eye toggle */
-    .inp-wrap{position:relative}
-    .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#555;cursor:pointer;font-size:16px;padding:4px}
-  </style>
+/* PHOTO */
+.photobtn{background:rgba(255,255,255,.03);border:2px dashed rgba(163,255,79,.28);border-radius:20px;padding:28px 14px;cursor:pointer;color:#F1F5F9;width:100%;margin:12px 0 6px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;min-height:140px;font-size:14px;font-weight:600;transition:border-color .2s,background .2s}
+.photobtn:active{background:rgba(255,255,255,.05);border-color:rgba(163,255,79,.5)}
+.pi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:11px 14px;margin-bottom:8px}
+.ptotal{background:rgba(163,255,79,.06);border:1px solid rgba(163,255,79,.18);border-radius:12px;padding:12px 14px;margin:10px 0}
+.ptip{font-size:12px;color:#94A3B8;line-height:1.65;margin-bottom:14px;padding:11px 14px;background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.14);border-radius:12px}
+.pact{display:flex;gap:9px;margin-top:6px}
+
+/* FOOD SEARCH */
+.food-search-list{max-height:220px;overflow-y:auto;margin-top:8px;-webkit-overflow-scrolling:touch}
+.food-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:10px;cursor:pointer;transition:background .15s}
+.food-item:active{background:rgba(255,255,255,.07)}
+.food-item-name{font-size:14px;font-weight:600}
+.food-item-macro{font-size:11px;color:#475569;margin-top:2px}
+
+/* MEASUREMENTS */
+.meas-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.meas-inp-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px}
+.meas-label{font-size:10px;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.meas-val{font-family:'Bebas Neue',cursive;font-size:26px;color:#A3FF4F;line-height:1}
+.meas-unit{font-size:11px;color:#475569;font-family:'DM Sans';margin-left:2px}
+
+/* MILESTONE */
+.milestone{background:linear-gradient(135deg,rgba(163,255,79,.1),rgba(45,212,191,.06));border:1px solid rgba(163,255,79,.2);border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+
+/* API STATUS */
+.api-status{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;font-size:11px;font-weight:700;margin-top:9px}
+.api-ok{background:rgba(163,255,79,.1);color:#A3FF4F;border:1px solid rgba(163,255,79,.25)}
+.api-no{background:rgba(248,113,113,.1);color:#F87171;border:1px solid rgba(248,113,113,.25)}
+
+/* TEMPLATE CARDS */
+.tpl-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:16px;margin-bottom:10px;cursor:pointer;transition:background .2s,border-color .2s}
+.tpl-card:active{background:rgba(255,255,255,.09);border-color:rgba(163,255,79,.3)}
+.tpl-tag{display:inline-block;background:rgba(163,255,79,.12);color:#A3FF4F;border:1px solid rgba(163,255,79,.25);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+
+/* AI PLAN */
+.plan-ex{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+
+/* SPINNERS & ANIM */
+.spin{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.1);border-top-color:#A3FF4F;border-radius:50%;animation:spin 1s linear infinite}
+.spin-lg{width:28px;height:28px;border-width:3px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes obStep{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 0 rgba(163,255,79,0)}50%{box-shadow:0 0 0 6px rgba(163,255,79,.15)}}
+@keyframes numberPop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes borderGlow{0%,100%{border-color:rgba(163,255,79,.15)}50%{border-color:rgba(163,255,79,.45)}}
+.fade{animation:fadeUp .32s cubic-bezier(.4,0,.2,1) forwards}
+.fade-d{animation:fadeDown .32s cubic-bezier(.4,0,.2,1) forwards}
+.fade-l{animation:fadeLeft .32s cubic-bezier(.4,0,.2,1) forwards}
+.fade-r{animation:fadeRight .32s cubic-bezier(.4,0,.2,1) forwards}
+.scale-in{animation:scaleIn .28s cubic-bezier(.34,1.56,.64,1) forwards}
+.slide-up{animation:slideUp .4s cubic-bezier(.4,0,.2,1) forwards}
+.pulse{animation:pulse 1.4s ease infinite}
+.step-in{animation:obStep .3s ease forwards}
+.glow-pulse{animation:glowPulse 2s ease infinite}
+/* Staggered children */
+.stagger>*:nth-child(1){animation-delay:.05s;opacity:0;animation:fadeUp .3s cubic-bezier(.4,0,.2,1) .05s forwards}
+.stagger>*:nth-child(2){animation-delay:.1s;opacity:0;animation:fadeUp .3s cubic-bezier(.4,0,.2,1) .1s forwards}
+.stagger>*:nth-child(3){animation-delay:.15s;opacity:0;animation:fadeUp .3s cubic-bezier(.4,0,.2,1) .15s forwards}
+.stagger>*:nth-child(4){animation-delay:.2s;opacity:0;animation:fadeUp .3s cubic-bezier(.4,0,.2,1) .2s forwards}
+.stagger>*:nth-child(5){animation-delay:.25s;opacity:0;animation:fadeUp .3s cubic-bezier(.4,0,.2,1) .25s forwards}
+/* Shimmer loading */
+.shimmer{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);background-size:400px 100%;animation:shimmer 1.4s infinite}
+/* Card press */
+.card-sm:active{transform:scale(.985);transition:transform .1s}
+.csm:active{transform:scale(.985);transition:transform .1s}
+/* Weekly bar */
+.wk-bar-wrap{display:flex;flex-direction:column;align-items:center;flex:1;gap:4px}
+.wk-bar-bg{width:100%;background:rgba(255,255,255,.06);border-radius:6px;overflow:hidden;height:60px;display:flex;align-items:flex-end}
+.wk-bar-fill{width:100%;border-radius:6px;transition:height .6s cubic-bezier(.4,0,.2,1);animation:barRise .6s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes barRise{from{height:0}to{height:var(--h)}}
+.wk-bar-label{font-size:9px;color:#475569;font-weight:700;text-transform:uppercase}
+.wk-bar-val{font-size:10px;color:#94A3B8;font-weight:600}
+/* Notification dot */
+@keyframes dotBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:#A3FF4F;animation:dotBounce 1s ease infinite;display:inline-block}
+.divr{text-align:center;color:#334155;font-size:11px;margin:11px 0;font-weight:600}
+.flx{display:flex;justify-content:space-between;align-items:center}
+</style>
 </head>
 <body>
-<div id="wrap">
-  <div id="boot" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:14px">
-    <div style="font-family:'Bebas Neue',cursive;font-size:46px;color:#C8FF00;letter-spacing:.04em">PATTA GHOBI</div>
-    <div class="spin spin-lg"></div>
-    <div style="color:#555;font-size:11px;letter-spacing:.1em">LOADING YOUR COACH...</div>
+<div id="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div id="app">
+  <div id="boot" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;position:relative;z-index:10">
+    <div style="width:72px;height:72px;border-radius:22px;background:linear-gradient(135deg,#A3FF4F,#2DD4BF);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 0 50px rgba(163,255,79,.4)">🥬</div>
+    <div style="font-family:'Bebas Neue',cursive;font-size:44px;color:#A3FF4F;letter-spacing:.06em">PATTA GHOBI</div>
+    <div style="color:#475569;font-size:12px;letter-spacing:.1em;font-weight:600">AI FITNESS COACH</div>
+    <div class="spin spin-lg" style="margin-top:10px"></div>
   </div>
+  <div id="ob" style="display:none"></div>
   <div id="hdr" style="display:none"></div>
   <div id="nav" style="display:none"></div>
+  <div id="aw-bar" style="display:none"></div>
   <div id="scr" style="display:none"></div>
   <div id="mod"></div>
+  <div id="rest-overlay" style="display:none"></div>
 </div>
 
 <script>
-// ── HARDCODED COLORS (no CSS vars — Safari SVG fix) ───────────────────────────
-const A="#C8FF00",BG="#080808",CARD="#111111",CARD2="#181818",
-      BD="#252525",TEXT="#F0F0F0",MUTED="#555",
-      RED="#FF4D4D",TEAL="#00E5CC",YEL="#FFD166";
-const LINE_COLORS=["#C8FF00","#00E5CC","#FF6B6B","#FFD166","#BF5AF2","#FF9F43","#48DBF0","#FF6B81"];
+// ─── COLORS (no CSS vars — Safari SVG bug) ────────────────────────────────────
+const PA="#A3FF4F",BG="#030305",CARD="rgba(255,255,255,0.04)",BD="rgba(255,255,255,0.07)",
+      TX="#F1F5F9",M2="#94A3B8",M3="#475569",M4="#334155",
+      TEAL="#2DD4BF",RED="#F87171",YEL="#FCD34D",PUR="#A78BFA",BLU="#38BDF8";
+const LCOLS=[PA,TEAL,RED,YEL,PUR,BLU,"#FB923C","#F472B6"];
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
-const S={
-  // Start with empty data — user logs their own
-  workouts:[], foods:[], weights:[],
-  target:75, tab:"home",
-  expanded:null, modal:null, whOpen:false,
-  useCustom:false, newEx:"Bench Press", customEx:"",
-  newSets:[{reps:"",weight:""}],
-  newFood:"", newGrams:"100", newWt:"",
-  chat:[], chatIn:"", chatLoad:false,
-  report:"", repLoad:false,
-  photoLoad:false, photoRes:null,
-  apiKey:"", showApiKey:false,
+// ─── DATE HELPERS ─────────────────────────────────────────────────────────────
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+function fmtDate(d){return MONTHS[d.getMonth()]+" "+d.getDate();}
+function fmtFull(d){return DAYS[d.getDay()]+", "+fmtDate(d)+" "+d.getFullYear();}
+const NOW=new Date();
+const TODAY=fmtDate(NOW);
+const FULL_DATE=fmtFull(NOW);
+
+// Get last 7 days as {label, dateStr, isToday}
+function getLast7(){
+  const days=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date(NOW);d.setDate(NOW.getDate()-i);
+    days.push({label:DAYS[d.getDay()].slice(0,1),dateStr:fmtDate(d),isToday:i===0});
+  }
+  return days;
+}
+
+// ─── FOOD DATABASE ────────────────────────────────────────────────────────────
+const FOOD_DB={
+  // Indian staples
+  "Basmati Rice (cooked)":{cal:130,protein:2.7,carbs:28,fat:0.3},
+  "Brown Rice (cooked)":{cal:112,protein:2.3,carbs:24,fat:0.8},
+  "Roti / Chapati":{cal:264,protein:9,carbs:55,fat:1.5},
+  "Paratha (plain)":{cal:300,protein:7,carbs:45,fat:11},
+  "Dal (cooked)":{cal:116,protein:9,carbs:20,fat:0.4},
+  "Rajma (cooked)":{cal:127,protein:8.7,carbs:22,fat:0.5},
+  "Chole (cooked)":{cal:164,protein:9,carbs:27,fat:2.6},
+  "Paneer":{cal:265,protein:18,carbs:3,fat:20},
+  "Idli":{cal:78,protein:2.5,carbs:16,fat:0.4},
+  "Dosa":{cal:168,protein:4,carbs:28,fat:5},
+  "Poha":{cal:180,protein:4,carbs:35,fat:3},
+  "Upma":{cal:140,protein:4,carbs:25,fat:3},
+  "Biryani (chicken)":{cal:185,protein:12,carbs:22,fat:5},
+  "Sambar":{cal:50,protein:3,carbs:8,fat:1},
+  "Curd / Dahi":{cal:60,protein:3.5,carbs:5,fat:2.5},
+  // Proteins
+  "Chicken Breast (cooked)":{cal:165,protein:31,carbs:0,fat:3.6},
+  "Chicken Leg (cooked)":{cal:185,protein:26,carbs:0,fat:8},
+  "Egg (whole)":{cal:155,protein:13,carbs:1,fat:11},
+  "Egg White":{cal:52,protein:11,carbs:0.7,fat:0.2},
+  "Salmon (cooked)":{cal:208,protein:20,carbs:0,fat:13},
+  "Tuna (canned)":{cal:132,protein:28,carbs:0,fat:2},
+  "Whey Protein":{cal:400,protein:80,carbs:8,fat:7},
+  "Greek Yogurt":{cal:100,protein:10,carbs:6,fat:3},
+  "Cottage Cheese":{cal:98,protein:11,carbs:3.4,fat:4.3},
+  "Beef (lean)":{cal:250,protein:26,carbs:0,fat:15},
+  "Tofu":{cal:76,protein:8,carbs:2,fat:4},
+  // Carbs
+  "Oats":{cal:389,protein:17,carbs:66,fat:7},
+  "Banana":{cal:89,protein:1.1,carbs:23,fat:0.3},
+  "Apple":{cal:52,protein:0.3,carbs:14,fat:0.2},
+  "Sweet Potato":{cal:86,protein:1.6,carbs:20,fat:0.1},
+  "White Bread":{cal:265,protein:9,carbs:49,fat:3.2},
+  "Pasta (cooked)":{cal:158,protein:6,carbs:31,fat:1},
+  "Potato":{cal:77,protein:2,carbs:17,fat:0.1},
+  // Dairy & Fats
+  "Whole Milk":{cal:61,protein:3.2,carbs:4.8,fat:3.3},
+  "Almond Milk":{cal:17,protein:0.6,carbs:1.3,fat:1.1},
+  "Almonds":{cal:579,protein:21,carbs:22,fat:50},
+  "Peanuts":{cal:567,protein:26,carbs:16,fat:49},
+  "Peanut Butter":{cal:588,protein:25,carbs:20,fat:50},
+  "Olive Oil":{cal:884,protein:0,carbs:0,fat:100},
+  // Veg
+  "Spinach":{cal:23,protein:2.9,carbs:3.6,fat:0.4},
+  "Broccoli":{cal:34,protein:2.8,carbs:7,fat:0.4},
+  "Mixed Vegetables":{cal:65,protein:3,carbs:13,fat:0.3},
+  "Cucumber":{cal:15,protein:0.7,carbs:3.6,fat:0.1},
+  "Tomato":{cal:18,protein:0.9,carbs:3.9,fat:0.2},
 };
 
-const PRESETS=["Bench Press","Squat","Deadlift","Pull-ups","Overhead Press","Barbell Row",
-  "Dumbbell Curl","Tricep Pushdown","Leg Press","Romanian Deadlift","Lat Pulldown",
-  "Hip Thrust","Cable Fly","Incline Bench","Face Pull","Leg Curl","Leg Extension"];
-const TODAY="Mar 19";
+// ─── WORKOUT TEMPLATES ────────────────────────────────────────────────────────
+const TEMPLATES=[
+  {name:"Push Day 💪",icon:"🏋️",color:"#A3FF4F",desc:"Chest, Shoulders, Triceps",exercises:[
+    {name:"Bench Press",sets:3,reps:8},{name:"Overhead Press",sets:3,reps:8},
+    {name:"Incline Bench",sets:3,reps:10},{name:"Cable Fly",sets:3,reps:12},
+    {name:"Tricep Pushdown",sets:3,reps:12}]},
+  {name:"Pull Day 🔗",icon:"💪",color:"#2DD4BF",desc:"Back, Biceps",exercises:[
+    {name:"Barbell Row",sets:4,reps:8},{name:"Pull-ups",sets:3,reps:8},
+    {name:"Lat Pulldown",sets:3,reps:10},{name:"Face Pull",sets:3,reps:15},
+    {name:"Dumbbell Curl",sets:3,reps:12}]},
+  {name:"Leg Day 🦵",icon:"🦵",color:"#F87171",desc:"Quads, Hamstrings, Glutes",exercises:[
+    {name:"Squat",sets:4,reps:8},{name:"Romanian Deadlift",sets:3,reps:10},
+    {name:"Leg Press",sets:3,reps:12},{name:"Leg Curl",sets:3,reps:12},
+    {name:"Calf Raise",sets:4,reps:15}]},
+  {name:"Full Body ⚡",icon:"⚡",color:"#FCD34D",desc:"Total body strength",exercises:[
+    {name:"Deadlift",sets:3,reps:5},{name:"Bench Press",sets:3,reps:8},
+    {name:"Squat",sets:3,reps:8},{name:"Barbell Row",sets:3,reps:8},
+    {name:"Overhead Press",sets:3,reps:10}]},
+  {name:"Cardio & Core 🔥",icon:"🔥",color:"#FB923C",desc:"Burn & strengthen",exercises:[
+    {name:"Plank",sets:3,reps:60},{name:"Russian Twist",sets:3,reps:20},
+    {name:"Leg Raise",sets:3,reps:15},{name:"Mountain Climber",sets:3,reps:30}]},
+];
 
-// ── PERSIST ───────────────────────────────────────────────────────────────────
+// ─── EXERCISE TIPS ────────────────────────────────────────────────────────────
+const TIPS={
+  "Bench Press":"Retract shoulder blades, plant feet firmly. Control the descent — 2 sec down, explosive up.",
+  "Squat":"Chest up, knees track toes. Hit parallel or below. Drive through your heels on the way up.",
+  "Deadlift":"Hinge at hips, bar against shins. Keep your back straight — never round your lower back.",
+  "Pull-ups":"Dead hang start. Pull elbows to ribs, not bar to chin. Slow controlled descent.",
+  "Overhead Press":"Core tight, don't arch your back. Bar path straight up — press your face through at top.",
+  "Barbell Row":"Hinge 45°, squeeze shoulder blades together at top. Keep elbows close to body.",
+  "Dumbbell Curl":"No swinging! Supinate wrist at top. Full extension at bottom for full range.",
+  "Tricep Pushdown":"Keep elbows locked at sides. Full lockout at bottom, controlled return.",
+  "Leg Press":"Feet shoulder-width. Don't lock knees at top. Full depth for maximum activation.",
+  "Romanian Deadlift":"Push hips back, keep bar close to legs. Feel hamstring stretch before returning.",
+  "Lat Pulldown":"Pull to upper chest, not behind neck. Lean back slightly, drive elbows down.",
+  "Hip Thrust":"Drive through your heels. Squeeze glutes hard at the top for 1 second.",
+};
+
+// ─── PRESET EXERCISES ─────────────────────────────────────────────────────────
+const PRESETS=["Bench Press","Squat","Deadlift","Pull-ups","Overhead Press","Barbell Row","Dumbbell Curl","Tricep Pushdown","Leg Press","Romanian Deadlift","Lat Pulldown","Hip Thrust","Cable Fly","Incline Bench","Face Pull","Leg Curl","Leg Extension","Arnold Press","Hammer Curl","Skull Crusher","Calf Raise","Plank","Russian Twist","Leg Raise","Mountain Climber"];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const S={
+  // Onboarding
+  onboarded:false, obStep:0, obName:"", obWeight:"", obGoalWeight:"", obLevel:"intermediate",
+  // User
+  name:"", level:"intermediate",
+  // Data
+  workouts:[], foods:[], weights:[], measurements:[],
+  // Goals
+  target:75, calorieGoal:2500, proteinGoal:160,
+  // UI
+  tab:"home", modal:null, expanded:null, whOpen:false, measOpen:false, foodSearch:"",
+  // Workout form
+  useCustom:false, newEx:"Bench Press", customEx:"", newSets:[{reps:"",weight:""}], editId:null,
+  // Active workout
+  activeWorkout:null, // {templateName, startTime, exercises:[{name,tip,sets:[{reps,weight,done}]}], elapsed}
+  awInterval:null,
+  // Rest timer
+  restActive:false, restRemaining:0, restMax:90, restInterval:null,
+  // Food
+  newFood:"", newGrams:"100",
+  // Weight
+  newWt:"",
+  // Measurements
+  newMeas:{chest:"",waist:"",arms:"",hips:""},
+  // AI
+  chat:[], chatIn:"", chatLoad:false,
+  report:"", repLoad:false,
+  aiMealPlan:null, aiMealLoad:false,
+  aiWorkoutPlan:null, aiWorkoutLoad:false,
+  aiWorkoutFocus:"chest",
+  // Photo
+  photoLoad:false, photoRes:null,
+  // Settings
+  apiKey:"", showKey:false,
+};
+
+// ─── PERSIST ──────────────────────────────────────────────────────────────────
 function sv(){
-  try{localStorage.setItem("pg6",JSON.stringify({
-    w:S.workouts,f:S.foods,wt:S.weights,t:S.target,
+  try{localStorage.setItem("pg8",JSON.stringify({
+    ob:S.onboarded,name:S.name,level:S.level,
+    w:S.workouts,f:S.foods,wt:S.weights,meas:S.measurements,
+    t:S.target,cg:S.calorieGoal,pg:S.proteinGoal,
     c:S.chat,r:S.report,k:S.apiKey
   }));}catch(e){}
 }
 function ld(){
   try{
-    const d=JSON.parse(localStorage.getItem("pg6")||"null");
+    const d=JSON.parse(localStorage.getItem("pg8")||"null");
     if(!d)return;
-    if(d.w)S.workouts=d.w;
-    if(d.f)S.foods=d.f;
-    if(d.wt)S.weights=d.wt;
-    if(d.t)S.target=d.t;
-    if(d.c)S.chat=d.c;
-    if(d.r)S.report=d.r;
-    if(d.k)S.apiKey=d.k;
+    if(d.ob)S.onboarded=d.ob; if(d.name)S.name=d.name; if(d.level)S.level=d.level;
+    if(d.w)S.workouts=d.w; if(d.f)S.foods=d.f; if(d.wt)S.weights=d.wt;
+    if(d.meas)S.measurements=d.meas;
+    if(d.t)S.target=d.t; if(d.cg)S.calorieGoal=d.cg; if(d.pg)S.proteinGoal=d.pg;
+    if(d.c)S.chat=d.c; if(d.r)S.report=d.r; if(d.k)S.apiKey=d.k;
   }catch(e){}
 }
 
-// ── COMPUTED ──────────────────────────────────────────────────────────────────
+// ─── COMPUTED ─────────────────────────────────────────────────────────────────
 const tw=()=>S.workouts.filter(w=>w.date===TODAY);
 const tf=()=>S.foods.filter(f=>f.date===TODAY);
-function nut(){
-  return tf().reduce((a,f)=>({
-    cal:a.cal+(+f.cal||0),
-    protein:a.protein+(+f.protein||0),
-    carbs:a.carbs+(+f.carbs||0),
-    fat:a.fat+(+f.fat||0)
-  }),{cal:0,protein:0,carbs:0,fat:0});
-}
-function vol(){
-  return tw().reduce((a,w)=>a+w.sets.reduce((b,s)=>b+(+s.reps||0)*(+s.weight||0),0),0);
-}
+function nut(){return tf().reduce((a,f)=>({cal:a.cal+(+f.cal||0),protein:a.protein+(+f.protein||0),carbs:a.carbs+(+f.carbs||0),fat:a.fat+(+f.fat||0)}),{cal:0,protein:0,carbs:0,fat:0});}
+function vol(){return tw().reduce((a,w)=>a+w.sets.reduce((b,s)=>b+(+s.reps||0)*(+s.weight||0),0),0);}
 const lw=()=>S.weights.length?S.weights[S.weights.length-1].w:0;
-const cg=()=>2500;
 const uniq=()=>[...new Set(S.workouts.map(w=>w.name))];
 function wtg(){
   if(S.weights.length<2)return"?";
@@ -242,530 +498,1040 @@ function wtg(){
   if((diff>0&&rate<0)||(diff<0&&rate>0))return"∞";
   return Math.abs(Math.ceil(diff/rate));
 }
+function fmtElapsed(ms){
+  const s=Math.floor(ms/1000),m=Math.floor(s/60),sec=s%60;
+  return `${m}:${sec.toString().padStart(2,"0")}`;
+}
+function getDatesWithWorkout(){
+  const set=new Set();S.workouts.forEach(w=>set.add(w.date));return set;
+}
 
-// ── CHARTS ────────────────────────────────────────────────────────────────────
+// ─── CHARTS ──────────────────────────────────────────────────────────────────
 function mkWtChart(){
+  if(S.weights.length<2)return`<div style="color:${M3};font-size:12px;text-align:center;padding:24px 0;font-weight:600">Log at least 2 weight entries to see your progress chart 📈</div>`;
   const actual=S.weights.map(w=>({date:w.date,actual:w.w}));
-  if(S.weights.length<2)return`<div style="color:${MUTED};font-size:12px;text-align:center;padding:20px 0">Log at least 2 weight entries to see your chart</div>`;
   const last=S.weights[S.weights.length-1].w,first=S.weights[0].w;
   const rate=(last-first)/Math.max(S.weights.length-1,1);
-  const pDates=["Apr 1","Apr 8","Apr 15","Apr 22","May 1","May 8","Jun 1"];
-  const proj=pDates.map((date,i)=>({date,projected:+(last+rate*(i+2)*1.5).toFixed(1)}));
+  const proj=["Apr 1","Apr 8","Apr 15","May 1","Jun 1"].map((date,i)=>({date,proj:+(last+rate*(i+2)*1.5).toFixed(1)}));
   const all=[...actual,...proj];
-  const allV=[...S.weights.map(w=>w.w),...proj.map(p=>p.projected),S.target];
+  const allV=[...S.weights.map(w=>w.w),...proj.map(p=>p.proj),S.target];
   const mn=Math.min(...allV)-1,mx=Math.max(...allV)+1,rng=mx-mn||1;
-  const W=360,H=150,pl=36,pr=8,pt=10,pb=20,iW=W-pl-pr,iH=H-pt-pb,N=all.length;
+  const W=360,H=150,pl=36,pr=8,pt=12,pb=22;
+  const iW=W-pl-pr,iH=H-pt-pb,N=all.length;
   const xs=all.map((_,i)=>pl+i*(iW/Math.max(N-1,1)));
   const fy=v=>pt+iH-((v-mn)/rng)*iH;
   let aP="",pP="",ast=false,pst=false;
   all.forEach((d,i)=>{
     if(d.actual!=null){aP+=(ast?"L":"M")+xs[i].toFixed(1)+","+fy(d.actual).toFixed(1)+" ";ast=true;}
-    if(d.projected!=null){pP+=(pst?"L":"M")+xs[i].toFixed(1)+","+fy(d.projected).toFixed(1)+" ";pst=true;}
+    if(d.proj!=null){pP+=(pst?"L":"M")+xs[i].toFixed(1)+","+fy(d.proj).toFixed(1)+" ";pst=true;}
   });
   const ty=fy(S.target).toFixed(1);
-  let dots="";actual.forEach((d,i)=>dots+=`<circle cx="${xs[i].toFixed(1)}" cy="${fy(d.actual).toFixed(1)}" r="3.5" fill="${A}" stroke="${CARD}" stroke-width="2"/>`);
+  let dots="";actual.forEach((d,i)=>{dots+=`<circle cx="${xs[i].toFixed(1)}" cy="${fy(d.actual).toFixed(1)}" r="3.5" fill="${PA}" stroke="#030305" stroke-width="2"/>`;});
   const step=Math.max(1,Math.ceil(N/5));
-  let xlabs="";all.forEach((d,i)=>{if(i%step===0||i===N-1)xlabs+=`<text x="${xs[i].toFixed(1)}" y="${H-3}" fill="#444" font-size="9" text-anchor="middle" font-family="Syne,sans-serif">${d.date}</text>`;});
+  let xl="";all.forEach((d,i)=>{if(i%step===0||i===N-1)xl+=`<text x="${xs[i].toFixed(1)}" y="${H-4}" fill="${M3}" font-size="9" text-anchor="middle" font-family="DM Sans,sans-serif">${d.date}</text>`;});
   const yv=[+mn.toFixed(1),+(mn+(mx-mn)/2).toFixed(1),+mx.toFixed(1)];
-  let ygr="";yv.forEach(v=>{const y=fy(v).toFixed(1);ygr+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#1E1E1E" stroke-width="1"/><text x="${pl-3}" y="${y}" fill="#444" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="Syne,sans-serif">${v}</text>`;});
-  return`<div class="chw"><svg viewBox="0 0 ${W} ${H}">${ygr}
-    <line x1="${pl}" y1="${ty}" x2="${W-pr}" y2="${ty}" stroke="${RED}" stroke-width="1.5" stroke-dasharray="5 3"/>
-    <text x="${W-pr-2}" y="${+ty-5}" fill="${RED}" font-size="9" text-anchor="end" font-family="Syne,sans-serif">Target ${S.target}kg</text>
-    <path d="${aP}" fill="none" stroke="${A}" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="${pP}" fill="none" stroke="${A}" stroke-width="2" stroke-dasharray="6 4" opacity=".55"/>
-    ${dots}${xlabs}</svg></div>`;
+  let yg="";yv.forEach(v=>{const y=fy(v).toFixed(1);yg+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/><text x="${pl-4}" y="${y}" fill="${M3}" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="DM Sans,sans-serif">${v}</text>`;});
+  return`<div class="chw"><svg viewBox="0 0 ${W} ${H}">${yg}
+    <line x1="${pl}" y1="${ty}" x2="${W-pr}" y2="${ty}" stroke="${RED}" stroke-width="1.5" stroke-dasharray="4 3" opacity=".7"/>
+    <text x="${W-pr-2}" y="${+ty-5}" fill="${RED}" font-size="9" text-anchor="end" font-family="DM Sans,sans-serif">Goal ${S.target}kg</text>
+    <path d="${aP}" fill="none" stroke="${PA}" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="${pP}" fill="none" stroke="${PA}" stroke-width="1.5" stroke-dasharray="5 4" opacity=".5"/>
+    ${dots}${xl}</svg></div>`;
 }
 
-function mkMultiExChart(){
+function mkExChart(){
   const names=uniq();
-  if(!names.length)return`<div style="color:${MUTED};font-size:12px;text-align:center;padding:20px 0">Log workouts to see progress charts</div>`;
-  const dateOrder=[];
+  if(!names.length||S.workouts.length<2)return`<div style="color:${M3};font-size:12px;text-align:center;padding:24px 0;font-weight:600">Log workouts on 2+ days to see strength progress 📊</div>`;
+  const allDates=[];
   const exData={};
   names.forEach(name=>{
     const map={};
     S.workouts.filter(w=>w.name===name).forEach(w=>{
       const mx=Math.max(...w.sets.map(s=>+s.weight||0));
       if(!map[w.date]||map[w.date]<mx)map[w.date]=mx;
-      if(!dateOrder.includes(w.date))dateOrder.push(w.date);
+      if(!allDates.includes(w.date))allDates.push(w.date);
     });
     exData[name]=map;
   });
-  if(dateOrder.length<2)return`<div style="color:${MUTED};font-size:12px;text-align:center;padding:20px 0">Log workouts on 2+ dates to see progress</div>`;
-  const allVals=[];
-  names.forEach(n=>Object.values(exData[n]).forEach(v=>allVals.push(v)));
+  if(allDates.length<2)return`<div style="color:${M3};font-size:12px;text-align:center;padding:24px 0;font-weight:600">Log workouts on 2+ days to see progress</div>`;
+  const allVals=names.flatMap(n=>Object.values(exData[n]).map(v=>+v));
   if(!allVals.length)return"";
-  const mn=Math.max(0,Math.min(...allVals)-10),mx=Math.max(...allVals)+10,rng=mx-mn||1;
-  const W=360,H=200,pl=36,pr=8,pt=10,pb=20,iW=W-pl-pr,iH=H-pt-pb,N=dateOrder.length;
+  const mn=Math.max(0,Math.min(...allVals)-10),mx=Math.max(...allVals)+15,rng=mx-mn||1;
+  const W=360,H=200,pl=36,pr=8,pt=12,pb=22;
+  const iW=W-pl-pr,iH=H-pt-pb,N=allDates.length;
   const xOf=i=>pl+i*(iW/Math.max(N-1,1));
   const fy=v=>pt+iH-((v-mn)/rng)*iH;
-  let lines="",dotsAll="";
+  let paths="",dots2="";
   names.forEach((name,ni)=>{
-    const color=LINE_COLORS[ni%LINE_COLORS.length];
-    let path="",dots="",st=false;
-    dateOrder.forEach((date,i)=>{
+    const color=LCOLS[ni%LCOLS.length];
+    let path="",st=false;
+    allDates.forEach((date,i)=>{
       const v=exData[name][date];
       if(v==null){st=false;return;}
       path+=(st?"L":"M")+xOf(i).toFixed(1)+","+fy(v).toFixed(1)+" ";st=true;
-      dots+=`<circle cx="${xOf(i).toFixed(1)}" cy="${fy(v).toFixed(1)}" r="3.5" fill="${color}" stroke="${CARD}" stroke-width="2"/>`;
+      dots2+=`<circle cx="${xOf(i).toFixed(1)}" cy="${fy(v).toFixed(1)}" r="3.5" fill="${color}" stroke="#030305" stroke-width="2"/>`;
     });
-    if(path){lines+=`<path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;dotsAll+=dots;}
+    if(path)paths+=`<path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
   });
   const step=Math.max(1,Math.ceil(N/5));
-  let xlabs="";dateOrder.forEach((d,i)=>{if(i%step===0||i===N-1)xlabs+=`<text x="${xOf(i).toFixed(1)}" y="${H-3}" fill="#444" font-size="9" text-anchor="middle" font-family="Syne,sans-serif">${d}</text>`;});
+  let xl="";allDates.forEach((d,i)=>{if(i%step===0||i===N-1)xl+=`<text x="${xOf(i).toFixed(1)}" y="${H-4}" fill="${M3}" font-size="9" text-anchor="middle" font-family="DM Sans,sans-serif">${d}</text>`;});
   const yv=[+mn.toFixed(0),+(mn+(mx-mn)/2).toFixed(0),+mx.toFixed(0)];
-  let ygr="";yv.forEach(v=>{const y=fy(v).toFixed(1);ygr+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="#1E1E1E" stroke-width="1"/><text x="${pl-3}" y="${y}" fill="#444" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="Syne,sans-serif">${v}</text>`;});
-  const legend=names.map((n,i)=>`<div style="display:flex;align-items:center;gap:5px"><div style="width:20px;height:3px;background:${LINE_COLORS[i%LINE_COLORS.length]};border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;color:${TEXT}">${n}</span></div>`).join("");
-  return`<div class="chw"><svg viewBox="0 0 ${W} ${H}">${ygr}${lines}${dotsAll}${xlabs}</svg></div><div style="display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px;padding-top:12px;border-top:1px solid ${BD}">${legend}</div>`;
+  let yg="";yv.forEach(v=>{const y=fy(v).toFixed(1);yg+=`<line x1="${pl}" y1="${y}" x2="${W-pr}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/><text x="${pl-4}" y="${y}" fill="${M3}" font-size="9" text-anchor="end" dominant-baseline="middle" font-family="DM Sans,sans-serif">${v}</text>`;});
+  const legend=names.map((n,i)=>`<div style="display:flex;align-items:center;gap:5px"><div style="width:18px;height:3px;background:${LCOLS[i%LCOLS.length]};border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;color:${TX};font-weight:600">${n}</span></div>`).join("");
+  return`<div class="chw"><svg viewBox="0 0 ${W} ${H}">${yg}${paths}${dots2}${xl}</svg></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;padding-top:12px;border-top:1px solid ${BD}">${legend}</div>`;
 }
 
-// ── API ───────────────────────────────────────────────────────────────────────
-async function claude(messages,sys){
-  if(!S.apiKey){
-    return"⚠️ No API key set. Tap the ⚙️ button in the top-right corner, enter your Anthropic API key, and try again.";
-  }
+function mkRestRing(remaining,max){
+  const pct=remaining/max;
+  const r=86,cx=100,cy=100,circ=2*Math.PI*r;
+  const dash=pct*circ,gap=circ-dash;
+  return`<svg viewBox="0 0 200 200" style="width:200px;height:200px">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${PA}" stroke-width="10"
+      stroke-dasharray="${dash.toFixed(2)} ${gap.toFixed(2)}"
+      stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"
+      style="transition:stroke-dasharray .5s linear"/>
+  </svg>`;
+}
+
+// ─── GEMINI API ───────────────────────────────────────────────────────────────
+async function gemini(prompt,sys,imgB64,imgMime){
+  if(!S.apiKey)return"⚠️ No Gemini API key. Tap ⚙️ → enter your free key from aistudio.google.com";
   try{
-    const r=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "x-api-key":S.apiKey,
-        "anthropic-version":"2023-06-01",
-        "anthropic-dangerous-direct-browser-access":"true"
-      },
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys||"",messages})
-    });
+    const model="gemini-1.5-flash";
+    const url=`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${S.apiKey}`;
+    const parts=[];
+    if(imgB64)parts.push({inline_data:{mime_type:imgMime||"image/jpeg",data:imgB64}});
+    parts.push({text:sys?`${sys}\n\n${prompt}`:prompt});
+    const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts}]})});
     const d=await r.json();
     if(d.error)return"AI error: "+d.error.message;
-    return d.content?.map(b=>b.text||"").join("")||"No response.";
-  }catch(e){
-    return"Could not connect. Please check your internet connection.";
-  }
+    return d.candidates?.[0]?.content?.parts?.[0]?.text||"No response.";
+  }catch(e){return"Could not connect. Check your internet and API key.";}
 }
 function ctx(){
-  return JSON.stringify({
-    currentWeight:lw(),targetWeight:S.target,
-    recentWorkouts:S.workouts.slice(-8).map(w=>({name:w.name,date:w.date,sets:w.sets})),
-    todayNutrition:nut(),weightTrend:S.weights.slice(-5)
-  });
+  const n=nut(),lv=lw();
+  return`User: ${S.name||"User"} (${S.level||"intermediate"} level)
+Current weight: ${lv||"not logged"}kg | Target: ${S.target}kg | Est ${wtg()} weeks
+Recent workouts (last 8): ${JSON.stringify(S.workouts.slice(-8).map(w=>({name:w.name,date:w.date,sets:w.sets})))}
+Today's nutrition: ${Math.round(n.cal)}kcal, ${Math.round(n.protein)}g protein, ${Math.round(n.carbs)}g carbs, ${Math.round(n.fat)}g fat
+Calorie goal: ${S.calorieGoal}kcal | Protein goal: ${S.proteinGoal}g
+Weight history (last 5): ${JSON.stringify(S.weights.slice(-5))}`;
 }
 
-// ── RENDER ────────────────────────────────────────────────────────────────────
+// ─── ACTIVE WORKOUT ───────────────────────────────────────────────────────────
+function startWorkout(templateIdx,custom){
+  clearInterval(S.awInterval);
+  const template=TEMPLATES[templateIdx];
+  const exes=custom||template.exercises.map(e=>({
+    name:e.name,
+    tip:TIPS[e.name]||"Focus on form. Controlled movement beats heavy sloppy reps.",
+    sets:Array.from({length:e.sets},()=>({reps:String(e.reps),weight:"",done:false}))
+  }));
+  S.activeWorkout={templateName:custom?"Custom Workout":template.name,startTime:Date.now(),exercises:exes,elapsed:0};
+  S.awInterval=setInterval(()=>{
+    if(S.activeWorkout){S.activeWorkout.elapsed=Date.now()-S.activeWorkout.startTime;rAwBar();}
+  },1000);
+  S.tab="lift";S.modal=null;R();
+}
+
+function finishWorkout(){
+  if(!S.activeWorkout)return;
+  clearInterval(S.awInterval);
+  // Save all exercises as workouts
+  S.activeWorkout.exercises.forEach(ex=>{
+    const doneSets=ex.sets.filter(s=>s.done&&s.reps&&s.weight);
+    if(doneSets.length){
+      S.workouts.push({id:Date.now()+Math.random(),date:TODAY,name:ex.name,sets:doneSets.map(s=>({reps:+s.reps,weight:+s.weight}))});
+    }
+  });
+  const elapsed=S.activeWorkout.elapsed;
+  const totalVol=S.activeWorkout.exercises.reduce((a,ex)=>a+ex.sets.filter(s=>s.done).reduce((b,s)=>b+(+s.reps||0)*(+s.weight||0),0),0);
+  const summary={duration:fmtElapsed(elapsed),exercises:S.activeWorkout.exercises.filter(ex=>ex.sets.some(s=>s.done)).length,volume:totalVol};
+  S.activeWorkout=null;
+  clearInterval(S.awInterval);
+  sv();
+  // Show summary modal
+  S.modal="workout-summary";
+  S._lastSummary=summary;
+  R();
+}
+
+function startRest(sec){
+  clearInterval(S.restInterval);
+  S.restActive=true;S.restRemaining=sec;S.restMax=sec;
+  rRestOverlay();
+  S.restInterval=setInterval(()=>{
+    S.restRemaining--;
+    if(S.restRemaining<=0){
+      clearInterval(S.restInterval);
+      S.restActive=false;
+      document.getElementById("rest-overlay").style.display="none";
+    } else {rRestOverlay();}
+  },1000);
+}
+
+function rRestOverlay(){
+  const el=document.getElementById("rest-overlay");
+  el.style.display="flex";
+  el.className="rest-overlay";
+  el.innerHTML=`
+    <div style="text-align:center;padding:32px">
+      <div style="font-size:14px;color:${M2};font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:20px">REST TIME</div>
+      <div class="rest-ring" style="position:relative;width:200px;height:200px;margin:0 auto 24px">
+        ${mkRestRing(S.restRemaining,S.restMax)}
+        <div class="rest-num">${S.restRemaining}</div>
+      </div>
+      <div style="font-size:13px;color:${M3};margin-bottom:24px;font-weight:500">seconds remaining</div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        ${[60,90,120].map(t=>`<button onclick="startRest(${t})" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 16px;color:${M2};font-size:13px;cursor:pointer;font-weight:600">${t}s</button>`).join("")}
+      </div>
+      <button onclick="skipRest()" style="display:block;margin:16px auto 0;background:none;border:none;color:${M3};font-size:13px;cursor:pointer;font-weight:600">Skip Rest →</button>
+    </div>`;
+}
+
+function skipRest(){
+  clearInterval(S.restInterval);
+  S.restActive=false;
+  document.getElementById("rest-overlay").style.display="none";
+}
+
+function rAwBar(){
+  const el=document.getElementById("aw-bar");
+  if(!S.activeWorkout){el.style.display="none";return;}
+  el.style.display="flex";
+  el.innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${PA};animation:pulse 1s ease infinite"></div>
+      <div>
+        <div style="font-size:10px;color:${M2};font-weight:700;text-transform:uppercase;letter-spacing:.08em">${S.activeWorkout.templateName}</div>
+        <div class="aw-timer">${fmtElapsed(S.activeWorkout.elapsed)}</div>
+      </div>
+    </div>
+    <button onclick="finishWorkout()" style="background:linear-gradient(135deg,#F87171,#DC2626);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer">FINISH ✓</button>`;
+}
+
+// ─── MAIN RENDER ──────────────────────────────────────────────────────────────
 function R(){
+  if(!S.onboarded){rOnboarding();return;}
   const lv=lw();
+  // Header
   document.getElementById("hdr").innerHTML=`
     <div class="hrow">
-      <div>
-        <div class="logo">PATTA GHOBI</div>
-        <div class="sub">AI Fitness Coach · Thu 19 Mar 2026</div>
+      <div class="logo-w">
+        <div class="logo-ic">🥬</div>
+        <div><div class="logo-t">PATTA GHOBI</div><div class="logo-s">${FULL_DATE}</div></div>
       </div>
-      <div class="hright">
+      <div class="hr">
         <div class="wpill" onclick="M('weight')">
-          <div class="wv">${lv||"—"}</div>
-          <div class="wl">kg · log</div>
+          <div class="wv">${lv||"—"}</div><div class="wl">kg · log</div>
         </div>
-        <button class="settings-btn" onclick="M('settings')" title="Settings">⚙️</button>
+        <button class="ibtn" onclick="M('settings')">⚙️</button>
       </div>
     </div>`;
-
+  // Nav
   document.getElementById("nav").innerHTML=
     [["home","⚡","Home"],["lift","🏋️","Lift"],["eat","🥗","Eat"],["grow","📈","Grow"],["coach","🤖","Coach"]]
     .map(([id,ic,lb])=>`<button class="ntab ${S.tab===id?"on":""}" onclick="T('${id}')"><span class="ni">${ic}</span>${lb}</button>`)
     .join("");
-
+  // Active workout bar
+  rAwBar();
+  // Content
   document.getElementById("scr").innerHTML=rTab();
   document.getElementById("mod").innerHTML=rModal();
 }
 
 function rTab(){
-  if(S.tab==="home")  return rHome();
-  if(S.tab==="lift")  return rLift();
-  if(S.tab==="eat")   return rEat();
-  if(S.tab==="grow")  return rGrow();
-  if(S.tab==="coach") return rCoach();
+  if(S.tab==="home") return rHome();
+  if(S.tab==="lift") return S.activeWorkout?rActiveWorkout():rLift();
+  if(S.tab==="eat")  return rEat();
+  if(S.tab==="grow") return rGrow();
+  if(S.tab==="coach")return rCoach();
   return rHome();
 }
 
-function apiWarning(){
-  if(S.apiKey)return"";
-  return`<div class="apibanner">
-    <div class="apibanner-icon">🔑</div>
-    <div style="flex:1">
-      <div style="font-weight:700;font-size:14px;margin-bottom:3px">API Key Required for AI</div>
-      <div style="font-size:12px;color:${MUTED};line-height:1.5">The AI coach needs your Anthropic API key to work. Get one free at console.anthropic.com</div>
-      <button class="apibanner-btn" onclick="M('settings')">⚙️ ADD API KEY</button>
+// ─── ONBOARDING ───────────────────────────────────────────────────────────────
+function rOnboarding(){
+  document.getElementById("hdr").style.display="none";
+  document.getElementById("nav").style.display="none";
+  document.getElementById("scr").style.display="none";
+  document.getElementById("aw-bar").style.display="none";
+  const ob=document.getElementById("ob");
+  ob.style.display="flex";
+
+  if(S.obStep===0){ob.innerHTML=`
+    <div class="ob-icon">🥬</div>
+    <div class="ob-title">PATTA GHOBI</div>
+    <div class="ob-sub">Your AI fitness coach.<br>Let's set up your profile in 60 seconds.</div>
+    <div class="ob-card step-in">
+      <div class="lbl" style="margin-top:0">Your Name</div>
+      <input class="inp" id="ob-name" placeholder="What should I call you?" value="${S.obName}" oninput="S.obName=this.value" style="margin-bottom:0"/>
     </div>
-  </div>`;
+    <button class="btn-p" style="width:320px;max-width:100%" onclick="obNext()">Continue →</button>`;}
+
+  else if(S.obStep===1){ob.innerHTML=`
+    <div class="ob-icon" style="font-size:28px">⚖️</div>
+    <div class="ob-title">YOUR STATS</div>
+    <div class="ob-sub">Help me understand where you are<br>and where you want to be.</div>
+    <div class="ob-card step-in">
+      <div class="lbl" style="margin-top:0">Current Weight (kg)</div>
+      <input class="inp inp-big" type="number" inputmode="decimal" id="ob-wt" placeholder="80" value="${S.obWeight}" oninput="S.obWeight=this.value" style="margin-bottom:14px"/>
+      <div class="lbl">Goal Weight (kg)</div>
+      <input class="inp inp-big" type="number" inputmode="decimal" id="ob-gw" placeholder="75" value="${S.obGoalWeight}" oninput="S.obGoalWeight=this.value"/>
+    </div>
+    <button class="btn-p" style="width:320px;max-width:100%" onclick="obNext()">Continue →</button>
+    <button onclick="S.obStep=0;rOnboarding()" style="background:none;border:none;color:${M3};font-size:13px;cursor:pointer;margin-top:12px;font-weight:600">← Back</button>`;}
+
+  else if(S.obStep===2){ob.innerHTML=`
+    <div class="ob-icon" style="font-size:28px">🏋️</div>
+    <div class="ob-title">YOUR LEVEL</div>
+    <div class="ob-sub">I'll tailor your AI coaching<br>to match your experience.</div>
+    <div class="ob-card step-in">
+      <div class="level-grid">
+        ${[["beginner","🌱","Beginner","< 1 year"],["intermediate","🔥","Intermediate","1–3 years"],["advanced","⚡","Advanced","3+ years"]]
+          .map(([v,ic,t,s])=>`<div class="lvl ${S.obLevel===v?"on":""}" onclick="S.obLevel='${v}';rOnboarding()">
+            <span class="lvl-ic">${ic}</span><div class="lvl-t">${t}</div><div class="lvl-s">${s}</div>
+          </div>`).join("")}
+      </div>
+    </div>
+    <button class="btn-p" style="width:320px;max-width:100%" onclick="obFinish()">Let's Go! 🚀</button>
+    <button onclick="S.obStep=1;rOnboarding()" style="background:none;border:none;color:${M3};font-size:13px;cursor:pointer;margin-top:12px;font-weight:600">← Back</button>`;}
 }
 
-// ── HOME ──────────────────────────────────────────────────────────────────────
+function obNext(){
+  if(S.obStep===0){
+    if(!S.obName.trim())return;
+    S.obStep=1;rOnboarding();
+  } else if(S.obStep===1){
+    if(!S.obWeight||!S.obGoalWeight)return;
+    S.obStep=2;rOnboarding();
+  }
+}
+
+function obFinish(){
+  S.name=S.obName.trim()||"Champ";
+  S.level=S.obLevel;
+  S.target=+S.obGoalWeight||75;
+  if(S.obWeight){S.weights.push({date:TODAY,w:+S.obWeight});}
+  S.onboarded=true;
+  sv();
+  document.getElementById("ob").style.display="none";
+  document.getElementById("hdr").style.display="";
+  document.getElementById("nav").style.display="";
+  document.getElementById("scr").style.display="";
+  R();
+}
+
+// ─── HOME ─────────────────────────────────────────────────────────────────────
 function rHome(){
   const n=nut(),tvol=vol(),lv=lw(),twl=tw();
+  const dates=getDatesWithWorkout();
+  const last7=getLast7();
+
+  // Daily summary
+  const hits=[],misses=[];
+  if(twl.length>0)hits.push(`${twl.length} exercise${twl.length>1?"s":""} logged 💪`);
+  else misses.push("No workout yet today");
+  if(n.protein>=S.proteinGoal)hits.push("Protein goal hit ✓");
+  else misses.push(`${Math.round(S.proteinGoal-n.protein)}g protein remaining`);
+  if(n.cal>=S.calorieGoal*0.85)hits.push("Calorie target reached ✓");
+  else misses.push(`${Math.round(S.calorieGoal-n.cal)} kcal remaining`);
+
+  // Streak
+  let streak=0;
+  for(let i=0;i<30;i++){
+    const d=new Date(NOW);d.setDate(NOW.getDate()-i);
+    if(dates.has(fmtDate(d)))streak++;else break;
+  }
+
   return`<div class="fade">
-  ${apiWarning()}
-  <div class="sg">
+  ${!S.apiKey?`<div class="card-warn">
+    <div style="display:flex;align-items:flex-start;gap:12px">
+      <span style="font-size:20px;flex-shrink:0">🔑</span>
+      <div><div style="font-weight:700;font-size:14px;margin-bottom:3px">Activate AI Coach</div>
+      <div style="font-size:12px;color:${M2};line-height:1.55">Get your <strong>free</strong> Gemini API key at <strong>aistudio.google.com</strong></div>
+      <button onclick="M('settings')" style="background:#F87171;color:#000;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;min-height:36px">⚙️ Add Free API Key</button></div>
+    </div>
+  </div>`:""}
+
+  <!-- GREETING -->
+  <div style="margin-bottom:14px;animation:fadeDown .35s ease both">
+    <div style="font-family:'Bebas Neue',cursive;font-size:28px;color:${TX}">Hey, ${S.name}! ${["💪","🔥","⚡","🏋️"][new Date().getHours()%4]}</div>
+    <div style="color:${M3};font-size:13px;margin-top:2px;font-weight:500">${streak>0?`${streak} day streak 🔥 — keep it going!`:"Start your streak today — log a workout!"}</div>
+  </div>
+
+  <!-- WEEKLY CALENDAR -->
+  <div class="cal-strip" style="animation:fadeUp .35s ease .05s both">
+    ${last7.map(d=>`<div class="cal-day">
+      <div class="cal-label">${d.label}</div>
+      <div class="cal-dot ${d.isToday?"today":dates.has(d.dateStr)?"trained":"rest"}">${d.isToday?"·":dates.has(d.dateStr)?"✓":""}</div>
+    </div>`).join("")}
+  </div>
+
+  <!-- STATS -->
+  <div class="sg3 stagger">
     <div class="st"><div class="stl">Calories</div><div class="stv" style="color:${YEL}">${Math.round(n.cal)}<span class="stu">kcal</span></div></div>
-    <div class="st"><div class="stl">Volume</div><div class="stv" style="color:${A}">${tvol>=1000?(tvol/1000).toFixed(1)+"k":tvol||0}<span class="stu">kg</span></div></div>
+    <div class="st"><div class="stl">Volume</div><div class="stv" style="color:${PA}">${tvol>=1000?(tvol/1000).toFixed(1)+"k":tvol||0}<span class="stu">kg</span></div></div>
     <div class="st"><div class="stl">Protein</div><div class="stv" style="color:${TEAL}">${Math.round(n.protein)}<span class="stu">g</span></div></div>
   </div>
 
-  <div class="gbanner">
-    <div>
-      <div style="font-size:10px;color:${A};text-transform:uppercase;letter-spacing:.1em">YOUR GOAL</div>
-      <div style="font-family:'Bebas Neue',cursive;font-size:21px;margin-top:4px">LOSE WEIGHT & BUILD MUSCLE 💪</div>
-      <div style="color:${MUTED};font-size:12px;margin-top:4px">Target: <span style="color:${A}">${S.target}kg</span> · Est. <span style="color:${A}">${wtg()} weeks</span></div>
-    </div>
-    <div>
-      <div class="gnum">${lv?(Math.abs((lv-S.target).toFixed(1))):"—"}</div>
-      <div style="font-size:10px;color:${MUTED};text-align:right">kg to go</div>
+  <!-- DAILY SUMMARY -->
+  <div class="card" style="margin-bottom:12px;animation:fadeUp .3s ease .1s both">
+    <div class="sh" style="margin-top:0">TODAY'S SUMMARY</div>
+    ${hits.map(h=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0"><div style="width:20px;height:20px;border-radius:6px;background:rgba(163,255,79,.15);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">✓</div><div style="font-size:13px;font-weight:600;color:${TX}">${h}</div></div>`).join("")}
+    ${misses.map(m=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0"><div style="width:20px;height:20px;border-radius:6px;background:rgba(248,113,113,.12);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">!</div><div style="font-size:13px;font-weight:500;color:${M2}">${m}</div></div>`).join("")}
+  </div>
+
+  <!-- GOAL BANNER -->
+  <div class="card-acc glow-pulse" style="animation:fadeUp .3s ease .15s both,glowPulse 3s ease 1s infinite">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:10px;color:${PA};text-transform:uppercase;letter-spacing:.1em;font-weight:700">Your Goal</div>
+        <div style="font-size:19px;font-weight:700;margin-top:5px">Lose Weight & Build Muscle</div>
+        <div style="color:${M2};font-size:12px;margin-top:5px;font-weight:500">Target: <span style="color:${PA};font-weight:700">${S.target}kg</span> · Est. <span style="color:${PA};font-weight:700">${wtg()} weeks</span></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Bebas Neue',cursive;font-size:42px;color:${PA};line-height:1">${lv?Math.abs((lv-S.target).toFixed(1)):"—"}</div>
+        <div style="font-size:10px;color:${M2};font-weight:600">kg to go</div>
+      </div>
     </div>
   </div>
 
+  <!-- TODAY'S LIFTS -->
   <div class="sh">TODAY'S LIFTS</div>
-  ${twl.length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:14px 0;margin-bottom:10px">No lifts today — crush it! 💥</div>`:""}
+  ${twl.length===0?`<div style="color:${M3};font-size:13px;text-align:center;padding:14px 0;margin-bottom:10px;font-weight:600">No lifts today — let's crush it! 💥</div>`:""}
   ${twl.map(w=>`<div class="csm">
     <div style="display:flex;justify-content:space-between;align-items:center">
-      <div>
+      <div style="flex:1">
         <div style="font-weight:700;font-size:15px">${w.name}</div>
-        <div style="color:${MUTED};font-size:12px;margin-top:2px">${w.sets.length} sets · ${w.sets.reduce((a,s)=>a+(+s.reps||0)*(+s.weight||0),0)} kg vol</div>
+        <div style="color:${M2};font-size:12px;margin-top:3px;font-weight:500">${w.sets.length} sets · ${w.sets.reduce((a,s)=>a+(+s.reps||0)*(+s.weight||0),0)} kg vol</div>
       </div>
-      <div style="display:flex;align-items:center;gap:9px">
-        <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${A}">${Math.max(...w.sets.map(s=>+s.weight||0))}<span style="font-size:11px;color:${MUTED};font-family:'Syne'">kg</span></div>
-        <button class="btndel" onclick="DW(${w.id})">✕</button>
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="font-family:'Bebas Neue',cursive;font-size:24px;color:${PA}">${Math.max(...w.sets.map(s=>+s.weight||0))}<span style="font-size:11px;color:${M3};font-family:'DM Sans'">kg</span></div>
+        <button class="btn-edit" onclick="openEdit(${w.id})">✏️</button>
+        <button class="btn-del" onclick="DW(${w.id})">✕</button>
       </div>
     </div>
   </div>`).join("")}
-  <button class="btnp" onclick="M('workout')" style="margin-top:4px">+ LOG WORKOUT</button>
 
-  <div class="rcard" style="margin-top:16px">
-    <div class="rhead">
+  <div style="display:flex;gap:9px;margin-top:6px">
+    <button class="btn-p" style="flex:2" onclick="M('workout')">+ LOG WORKOUT</button>
+    <button class="btn-s" style="flex:1" onclick="M('templates')">📋 Template</button>
+  </div>
+
+  <!-- AI COACH -->
+  <div class="card-ai" style="margin-top:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
       <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:20px">🤖</span>
-        <span style="font-family:'Bebas Neue',cursive;font-size:13px;color:${A};letter-spacing:.1em">AI COACH</span>
+        <span style="font-size:22px">🤖</span>
+        <span style="font-weight:700;font-size:14px;color:${PUR}">AI COACH</span>
       </div>
+      ${S.report?`<button onclick="doRep()" ${S.repLoad?"disabled":""} style="background:none;border:1px solid rgba(167,139,250,.3);border-radius:8px;padding:7px 13px;color:${PUR};cursor:pointer;font-size:12px;font-weight:700">↺ Refresh</button>`:""}
     </div>
-    ${S.report
-      ?`<div class="rtxt">${S.report}</div><button class="rfbtn" onclick="doRep()" style="margin-top:12px;width:100%" ${S.repLoad?"disabled":""}>↺ Refresh Report</button>`
-      :`<button class="btnp" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin"></div><span class="pulse">Analyzing...</span>`:"✨ Generate My Coach Report"}</button>`}
+    ${S.report?`<div style="font-size:13px;color:${TX};line-height:1.8;white-space:pre-wrap">${S.report}</div>`
+    :`<button class="btn-p2" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin"></div><span class="pulse">Analyzing your data...</span>`:"✨ Generate My Coach Report"}</button>`}
   </div>
   </div>`;
 }
 
-// ── LIFT ──────────────────────────────────────────────────────────────────────
+// ─── LIFT (normal mode) ───────────────────────────────────────────────────────
 function rLift(){
-  const twl=tw(),prev=S.workouts.filter(w=>w.date!==TODAY);
-  const hasProgress=uniq().length>0&&S.workouts.some(w=>{
-    const map={};S.workouts.filter(x=>x.name===w.name).forEach(x=>{const mx=Math.max(...x.sets.map(s=>+s.weight||0));if(!map[x.date]||map[x.date]<mx)map[x.date]=mx;});
-    return Object.keys(map).length>=2;
-  });
+  const twl=tw(), prev=S.workouts.filter(w=>w.date!==TODAY);
   return`<div class="fade">
   <div class="flx" style="margin-bottom:14px">
     <div class="sh" style="margin:0">WORKOUT LOG</div>
-    <button class="btnadd" onclick="M('workout')">+ ADD</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn-s" style="padding:8px 14px;min-height:38px;font-size:12px;font-weight:700" onclick="M('templates')">📋 Templates</button>
+      <button class="btn-add" onclick="M('workout')">+ ADD</button>
+    </div>
   </div>
+
   <div class="sh">TODAY</div>
-  ${twl.length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:12px 0;margin-bottom:10px">No lifts today yet</div>`:""}
+  ${twl.length===0?`<div style="color:${M3};font-size:13px;text-align:center;padding:12px 0;margin-bottom:10px;font-weight:600">No lifts today yet</div>`:""}
   ${twl.map(w=>wCard(w,true)).join("")}
-  ${prev.length>0?`<div class="sh" style="margin-top:6px">PREVIOUS SESSIONS</div>${prev.map(w=>wCard(w,false)).join("")}`:""}
-  ${hasProgress?`<div class="sh" style="margin-top:8px">ALL EXERCISE PROGRESS</div><div class="card">${mkMultiExChart()}</div>`:""}
+
+  ${prev.length>0?`<div class="sh" style="margin-top:8px">PREVIOUS SESSIONS</div>${prev.map(w=>wCard(w,false)).join("")}`:""}
+
+  <div class="sh" style="margin-top:10px">STRENGTH PROGRESS</div>
+  <div class="card">${mkExChart()}</div>
   </div>`;
 }
 
-function wCard(w,canDel){
-  return`<div class="card" style="padding:0;overflow:hidden;margin-bottom:9px">
-    <div style="padding:13px 15px;display:flex;justify-content:space-between;align-items:center">
+function wCard(w,canEdit){
+  const maxKg=Math.max(...w.sets.map(s=>+s.weight||0));
+  return`<div class="card" style="padding:0;overflow:hidden;margin-bottom:10px">
+    <div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
       <div style="cursor:pointer;flex:1" onclick="EX(${w.id})">
-        <div style="font-weight:700">${w.name}</div>
-        <div style="color:${MUTED};font-size:11px;margin-top:2px">${w.date} · ${w.sets.length} sets · Max ${Math.max(...w.sets.map(s=>+s.weight||0))}kg</div>
+        <div style="font-weight:700;font-size:15px">${w.name}</div>
+        <div style="color:${M2};font-size:11px;margin-top:3px;font-weight:600">${w.date} · ${w.sets.length} sets · Max ${maxKg}kg</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="color:${A};font-family:'Bebas Neue',cursive;font-size:18px;cursor:pointer" onclick="EX(${w.id})">${S.expanded===w.id?"▲":"▼"}</div>
-        ${canDel?`<button class="btndel" onclick="DW(${w.id})">✕</button>`:""}
+      <div style="display:flex;align-items:center;gap:7px">
+        <div style="font-family:'Bebas Neue',cursive;font-size:20px;color:${PA};cursor:pointer" onclick="EX(${w.id})">${S.expanded===w.id?"▲":"▼"}</div>
+        ${canEdit?`<button class="btn-edit" onclick="openEdit(${w.id})">✏️</button>`:""}
+        ${canEdit?`<button class="btn-del" onclick="DW(${w.id})">✕</button>`:""}
       </div>
     </div>
-    ${S.expanded===w.id?`<div style="border-top:1px solid ${BD};padding:11px 15px 13px">
-      ${w.sets.map((s,i)=>`<div class="setrow"><div style="color:${MUTED};font-size:12px;align-self:center">Set ${i+1}</div><div style="text-align:center;font-weight:600;font-size:14px;align-self:center">${s.reps} reps</div><div style="text-align:right;font-family:'Bebas Neue',cursive;font-size:20px;color:${A};align-self:center">${s.weight}kg</div></div>`).join("")}
-      <div style="margin-top:9px;background:${CARD2};border-radius:8px;padding:9px 13px;display:flex;justify-content:space-between">
-        <span style="color:${MUTED};font-size:12px">Volume</span>
-        <span style="font-family:'Bebas Neue',cursive;font-size:18px;color:${A}">${w.sets.reduce((a,s)=>a+(+s.reps||0)*(+s.weight||0),0)} kg</span>
+    ${S.expanded===w.id?`<div style="border-top:1px solid ${BD};padding:12px 16px 14px">
+      ${w.sets.map((s,i)=>`<div class="setrow"><div style="color:${M3};font-size:12px;font-weight:600;align-self:center">Set ${i+1}</div><div style="text-align:center;font-weight:700;font-size:14px;align-self:center">${s.reps} reps</div><div style="text-align:right;font-family:'Bebas Neue',cursive;font-size:20px;color:${PA};align-self:center">${s.weight}kg</div></div>`).join("")}
+      <div style="margin-top:10px;background:rgba(255,255,255,.04);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="color:${M2};font-size:12px;font-weight:600">Volume</span>
+        <span style="font-family:'Bebas Neue',cursive;font-size:20px;color:${PA}">${w.sets.reduce((a,s)=>a+(+s.reps||0)*(+s.weight||0),0)} kg</span>
       </div>
     </div>`:""}
   </div>`;
 }
 
-// ── EAT ───────────────────────────────────────────────────────────────────────
+// ─── ACTIVE WORKOUT MODE ──────────────────────────────────────────────────────
+function rActiveWorkout(){
+  if(!S.activeWorkout)return rLift();
+  const aw=S.activeWorkout;
+  return`<div class="fade">
+  ${aw.exercises.map((ex,ei)=>`
+    <div class="aw-setbox">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div style="font-weight:700;font-size:16px">${ex.name}</div>
+          <div style="color:${M2};font-size:11px;margin-top:2px;font-weight:500">${ex.sets.filter(s=>s.done).length}/${ex.sets.length} sets done</div>
+        </div>
+        <button onclick="addAwSet(${ei})" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:6px 12px;color:${M2};font-size:12px;font-weight:700;cursor:pointer">+ Set</button>
+      </div>
+      ${ex.tip?`<div class="aw-tip">💡 ${ex.tip}</div>`:""}
+      ${ex.sets.map((s,si)=>`
+        <div style="display:grid;grid-template-columns:36px 1fr 1fr 44px;gap:7px;padding:8px 0;border-top:1px solid rgba(255,255,255,.05)">
+          <div style="color:${M3};font-size:12px;font-weight:700;align-self:center">${si+1}</div>
+          <input class="inp" type="number" inputmode="numeric" placeholder="Reps" value="${s.reps}" oninput="awSetVal(${ei},${si},'reps',this.value)" style="min-height:42px;font-size:14px"/>
+          <input class="inp" type="number" inputmode="decimal" placeholder="kg" value="${s.weight}" oninput="awSetVal(${ei},${si},'weight',this.value)" style="min-height:42px;font-size:14px"/>
+          <button class="btn-check ${s.done?"done":""}" onclick="awDoneSet(${ei},${si})">✓</button>
+        </div>`).join("")}
+    </div>`).join("")}
+
+  <button class="btn-p" style="background:linear-gradient(135deg,#F87171,#DC2626);box-shadow:0 4px 20px rgba(248,113,113,.3);margin-top:8px" onclick="finishWorkout()">🏁 FINISH WORKOUT</button>
+  <button class="btn-s" style="margin-top:8px" onclick="cancelWorkout()">Cancel Workout</button>
+  </div>`;
+}
+
+// ─── EAT ─────────────────────────────────────────────────────────────────────
 function rEat(){
-  const n=nut(),cgl=cg(),pct=Math.min(n.cal/cgl*100,100);
+  const n=nut(),pct=Math.min(n.cal/S.calorieGoal*100,100);
+  const ppct=Math.min(n.protein/S.proteinGoal*100,100);
+
+  // ── Build 7-day food data ──────────────────────────────────────────────────
+  const last7=getLast7();
+  const weekData=last7.map(day=>{
+    const dayFoods=S.foods.filter(f=>f.date===day.dateStr);
+    const tot=dayFoods.reduce((a,f)=>({cal:a.cal+(+f.cal||0),protein:a.protein+(+f.protein||0),carbs:a.carbs+(+f.carbs||0),fat:a.fat+(+f.fat||0)}),{cal:0,protein:0,carbs:0,fat:0});
+    return{...day,...tot,count:dayFoods.length};
+  });
+  const weekTotals=weekData.reduce((a,d)=>({cal:a.cal+d.cal,protein:a.protein+d.protein,carbs:a.carbs+d.carbs,fat:a.fat+d.fat}),{cal:0,protein:0,carbs:0,fat:0});
+  const maxCal=Math.max(...weekData.map(d=>d.cal),S.calorieGoal);
+
   return`<div class="fade">
   <div class="flx" style="margin-bottom:14px">
     <div class="sh" style="margin:0">FOOD INTAKE</div>
-    <button class="btnadd" onclick="M('food')">📸 ADD</button>
-  </div>
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-      <div style="font-family:'Bebas Neue',cursive;font-size:30px;color:${A}">${Math.round(n.cal)}<span style="font-size:12px;color:${MUTED};font-family:'Syne';margin-left:4px">kcal</span></div>
-      <div style="color:${MUTED};font-size:12px;align-self:flex-end;margin-bottom:3px">/ ${cgl} goal</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-s" style="padding:8px 13px;min-height:38px;font-size:12px;font-weight:700" onclick="doMealPlan()">🤖 Meal Plan</button>
+      <button class="btn-add" onclick="M('food')">📸 ADD</button>
     </div>
-    <div class="barbg"><div class="barfill" style="width:${pct}%"></div></div>
-    <div class="macs">
+  </div>
+
+  <!-- TODAY CARD with animated bars -->
+  <div class="card scale-in">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+      <div>
+        <div style="font-size:10px;color:${M3};font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px">Today</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:36px;color:${PA};line-height:1;animation:numberPop .4s ease">${Math.round(n.cal)}<span style="font-size:13px;color:${M3};font-family:'DM Sans';margin-left:4px">kcal</span></div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;color:${M3};font-weight:700;margin-bottom:3px">Goal</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:24px;color:${M3}">${S.calorieGoal}</div>
+        <div style="font-size:10px;color:${pct>=100?PA:M3};font-weight:700;margin-top:2px">${pct>=100?"✓ Hit!":Math.round(pct)+"%"}</div>
+      </div>
+    </div>
+    <div class="barbg" style="margin-bottom:12px;height:7px;border-radius:99px">
+      <div class="barfill" style="width:${pct}%;height:7px;border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1)"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <div style="font-size:11px;color:${M3};font-weight:700">Protein</div>
+      <div style="font-size:11px;color:${ppct>=100?PA:M2};font-weight:700">${Math.round(n.protein)}g / ${S.proteinGoal}g ${ppct>=100?"✓":""}</div>
+    </div>
+    <div class="barbg" style="height:5px;margin-bottom:14px">
+      <div style="height:100%;border-radius:99px;background:${RED};width:${ppct}%;transition:width .8s cubic-bezier(.4,0,.2,1) .1s"></div>
+    </div>
+    <div class="macs stagger">
       <div class="mac"><div class="macv" style="color:${RED}">${Math.round(n.protein)}g</div><div class="macl">Protein</div></div>
       <div class="mac"><div class="macv" style="color:${TEAL}">${Math.round(n.carbs)}g</div><div class="macl">Carbs</div></div>
       <div class="mac"><div class="macv" style="color:${YEL}">${Math.round(n.fat)}g</div><div class="macl">Fat</div></div>
     </div>
   </div>
-  ${tf().map(f=>`<div class="csm">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div style="flex:1">
-        <div style="font-weight:700;font-size:14px">${f.name}</div>
-        <div style="font-size:11px;color:${MUTED};margin-top:3px"><span style="color:${RED}">${Math.round(+f.protein||0)}g P</span> · <span style="color:${TEAL}">${Math.round(+f.carbs||0)}g C</span> · <span style="color:${YEL}">${Math.round(+f.fat||0)}g F</span></div>
+
+  <!-- WEEKLY BAR CHART -->
+  <div class="card fade-r" style="animation-delay:.08s">
+    <div class="flx" style="margin-bottom:14px">
+      <div class="sh" style="margin:0">WEEKLY CALORIES</div>
+      <div style="font-size:11px;color:${M2};font-weight:600">${Math.round(weekTotals.cal).toLocaleString()} kcal total</div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:flex-end;height:80px;margin-bottom:8px">
+      ${weekData.map((d,i)=>{
+        const h=maxCal>0?Math.round((d.cal/maxCal)*72):0;
+        const isToday=d.isToday;
+        const hitGoal=d.cal>=S.calorieGoal;
+        return`<div class="wk-bar-wrap">
+          <div class="wk-bar-bg">
+            <div style="width:100%;height:${h}px;background:${isToday?`linear-gradient(180deg,${PA},${TEAL})`:`rgba(163,255,79,${hitGoal?.5:.22})`};border-radius:6px 6px 0 0;transition:height .6s cubic-bezier(.4,0,.2,1);animation-delay:${i*.06}s"></div>
+          </div>
+          <div class="wk-bar-label" style="color:${isToday?PA:M3}">${d.label}</div>
+          ${d.cal>0?`<div class="wk-bar-val">${d.cal>=1000?(d.cal/1000).toFixed(1)+"k":d.cal}</div>`:`<div class="wk-bar-val" style="color:${M4}">—</div>`}
+        </div>`;
+      }).join("")}
+    </div>
+    <!-- Weekly totals row -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding-top:12px;border-top:1px solid ${BD}">
+      ${[["Calories",Math.round(weekTotals.cal)+" kcal",YEL],["Protein",Math.round(weekTotals.protein)+"g",RED],["Carbs",Math.round(weekTotals.carbs)+"g",TEAL],["Fat",Math.round(weekTotals.fat)+"g",YEL]].map(([l,v,c])=>`
+        <div style="text-align:center">
+          <div style="font-family:'Bebas Neue',cursive;font-size:17px;color:${c};line-height:1">${v}</div>
+          <div style="font-size:9px;color:${M3};font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-top:2px">${l}</div>
+        </div>`).join("")}
+    </div>
+  </div>
+
+  <!-- WEEKLY DAY-BY-DAY LOG -->
+  <div class="sh" style="animation:fadeUp .3s ease .12s both">7-DAY FOOD LOG</div>
+  ${weekData.filter(d=>d.cal>0||d.isToday).map((d,i)=>`
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:10px;animation:fadeUp .3s ease ${i*.06+.1}s both">
+      <div onclick="toggleDayLog('${d.dateStr}')" style="padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:700;font-size:14px;color:${d.isToday?PA:TX}">${d.isToday?"Today":d.dateStr} ${d.isToday?'<span class="notif-dot" style="margin-left:6px"></span>':""}</div>
+          <div style="font-size:11px;color:${M2};margin-top:3px;font-weight:500">${d.count} items · <span style="color:${RED}">${Math.round(d.protein)}g P</span> · <span style="color:${TEAL}">${Math.round(d.carbs)}g C</span> · <span style="color:${YEL}">${Math.round(d.fat)}g F</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${d.cal>=S.calorieGoal?PA:YEL}">${Math.round(d.cal)}<span style="font-size:10px;color:${M3};font-family:'DM Sans';margin-left:2px">kcal</span></div>
+          <div style="color:${PA};font-size:14px">${S._openDayLogs&&S._openDayLogs[d.dateStr]?"▲":"▼"}</div>
+        </div>
       </div>
-      <div style="display:flex;align-items:center;gap:9px">
-        <div style="font-family:'Bebas Neue',cursive;font-size:20px;color:${YEL}">${Math.round(+f.cal||0)}<span style="font-size:11px;color:${MUTED};font-family:'Syne'"> kcal</span></div>
-        <button class="btndel" onclick="DF(${f.id})">✕</button>
+      ${S._openDayLogs&&S._openDayLogs[d.dateStr]?`<div style="border-top:1px solid ${BD};padding:10px 16px 14px">
+        ${S.foods.filter(f=>f.date===d.dateStr).length===0
+          ?`<div style="color:${M3};font-size:13px;text-align:center;padding:8px 0;font-weight:500">No food logged</div>`
+          :S.foods.filter(f=>f.date===d.dateStr).map(f=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)">
+              <div><div style="font-weight:600;font-size:13px">${f.name}</div><div style="font-size:11px;color:${M2};margin-top:1px"><span style="color:${RED}">${Math.round(+f.protein||0)}g P</span> · <span style="color:${TEAL}">${Math.round(+f.carbs||0)}g C</span></div></div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="font-family:'Bebas Neue',cursive;font-size:18px;color:${YEL}">${Math.round(+f.cal||0)}<span style="font-size:10px;color:${M3};font-family:'DM Sans'"> kcal</span></div>
+                ${d.isToday?`<button class="btn-del" style="padding:5px 8px;font-size:11px" onclick="DF(${f.id})">✕</button>`:""}
+              </div>
+            </div>`).join("")}
+        <!-- Day total -->
+        <div style="margin-top:10px;background:rgba(163,255,79,.06);border:1px solid rgba(163,255,79,.15);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;font-weight:700;color:${M2}">Day Total</span>
+          <div style="display:flex;gap:14px">
+            <span style="font-family:'Bebas Neue',cursive;font-size:18px;color:${PA}">${Math.round(d.cal)}<span style="font-size:10px;color:${M3};font-family:'DM Sans';margin-left:2px">kcal</span></span>
+            <span style="font-size:12px;color:${RED};font-weight:600">${Math.round(d.protein)}g P</span>
+          </div>
+        </div>
+      </div>`:""}
+    </div>`).join("")}
+
+  ${S.aiMealPlan?`<div class="card-ai fade-l" style="animation-delay:.15s">
+    <div class="flx" style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:7px"><span>🤖</span><span style="font-weight:700;font-size:13px;color:${PUR}">AI MEAL PLAN</span></div>
+      <div style="display:flex;gap:7px">
+        <button onclick="addAllMeals()" style="background:rgba(163,255,79,.12);border:1px solid rgba(163,255,79,.25);color:${PA};border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer">Add All</button>
+        <button onclick="S.aiMealPlan=null;R()" style="background:none;border:1px solid rgba(255,255,255,.08);color:${M3};border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">✕</button>
       </div>
     </div>
-  </div>`).join("")}
-  ${tf().length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:14px 0">Nothing logged today — tap ADD to track your meals</div>`:""}
+    ${S.aiMealPlan.map((meal,i)=>`<div class="plan-ex" style="animation:fadeUp .3s ease ${i*.05}s both">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div style="font-weight:700;font-size:14px">${meal.name}</div><div style="font-size:11px;color:${M2};margin-top:2px">${meal.grams||""}g · <span style="color:${RED}">${meal.protein}g P</span> · <span style="color:${TEAL}">${meal.carbs}g C</span></div></div>
+        <div style="text-align:right">
+          <div style="font-family:'Bebas Neue',cursive;font-size:20px;color:${YEL}">${meal.calories}<span style="font-size:10px;color:${M3};font-family:'DM Sans'"> kcal</span></div>
+          <button onclick="addMeal(${i})" style="background:rgba(163,255,79,.1);border:1px solid rgba(163,255,79,.22);color:${PA};border-radius:7px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;margin-top:4px">+ Add</button>
+        </div>
+      </div>
+    </div>`).join("")}
+  </div>`:""}
   </div>`;
 }
 
-// ── GROW ──────────────────────────────────────────────────────────────────────
+// ─── GROW ─────────────────────────────────────────────────────────────────────
 function rGrow(){
-  const lv=lw();
-  const userExercises=uniq(); // only exercises user has logged
+  const lv=lw(), ues=uniq();
+  const lastMeas=S.measurements.slice(-1)[0]||null;
+  // Milestone
+  let milestone="";
+  if(S.weights.length>=2){
+    const first=S.weights[0], last=S.weights[S.weights.length-1];
+    const diff=+(last.w-first.w).toFixed(1);
+    const weeks=Math.round((S.weights.length-1)/2);
+    if(Math.abs(diff)>=0.5){
+      milestone=`<div class="milestone">
+        <div>
+          <div style="font-size:10px;color:${PA};font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Progress Since Start</div>
+          <div style="font-size:14px;font-weight:700">${first.date} → ${last.date}</div>
+          <div style="font-size:13px;color:${M2};margin-top:3px;font-weight:500">Over ~${weeks} week${weeks!==1?"s":""}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Bebas Neue',cursive;font-size:36px;color:${diff<0?PA:RED};line-height:1">${diff>0?"+":""}${diff}</div>
+          <div style="font-size:11px;color:${M2};font-weight:600">kg</div>
+        </div>
+      </div>`;
+    }
+  }
 
   return`<div class="fade">
+  ${milestone}
+
   <div class="sh">WEIGHT PROGRESS & GOAL</div>
   <div class="card">
     <div class="trow">
       <div>
-        <div style="font-size:10px;color:${MUTED};text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Current → Target</div>
-        <div style="font-family:'Bebas Neue',cursive;font-size:26px;line-height:1">
-          ${lv||"—"} <span style="color:${MUTED}">→</span> <span style="color:${A}">${S.target}</span>
-          <span style="font-size:12px;color:${MUTED};font-family:'Syne';margin-left:4px">kg</span>
+        <div style="font-size:10px;color:${M3};text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;font-weight:700">Current → Target</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:28px;line-height:1">
+          ${lv||"—"} <span style="color:${M3}">→</span> <span style="color:${PA}">${S.target}</span>
+          <span style="font-size:13px;color:${M3};font-family:'DM Sans';margin-left:4px">kg</span>
         </div>
-        <div style="color:${TEAL};font-size:12px;margin-top:6px">⏱ ~${wtg()} weeks at current pace</div>
+        <div style="color:${TEAL};font-size:12px;margin-top:7px;font-weight:700">⏱ ~${wtg()} weeks at current pace</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:7px;align-items:center">
         <button class="tcbtn" onclick="TG(.5)">＋</button>
-        <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${A}">${S.target}</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:24px;color:${PA}">${S.target}</div>
         <button class="tcbtn" onclick="TG(-.5)">－</button>
       </div>
     </div>
     ${mkWtChart()}
   </div>
 
+  <!-- BODY MEASUREMENTS -->
+  <div class="sh">BODY MEASUREMENTS</div>
+  <div class="card">
+    <div class="flx" style="margin-bottom:12px">
+      <div style="font-weight:700;font-size:14px">${lastMeas?`Last logged ${lastMeas.date}`:"No measurements yet"}</div>
+      <button class="btn-add" onclick="M('measurement')" style="font-size:12px;padding:7px 12px">+ LOG</button>
+    </div>
+    ${lastMeas?`<div class="meas-grid">
+      ${[["Chest","chest","cm"],["Waist","waist","cm"],["Arms","arms","cm"],["Hips","hips","cm"]].map(([l,k,u])=>lastMeas[k]?`<div class="meas-inp-wrap">
+        <div class="meas-label">${l}</div>
+        <div class="meas-val">${lastMeas[k]}<span class="meas-unit">${u}</span></div>
+      </div>`:"").join("")}
+    </div>`:`<div style="color:${M3};font-size:13px;text-align:center;padding:12px 0;font-weight:600">Log chest, waist, arms & hips to track body composition</div>`}
+  </div>
+
+  <!-- WEIGHT HISTORY -->
   <div class="sh">WEIGHT HISTORY</div>
   <div class="card">
     <div class="wh-summary" onclick="WHT()">
       <div>
-        <div style="font-weight:600;font-size:14px">${S.weights.length} entries logged</div>
-        ${lv?`<div style="font-size:12px;color:${MUTED};margin-top:2px">Latest: ${lv} kg on ${S.weights[S.weights.length-1]?.date||""}</div>`:`<div style="font-size:12px;color:${MUTED};margin-top:2px">No entries yet — tap + Log Today</div>`}
+        <div style="font-weight:700;font-size:14px">${S.weights.length} entries logged</div>
+        ${lv?`<div style="font-size:12px;color:${M2};margin-top:3px;font-weight:500">Latest: <span style="color:${PA};font-weight:700">${lv} kg</span></div>`:`<div style="font-size:12px;color:${M3};margin-top:3px">No entries yet</div>`}
       </div>
       <div style="display:flex;align-items:center;gap:10px">
-        <button class="btnadd" onclick="event.stopPropagation();M('weight')" style="font-size:12px;padding:7px 12px">+ LOG</button>
+        <button class="btn-add" onclick="event.stopPropagation();M('weight')" style="font-size:12px;padding:7px 12px">+ LOG</button>
         <div class="wh-arrow ${S.whOpen?"open":""}">▼</div>
       </div>
     </div>
-    ${S.whOpen&&S.weights.length>0?`<div class="wh-list">
-      ${S.weights.slice().reverse().map((e,i)=>`
-        <div class="whr">
-          <div>
-            <div style="color:${MUTED};font-size:13px">${e.date}</div>
-            ${i===0?`<div style="font-size:10px;color:${A};margin-top:1px">Latest</div>`:""}
-          </div>
-          <div style="display:flex;align-items:center;gap:11px">
-            <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${A}">${e.w}<span style="font-size:12px;color:${MUTED};font-family:'Syne';margin-left:2px">kg</span></div>
-            <button class="btndel" style="padding:6px 9px;font-size:11px" onclick="DWT(${S.weights.length-1-i})">✕</button>
-          </div>
-        </div>`).join("")}
+    ${S.whOpen&&S.weights.length>0?`<div style="margin-top:12px;border-top:1px solid ${BD};padding-top:8px">
+      ${S.weights.slice().reverse().map((e,i)=>`<div class="whr">
+        <div><div style="color:${M2};font-size:13px;font-weight:600">${e.date}</div>${i===0?`<div style="font-size:10px;color:${PA};margin-top:2px;font-weight:700">LATEST</div>`:""}</div>
+        <div style="display:flex;align-items:center;gap:11px">
+          <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${PA}">${e.w}<span style="font-size:12px;color:${M3};font-family:'DM Sans';margin-left:2px">kg</span></div>
+          <button class="btn-del" style="padding:6px 9px;font-size:11px" onclick="DWT(${S.weights.length-1-i})">✕</button>
+        </div>
+      </div>`).join("")}
     </div>`:""}
-    ${S.whOpen&&S.weights.length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:16px 0">No weight entries yet</div>`:""}
   </div>
 
+  <!-- PERSONAL RECORDS -->
   <div class="sh">PERSONAL RECORDS</div>
-  ${userExercises.length===0
-    ?`<div class="csm"><div style="color:${MUTED};font-size:13px;text-align:center;padding:8px 0">No workouts logged yet — go to Lift to add your exercises</div></div>`
-    :userExercises.map(name=>{
+  ${ues.length===0?`<div class="csm"><div style="color:${M3};font-size:13px;text-align:center;padding:8px 0;font-weight:600">No workouts logged yet — go lift! 💪</div></div>`
+    :ues.map(name=>{
       const allSets=S.workouts.filter(w=>w.name===name).flatMap(w=>w.sets);
       if(!allSets.length)return"";
       const best=Math.max(...allSets.map(s=>+s.weight||0));
       const lastDate=S.workouts.filter(w=>w.name===name).slice(-1)[0]?.date||"";
       return`<div class="csm">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <div style="font-weight:600;font-size:14px">${name}</div>
-            <div style="font-size:11px;color:${MUTED};margin-top:2px">${lastDate}</div>
-          </div>
-          <div style="font-family:'Bebas Neue',cursive;font-size:25px;color:${A}">${best}<span style="font-size:11px;color:${MUTED};font-family:'Syne';margin-left:3px">kg</span></div>
+          <div><div style="font-weight:700;font-size:14px">${name}</div><div style="font-size:11px;color:${M3};margin-top:3px;font-weight:500">${lastDate}</div></div>
+          <div style="font-family:'Bebas Neue',cursive;font-size:26px;color:${PA}">${best}<span style="font-size:11px;color:${M3};font-family:'DM Sans';margin-left:3px">kg</span></div>
         </div>
       </div>`;
     }).join("")}
   </div>`;
 }
 
-// ── COACH ─────────────────────────────────────────────────────────────────────
+// ─── COACH ────────────────────────────────────────────────────────────────────
 function rCoach(){
   return`<div class="fade">
-  ${apiWarning()}
   <div class="sh">AI COACH · FULL ANALYSIS</div>
-  <div class="rcard">
-    <div class="rhead">
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:20px">🤖</span>
-        <span style="font-family:'Bebas Neue',cursive;font-size:13px;color:${A};letter-spacing:.1em">PERSONALIZED REPORT</span>
-      </div>
-      <button class="rfbtn" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin" style="display:inline-block"></div>`:"↺ Refresh"}</button>
+  <div class="card-ai">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">🤖</span><span style="font-weight:700;font-size:13px;color:${PUR}">PERSONALIZED REPORT</span></div>
+      <button onclick="doRep()" ${S.repLoad?"disabled":""} style="background:none;border:1px solid rgba(167,139,250,.28);border-radius:8px;padding:8px 14px;color:${PUR};cursor:pointer;font-size:12px;font-weight:700">${S.repLoad?`<div class="spin" style="display:inline-block;border-top-color:${PUR}"></div>`:"↺ Refresh"}</button>
     </div>
-    ${S.report
-      ?`<div class="rtxt">${S.report}</div>`
-      :`<button class="btnp" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin"></div><span class="pulse">Analyzing...</span>`:"✨ Generate My Coach Report"}</button>`}
+    ${S.report?`<div style="font-size:13px;color:${TX};line-height:1.8;white-space:pre-wrap">${S.report}</div>`
+      :`<button class="btn-p2" onclick="doRep()" ${S.repLoad?"disabled":""}>${S.repLoad?`<div class="spin"></div><span class="pulse">Analyzing...</span>`:"✨ Generate My Coach Report"}</button>`}
   </div>
+
+  <!-- AI WORKOUT GENERATOR -->
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px"><span>⚡</span><span style="font-weight:700;font-size:13px">AI WORKOUT GENERATOR</span></div>
+    </div>
+    <div style="font-size:12px;color:${M2};margin-bottom:12px;font-weight:500">Tell me what to train and I'll build a personalized workout based on your history.</div>
+    <select class="inp" id="aw-focus" style="margin-bottom:10px;min-height:44px" oninput="S.aiWorkoutFocus=this.value">
+      ${["Chest & Triceps","Back & Biceps","Legs","Shoulders","Full Body","Core & Cardio"].map(f=>`<option value="${f}" ${S.aiWorkoutFocus===f?"selected":""}>${f}</option>`).join("")}
+    </select>
+    <button class="btn-g" onclick="doAiWorkout()" ${S.aiWorkoutLoad?"disabled":""}>${S.aiWorkoutLoad?`<div class="spin"></div><span class="pulse">Building your workout...</span>`:"🤖 Generate Workout Plan"}</button>
+    ${S.aiWorkoutPlan?`<div style="margin-top:12px;border-top:1px solid ${BD};padding-top:12px">
+      <div style="font-weight:700;font-size:13px;color:${PA};margin-bottom:8px">Generated Workout</div>
+      ${S.aiWorkoutPlan.map((ex,i)=>`<div class="plan-ex">
+        <div style="font-weight:700;font-size:14px">${ex.name}</div>
+        <div style="font-size:12px;color:${M2};margin-top:3px;font-weight:500">${ex.sets} sets × ${ex.reps} reps · ${ex.weight?`Target ${ex.weight}kg`:"Choose weight"}</div>
+        ${ex.tip?`<div style="font-size:11px;color:${M3};margin-top:4px;font-style:italic">${ex.tip}</div>`:""}
+      </div>`).join("")}
+      <button class="btn-p" style="margin-top:8px" onclick="startAiWorkout()">🏋️ START THIS WORKOUT</button>
+    </div>`:""}
+  </div>
+
+  <!-- WEEKLY REPORT -->
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span>📊</span><span style="font-weight:700;font-size:13px">WEEKLY SUMMARY</span></div>
+    <button class="btn-g" onclick="doWeeklyReport()" ${S.repLoad?"disabled":""}>Generate This Week's Report</button>
+  </div>
+
+  <!-- CHAT -->
   <div class="sh">CHAT WITH YOUR COACH</div>
   <div class="chatbox" id="cb">
-    ${S.chat.length===0?`<div style="color:${MUTED};font-size:13px;text-align:center;padding:28px 10px;line-height:1.7">Ask anything 👇<br>"Should I increase bench weight?"<br>"What should I eat today?"</div>`:""}
+    ${S.chat.length===0?`<div style="color:${M3};font-size:13px;text-align:center;padding:28px 10px;line-height:1.7;font-weight:600">Ask anything 👇<br>"Increase my bench weight?"<br>"What should I eat today?"</div>`:""}
     ${S.chat.map(m=>`<div class="msg ${m.role==="user"?"u":"b"}"><div class="bub ${m.role==="user"?"u":"b"}">${m.content}</div></div>`).join("")}
-    ${S.chatLoad?`<div style="display:flex;align-items:center;gap:8px;color:${MUTED};font-size:13px;padding:4px 0"><div class="spin"></div> Thinking...</div>`:""}
+    ${S.chatLoad?`<div style="display:flex;align-items:center;gap:8px;color:${M3};font-size:13px;padding:4px 0"><div class="spin"></div><span class="pulse">Thinking...</span></div>`:""}
     <div id="ce"></div>
   </div>
   <div class="cinrow">
     <input class="inp" id="ci" placeholder="Ask your coach..." value="${(S.chatIn||"").replace(/"/g,"&quot;")}" oninput="S.chatIn=this.value" onkeydown="if(event.key==='Enter')CH()"/>
-    <button class="btnsend" onclick="CH()" ${S.chatLoad?"disabled":""}>SEND</button>
+    <button class="btn-send" onclick="CH()" ${S.chatLoad?"disabled":""}>SEND</button>
   </div>
   <div class="qbtns">
-    ${["Increase bench weight?","What to eat today?","Am I on track?","Best exercises?"]
+    ${["Increase bench weight?","What to eat today?","Am I on track?","Best exercises for me?","How to improve recovery?"]
       .map(q=>`<button class="qbtn" onclick="QA(this.textContent)">${q}</button>`).join("")}
   </div>
   </div>`;
 }
 
-// ── MODALS ────────────────────────────────────────────────────────────────────
+// ─── MODALS ───────────────────────────────────────────────────────────────────
 function rModal(){
   if(!S.modal)return"";
-  if(S.modal==="workout")  return mWorkout();
-  if(S.modal==="food")     return mFood();
-  if(S.modal==="weight")   return mWeight();
-  if(S.modal==="settings") return mSettings();
+  const M=S.modal;
+  if(M==="workout")  return mWorkout(false);
+  if(M==="edit")     return mWorkout(true);
+  if(M==="food")     return mFood();
+  if(M==="weight")   return mWeight();
+  if(M==="settings") return mSettings();
+  if(M==="templates")return mTemplates();
+  if(M==="measurement")return mMeasurement();
+  if(M==="workout-summary")return mWorkoutSummary();
   return"";
 }
 
-function mSettings(){
-  const hasKey=!!S.apiKey;
-  return`<div class="overlay" onclick="M(null)">
+function mWorkout(isEdit){
+  return`<div class="overlay" onclick="Mc(null)">
   <div class="sheet" onclick="event.stopPropagation()">
-    <div class="shtop"><div class="hdl"></div><div class="stitle">⚙️ SETTINGS</div></div>
-
-    <div class="settings-panel">
-      <div style="font-family:'Bebas Neue',cursive;font-size:16px;color:${A};letter-spacing:.08em;margin-bottom:8px">🔑 ANTHROPIC API KEY</div>
-      <div style="font-size:12px;color:${MUTED};line-height:1.6;margin-bottom:12px">
-        Required for AI Coach to work. Get your free key at:<br>
-        <span style="color:${A}">console.anthropic.com → API Keys</span>
-      </div>
-      <label class="lbl" style="margin-top:0">Your API Key</label>
-      <div class="inp-wrap">
-        <input class="inp" id="apiinp" type="${S.showApiKey?"text":"password"}" placeholder="sk-ant-api03-..." value="${S.apiKey||""}" oninput="S.apiKey=this.value" style="padding-right:48px"/>
-        <button class="eye-btn" onclick="S.showApiKey=!S.showApiKey;R();setTimeout(()=>{const el=document.getElementById('apiinp');if(el)el.focus();},50)">${S.showApiKey?"🙈":"👁️"}</button>
-      </div>
-      <div class="api-status ${hasKey?"api-ok":"api-no"}" style="margin-top:10px">
-        <div class="api-dot" style="background:${hasKey?"#C8FF00":"#FF4D4D"}"></div>
-        ${hasKey?"API Key saved — AI is ready ✓":"No API key — AI features disabled"}
-      </div>
-      <button class="btnp" style="margin-top:14px" onclick="saveKey()">SAVE API KEY</button>
-    </div>
-
-    <div class="settings-panel">
-      <div style="font-family:'Bebas Neue',cursive;font-size:16px;color:${A};letter-spacing:.08em;margin-bottom:8px">🎯 TARGET WEIGHT</div>
-      <label class="lbl" style="margin-top:0">Goal Weight (kg)</label>
-      <input class="inp inpbig" type="number" inputmode="decimal" step="0.5" id="tginp" value="${S.target}" oninput="S.target=+this.value" style="margin-bottom:10px"/>
-      <button class="btnp" onclick="sv();M(null)">SAVE TARGET</button>
-    </div>
-
-    <div class="settings-panel" style="border-color:rgba(255,77,77,.25)">
-      <div style="font-family:'Bebas Neue',cursive;font-size:16px;color:${RED};letter-spacing:.08em;margin-bottom:8px">⚠️ CLEAR ALL DATA</div>
-      <div style="font-size:12px;color:${MUTED};margin-bottom:12px">This will delete all your workouts, food logs, and weight history.</div>
-      <button onclick="clearAll()" style="background:rgba(255,77,77,.1);border:1px solid rgba(255,77,77,.3);color:${RED};border-radius:8px;padding:12px;font-size:13px;cursor:pointer;width:100%;min-height:44px">Delete All My Data</button>
-    </div>
-  </div>
-  </div>`;
-}
-
-function mWorkout(){
-  return`<div class="overlay" onclick="M(null)">
-  <div class="sheet" onclick="event.stopPropagation()">
-    <div class="shtop"><div class="hdl"></div><div class="stitle">LOG EXERCISE</div></div>
+    <div class="shtop"><div class="hdl"></div><div class="stitle">${isEdit?"EDIT EXERCISE":"LOG EXERCISE"}</div></div>
     <div class="toggle">
-      <button class="tglbtn ${!S.useCustom?"on":""}" onclick="S.useCustom=false;R()">From List</button>
-      <button class="tglbtn ${S.useCustom?"on":""}" onclick="S.useCustom=true;R()">Custom Name</button>
+      <button class="tgl ${!S.useCustom?"on":""}" onclick="S.useCustom=false;R()">From List</button>
+      <button class="tgl ${S.useCustom?"on":""}" onclick="S.useCustom=true;R()">Custom Name</button>
     </div>
     ${!S.useCustom
       ?`<label class="lbl">Exercise</label><select class="inp" id="es" style="margin-bottom:14px">${PRESETS.map(e=>`<option ${S.newEx===e?"selected":""}>${e}</option>`).join("")}</select>`
-      :`<label class="lbl">Exercise Name</label><input class="inp" id="cex" placeholder="e.g. Moon Walk, Cable Fly" value="${S.customEx||""}" oninput="S.customEx=this.value" style="margin-bottom:14px"/>`
+      :`<label class="lbl">Exercise Name</label><input class="inp" id="cex" placeholder="e.g. Battle Ropes, Box Jump..." value="${S.customEx||""}" oninput="S.customEx=this.value" style="margin-bottom:14px"/>`
     }
+    ${(()=>{const eName=S.useCustom?S.customEx:S.newEx;const tip=TIPS[eName];return tip?`<div style="background:rgba(163,255,79,.06);border:1px solid rgba(163,255,79,.15);border-radius:12px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:${M2};line-height:1.6">💡 ${tip}</div>`:""})()}
     <label class="lbl">Sets (Reps / Weight in kg)</label>
     ${S.newSets.map((s,i)=>`<div class="row2">
       <input class="inp" type="number" inputmode="numeric" placeholder="Reps" value="${s.reps}" oninput="S.newSets[${i}].reps=this.value"/>
       <input class="inp" type="number" inputmode="decimal" placeholder="Weight kg" value="${s.weight}" oninput="S.newSets[${i}].weight=this.value"/>
-      ${S.newSets.length>1?`<button onclick="RS(${i})" style="background:${CARD2};border:1px solid ${BD};border-radius:8px;color:${RED};padding:0 13px;cursor:pointer;font-size:16px;min-height:46px;flex-shrink:0">✕</button>`:""}
+      ${S.newSets.length>1?`<button onclick="RS(${i})" style="background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.22);border-radius:10px;color:${RED};padding:0 12px;cursor:pointer;font-size:16px;min-height:48px;flex-shrink:0">✕</button>`:""}
     </div>`).join("")}
-    <button class="btns" style="margin-top:4px;margin-bottom:14px" onclick="AS()">+ Add Another Set</button>
-    <button class="btnp" onclick="SW()">SAVE EXERCISE</button>
-  </div>
-  </div>`;
+    <button class="btn-s" style="margin-top:4px;margin-bottom:14px" onclick="AS()">+ Add Another Set</button>
+    <button class="btn-p" onclick="SW(${isEdit})">${isEdit?"SAVE CHANGES":"SAVE EXERCISE"}</button>
+    ${isEdit?`<button class="btn-s" style="margin-top:8px" onclick="Mc(null)">Cancel</button>`:""}
+  </div></div>`;
 }
 
 function mFood(){
-  return`<div class="overlay" onclick="M(null)">
+  const keys=Object.keys(FOOD_DB);
+  const filtered=S.foodSearch?keys.filter(k=>k.toLowerCase().includes(S.foodSearch.toLowerCase())):keys;
+  return`<div class="overlay" onclick="Mc(null)">
   <div class="sheet" onclick="event.stopPropagation()">
     <div class="shtop"><div class="hdl"></div><div class="stitle">LOG FOOD</div></div>
-    <div style="color:${MUTED};font-size:12px;margin-bottom:4px">📸 Upload a food photo — AI estimates all macros automatically</div>
+    <div style="color:${M2};font-size:12px;margin-bottom:4px;font-weight:600">📸 Photo analysis or search our food database</div>
     <input type="file" accept="image/*" capture="environment" id="pf" style="display:none" onchange="PH(this)"/>
     ${!S.photoRes?`
       <button class="photobtn" onclick="document.getElementById('pf').click()">
-        ${S.photoLoad
-          ?`<div class="spin spin-lg"></div><span class="pulse" style="color:${MUTED};font-size:13px;margin-top:4px">AI analyzing your food...</span>`
-          :`<div style="font-size:40px">📸</div><div style="font-weight:600">Take or upload a photo</div><div style="color:${MUTED};font-size:11px">AI identifies every item & estimates macros</div>`}
+        ${S.photoLoad?`<div class="spin spin-lg"></div><span class="pulse" style="color:${M3};font-size:13px;margin-top:4px">Gemini AI analyzing...</span>`:`<div style="font-size:44px">📸</div><div style="font-weight:700">Take or upload a photo</div><div style="color:${M3};font-size:11px;font-weight:600">AI identifies food & estimates macros instantly</div>`}
       </button>
-      <div class="divr">— or enter manually —</div>
-      <label class="lbl">Food Name</label>
-      <input class="inp" id="fn" placeholder="e.g. Dal Rice, Chicken Tikka" style="margin-bottom:9px" value="${S.newFood||""}" oninput="S.newFood=this.value"/>
-      <label class="lbl">Grams / Serving</label>
-      <input class="inp" type="number" inputmode="numeric" style="margin-bottom:14px" value="${S.newGrams||100}" oninput="S.newGrams=this.value"/>
-      <button class="btnp" onclick="SF()">SAVE FOOD</button>
+      <div class="divr">— or search food database —</div>
+      <input class="inp" placeholder="Search foods... (e.g. Dal, Chicken, Oats)" value="${S.foodSearch||""}" oninput="S.foodSearch=this.value;R()" style="margin-bottom:8px"/>
+      <div class="food-search-list">
+        ${filtered.slice(0,20).map(name=>{const f=FOOD_DB[name];return`<div class="food-item" onclick="pickFood('${name.replace(/'/g,"\\'")}')">
+          <div><div class="food-item-name">${name}</div><div class="food-item-macro">per 100g · <span style="color:${RED}">${f.protein}g P</span> · <span style="color:${TEAL}">${f.carbs}g C</span> · <span style="color:${YEL}">${f.fat}g F</span></div></div>
+          <div style="font-family:'Bebas Neue',cursive;font-size:18px;color:${YEL}">${f.cal}<span style="font-size:10px;color:${M3};font-family:'DM Sans'">kcal</span></div>
+        </div>`;}).join("")}
+      </div>
+      ${S.newFood?`<div style="margin-top:12px;border-top:1px solid ${BD};padding-top:12px">
+        <div style="font-weight:700;font-size:14px;margin-bottom:8px">${S.newFood}</div>
+        <label class="lbl">Grams / Serving</label>
+        <input class="inp" type="number" inputmode="numeric" id="fg" value="${S.newGrams}" oninput="S.newGrams=this.value" style="margin-bottom:12px"/>
+        ${(()=>{const f=FOOD_DB[S.newFood];const g=+S.newGrams||100;return f?`<div style="background:rgba(163,255,79,.06);border:1px solid rgba(163,255,79,.15);border-radius:10px;padding:11px 14px;margin-bottom:12px;display:flex;gap:12px">
+          <div style="text-align:center;flex:1"><div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${YEL}">${Math.round(f.cal*g/100)}</div><div style="font-size:10px;color:${M3};font-weight:700">kcal</div></div>
+          <div style="text-align:center;flex:1"><div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${RED}">${Math.round(f.protein*g/100)}g</div><div style="font-size:10px;color:${M3};font-weight:700">protein</div></div>
+          <div style="text-align:center;flex:1"><div style="font-family:'Bebas Neue',cursive;font-size:22px;color:${TEAL}">${Math.round(f.carbs*g/100)}g</div><div style="font-size:10px;color:${M3};font-weight:700">carbs</div></div>
+        </div>`:""})()}
+        <button class="btn-p" onclick="SF()">ADD TO LOG</button>
+      </div>`:""}
     `:""}
     ${S.photoRes&&!S.photoRes.raw?`
       ${(S.photoRes.items||[]).map(it=>`<div class="pi">
-        <div style="font-weight:700;font-size:14px">${it.name} <span style="color:${MUTED};font-size:12px">~${it.grams_estimated}g</span></div>
-        <div style="font-size:12px;color:${MUTED};margin-top:3px"><span style="color:${YEL}">${it.calories} kcal</span> · <span style="color:${RED}">${it.protein}g P</span> · <span style="color:${TEAL}">${it.carbs}g C</span></div>
+        <div style="font-weight:700;font-size:14px">${it.name} <span style="color:${M3};font-size:12px">~${it.grams_estimated}g</span></div>
+        <div style="font-size:12px;color:${M2};margin-top:3px;font-weight:500"><span style="color:${YEL}">${it.calories} kcal</span> · <span style="color:${RED}">${it.protein}g P</span> · <span style="color:${TEAL}">${it.carbs}g C</span></div>
       </div>`).join("")}
       ${S.photoRes.totals?`<div class="ptotal">
-        <div style="font-family:'Bebas Neue',cursive;font-size:12px;color:${A};margin-bottom:5px">TOTAL</div>
-        <div><span style="color:${YEL};font-family:'Bebas Neue',cursive;font-size:22px">${S.photoRes.totals.calories}</span><span style="color:${MUTED}"> kcal · </span><span style="color:${RED}">${S.photoRes.totals.protein}g P</span> · <span style="color:${TEAL}">${S.photoRes.totals.carbs}g C</span></div>
+        <div style="font-size:11px;color:${PA};font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">Total Nutrition</div>
+        <div><span style="color:${YEL};font-family:'Bebas Neue',cursive;font-size:24px">${S.photoRes.totals.calories}</span><span style="color:${M3}"> kcal · </span><span style="color:${RED}">${S.photoRes.totals.protein}g P</span> · <span style="color:${TEAL}">${S.photoRes.totals.carbs}g C</span></div>
       </div>`:""}
       ${S.photoRes.tip?`<div class="ptip">🤖 ${S.photoRes.tip}</div>`:""}
       <div class="pact">
-        <button class="btnp" style="flex:2" onclick="AP()">ADD TO LOG</button>
-        <button class="btnout" onclick="S.photoRes=null;R()">Retry</button>
+        <button class="btn-p" style="flex:2" onclick="AP()">ADD TO LOG</button>
+        <button class="btn-out" onclick="S.photoRes=null;R()">Retry</button>
       </div>
     `:""}
-    ${S.photoRes&&S.photoRes.raw?`<div style="font-size:13px;color:${TEXT};line-height:1.7;margin-bottom:12px">${S.photoRes.raw}</div><button class="btns" onclick="S.photoRes=null;R()">Try Again</button>`:""}
-  </div>
-  </div>`;
+    ${S.photoRes?.raw?`<div style="font-size:13px;color:${TX};line-height:1.7;margin-bottom:12px">${S.photoRes.raw}</div><button class="btn-s" onclick="S.photoRes=null;R()">Try Again</button>`:""}
+  </div></div>`;
 }
 
 function mWeight(){
-  return`<div class="overlay" onclick="M(null)">
+  return`<div class="overlay" onclick="Mc(null)">
   <div class="sheet" onclick="event.stopPropagation()">
     <div class="shtop"><div class="hdl"></div><div class="stitle">LOG WEIGHT</div></div>
     <label class="lbl">Today's Weight (kg)</label>
-    <input class="inp inpbig" type="number" inputmode="decimal" step="0.1" placeholder="e.g. 79.8" id="wi" style="margin-bottom:18px" value="${S.newWt||""}" oninput="S.newWt=this.value"/>
-    <button class="btnp" onclick="SaveWt()">SAVE</button>
-  </div>
-  </div>`;
+    <input class="inp inp-big" type="number" inputmode="decimal" step="0.1" placeholder="79.8" id="wi" style="margin-bottom:20px" value="${S.newWt||""}" oninput="S.newWt=this.value"/>
+    <button class="btn-p" onclick="SaveWt()">SAVE WEIGHT</button>
+  </div></div>`;
 }
 
-// ── ACTIONS ───────────────────────────────────────────────────────────────────
+function mMeasurement(){
+  return`<div class="overlay" onclick="Mc(null)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="shtop"><div class="hdl"></div><div class="stitle">BODY MEASUREMENTS</div></div>
+    <div style="font-size:12px;color:${M2};margin-bottom:16px;line-height:1.55;font-weight:500">Track chest, waist, arms and hips over time to see body recomposition — even when the scale doesn't move.</div>
+    <div class="meas-grid">
+      ${[["Chest","chest"],["Waist","waist"],["Arms","arms"],["Hips","hips"]].map(([l,k])=>`<div>
+        <label class="lbl" style="margin-top:0">${l} (cm)</label>
+        <input class="inp" type="number" inputmode="decimal" placeholder="0" value="${S.newMeas[k]||""}" oninput="S.newMeas['${k}']=this.value"/>
+      </div>`).join("")}
+    </div>
+    <button class="btn-p" style="margin-top:14px" onclick="SaveMeas()">SAVE MEASUREMENTS</button>
+  </div></div>`;
+}
+
+function mTemplates(){
+  return`<div class="overlay" onclick="Mc(null)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="shtop"><div class="hdl"></div><div class="stitle">WORKOUT TEMPLATES</div></div>
+    <div style="font-size:12px;color:${M2};margin-bottom:16px;font-weight:500">Tap a template to start a guided workout session with exercise tips and rest timer.</div>
+    ${TEMPLATES.map((t,i)=>`<div class="tpl-card" onclick="startWorkout(${i})">
+      <div class="tpl-tag" style="background:rgba(163,255,79,.1);color:${t.color};border-color:${t.color}44">${t.icon} ${t.name}</div>
+      <div style="font-weight:700;font-size:15px;margin-bottom:4px">${t.name}</div>
+      <div style="font-size:12px;color:${M2};margin-bottom:8px;font-weight:500">${t.desc}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        ${t.exercises.map(e=>`<span style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:6px;padding:3px 8px;font-size:11px;color:${M2};font-weight:500">${e.name}</span>`).join("")}
+      </div>
+    </div>`).join("")}
+  </div></div>`;
+}
+
+function mWorkoutSummary(){
+  const s=S._lastSummary||{};
+  return`<div class="overlay" onclick="Mc(null)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="shtop"><div class="hdl"></div><div class="stitle">WORKOUT DONE! 🎉</div></div>
+    <div style="text-align:center;padding:24px 0">
+      <div style="font-size:56px;margin-bottom:16px">🏆</div>
+      <div style="font-family:'Bebas Neue',cursive;font-size:28px;color:${PA};letter-spacing:.04em;margin-bottom:8px">GREAT WORK!</div>
+      <div style="color:${M2};font-size:14px;font-weight:500;margin-bottom:28px">You crushed it, ${S.name}!</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:28px">
+        <div class="st"><div class="stl">Duration</div><div class="stv" style="color:${PA};font-size:20px">${s.duration||"—"}</div></div>
+        <div class="st"><div class="stl">Exercises</div><div class="stv" style="color:${TEAL};font-size:20px">${s.exercises||0}</div></div>
+        <div class="st"><div class="stl">Volume</div><div class="stv" style="color:${YEL};font-size:20px">${s.volume||0}<span class="stu">kg</span></div></div>
+      </div>
+      <button class="btn-p" onclick="Mc(null)">AWESOME! →</button>
+    </div>
+  </div></div>`;
+}
+
+function mSettings(){
+  const hasKey=!!S.apiKey;
+  return`<div class="overlay" onclick="Mc(null)">
+  <div class="sheet" onclick="event.stopPropagation()">
+    <div class="shtop"><div class="hdl"></div><div class="stitle">⚙️ SETTINGS</div></div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div style="font-weight:700;font-size:14px;color:${PA};margin-bottom:6px">🔑 Google Gemini API Key</div>
+      <div style="font-size:12px;color:${M2};line-height:1.6;margin-bottom:12px"><strong>100% Free</strong> — no credit card needed!<br>Get it at: <span style="color:${PA};font-weight:700">aistudio.google.com</span> → Get API Key</div>
+      <label class="lbl" style="margin-top:0">Paste Your API Key</label>
+      <div class="inp-wrap">
+        <input class="inp" id="apiinp" type="${S.showKey?"text":"password"}" placeholder="AIzaSy..." value="${S.apiKey||""}" oninput="S.apiKey=this.value" style="padding-right:48px"/>
+        <button class="eye-btn" onclick="S.showKey=!S.showKey;R();setTimeout(()=>{const el=document.getElementById('apiinp');if(el){el.value=S.apiKey;el.focus();}},50)">${S.showKey?"🙈":"👁️"}</button>
+      </div>
+      <div class="api-status ${hasKey?"api-ok":"api-no"}">${hasKey?"✓ API Key saved — AI is ready!":"✗ No API key — AI features disabled"}</div>
+      <button class="btn-p" style="margin-top:14px" onclick="saveKey()">SAVE API KEY</button>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div style="font-weight:700;font-size:14px;color:${PA};margin-bottom:10px">🎯 Goals</div>
+      <label class="lbl" style="margin-top:0">Target Weight (kg)</label>
+      <input class="inp" type="number" inputmode="decimal" step="0.5" value="${S.target}" oninput="S.target=+this.value" style="margin-bottom:10px"/>
+      <label class="lbl">Daily Calorie Goal (kcal)</label>
+      <input class="inp" type="number" inputmode="numeric" value="${S.calorieGoal}" oninput="S.calorieGoal=+this.value" style="margin-bottom:10px"/>
+      <label class="lbl">Daily Protein Goal (g)</label>
+      <input class="inp" type="number" inputmode="numeric" value="${S.proteinGoal}" oninput="S.proteinGoal=+this.value" style="margin-bottom:14px"/>
+      <button class="btn-p" onclick="sv();Mc(null)">SAVE GOALS</button>
+    </div>
+
+    <div class="card" style="margin-bottom:14px">
+      <div style="font-weight:700;font-size:14px;color:${PA};margin-bottom:10px">👤 Profile</div>
+      <label class="lbl" style="margin-top:0">Name</label>
+      <input class="inp" value="${S.name}" oninput="S.name=this.value" style="margin-bottom:10px"/>
+      <label class="lbl">Fitness Level</label>
+      <select class="inp" onchange="S.level=this.value" style="margin-bottom:14px">
+        ${["beginner","intermediate","advanced"].map(l=>`<option value="${l}" ${S.level===l?"selected":""}>${l.charAt(0).toUpperCase()+l.slice(1)}</option>`).join("")}
+      </select>
+      <button class="btn-p" onclick="sv();Mc(null)">SAVE PROFILE</button>
+    </div>
+
+    <div class="card" style="margin-bottom:14px;border-color:rgba(45,212,191,.2);animation:borderGlow 3s ease infinite">
+      <div style="font-weight:700;font-size:14px;color:${TEAL};margin-bottom:6px">💾 Backup & Restore</div>
+      <div style="font-size:12px;color:${M2};line-height:1.6;margin-bottom:14px">Export all your data as a file to keep it safe. Import it back anytime — even on a new phone.</div>
+      <div style="display:flex;gap:9px">
+        <button onclick="exportData()" style="flex:1;background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3);color:${TEAL};border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;min-height:46px;display:flex;align-items:center;justify-content:center;gap:6px">⬇️ Export Data</button>
+        <label style="flex:1;background:rgba(163,255,79,.08);border:1px solid rgba(163,255,79,.25);color:${PA};border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;min-height:46px;display:flex;align-items:center;justify-content:center;gap:6px">
+          ⬆️ Import Data
+          <input type="file" accept=".json" style="display:none" onchange="importData(this)"/>
+        </label>
+      </div>
+      <div id="backup-msg" style="font-size:12px;color:${PA};text-align:center;margin-top:10px;display:none"></div>
+    </div>
+
+    <div class="card" style="border-color:rgba(248,113,113,.2)">
+      <div style="font-weight:700;font-size:14px;color:${RED};margin-bottom:6px">⚠️ Clear All Data</div>
+      <div style="font-size:12px;color:${M2};margin-bottom:12px">Permanently deletes all workouts, food logs, and weight history.</div>
+      <button onclick="clearAll()" style="background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.22);color:${RED};border-radius:10px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;width:100%;min-height:44px">Delete All My Data</button>
+    </div>
+  </div></div>`;
+}
+
+// ─── ACTIONS ──────────────────────────────────────────────────────────────────
 window.T    = t  => { S.tab=t; R(); };
 window.EX   = id => { S.expanded=S.expanded===id?null:id; R(); };
-window.M    = m  => { S.modal=m; if(!m)S.photoRes=null; R(); };
+window.Mc   = m  => { S.modal=m; if(!m){S.photoRes=null; S.editId=null; S.foodSearch="";} R(); };
+window.M    = m  => { Mc(m); };
 window.TG   = d  => { S.target=+(S.target+d).toFixed(1); sv(); R(); };
 window.AS   = () => { S.newSets.push({reps:"",weight:""}); R(); };
 window.RS   = i  => { if(S.newSets.length>1)S.newSets.splice(i,1); R(); };
@@ -774,33 +1540,118 @@ window.DF   = id => { S.foods=S.foods.filter(f=>f.id!==id); sv(); R(); };
 window.DWT  = idx=> { S.weights.splice(idx,1); sv(); R(); };
 window.WHT  = ()=> { S.whOpen=!S.whOpen; R(); };
 
-window.saveKey = () => {
-  const v=document.getElementById("apiinp")?.value||S.apiKey;
-  S.apiKey=v.trim(); sv(); M(null);
+// ── Day log toggle (food tab) ─────────────────────────────────────────────────
+window.toggleDayLog = dateStr => {
+  if(!S._openDayLogs)S._openDayLogs={};
+  S._openDayLogs[dateStr]=!S._openDayLogs[dateStr];
+  R();
 };
 
-window.clearAll = () => {
-  if(!confirm("Delete ALL your data? This cannot be undone."))return;
-  S.workouts=[]; S.foods=[]; S.weights=[];
-  S.chat=[]; S.report=""; S.whOpen=false;
-  sv(); M(null); R();
+// ── Export / Import ───────────────────────────────────────────────────────────
+window.exportData = () => {
+  const data={
+    version:"pg8",
+    exportedAt:new Date().toISOString(),
+    name:S.name, level:S.level,
+    workouts:S.workouts, foods:S.foods,
+    weights:S.weights, measurements:S.measurements,
+    target:S.target, calorieGoal:S.calorieGoal,
+    proteinGoal:S.proteinGoal, chat:S.chat,
+    apiKey:S.apiKey
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=`patta-ghobi-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const msg=document.getElementById("backup-msg");
+  if(msg){msg.style.display="block";msg.textContent="✓ Data exported successfully!";setTimeout(()=>{msg.style.display="none";},3000);}
 };
 
-window.SW = () => {
+window.importData = (inp) => {
+  const file=inp.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(data.workouts)S.workouts=data.workouts;
+      if(data.foods)S.foods=data.foods;
+      if(data.weights)S.weights=data.weights;
+      if(data.measurements)S.measurements=data.measurements;
+      if(data.target)S.target=data.target;
+      if(data.calorieGoal)S.calorieGoal=data.calorieGoal;
+      if(data.proteinGoal)S.proteinGoal=data.proteinGoal;
+      if(data.name)S.name=data.name;
+      if(data.level)S.level=data.level;
+      if(data.chat)S.chat=data.chat;
+      if(data.apiKey)S.apiKey=data.apiKey;
+      if(data.name)S.onboarded=true;
+      sv();
+      const msg=document.getElementById("backup-msg");
+      if(msg){msg.style.display="block";msg.textContent="✓ Data imported! Your history is restored.";msg.style.color="#A3FF4F";}
+      setTimeout(()=>{ Mc(null); R(); },1500);
+    }catch(err){
+      const msg=document.getElementById("backup-msg");
+      if(msg){msg.style.display="block";msg.style.color="#F87171";msg.textContent="✗ Invalid file. Please use a Patta Ghobi backup file.";}
+    }
+  };
+  reader.readAsText(file);
+};
+
+// Active workout
+window.awSetVal  = (ei,si,k,v) => { if(S.activeWorkout)S.activeWorkout.exercises[ei].sets[si][k]=v; };
+window.awDoneSet = (ei,si)     => {
+  if(!S.activeWorkout)return;
+  const set=S.activeWorkout.exercises[ei].sets[si];
+  set.done=!set.done;
+  if(set.done){startRest(90);}
+  else{skipRest();}
+  R();
+};
+window.addAwSet  = ei => {
+  if(!S.activeWorkout)return;
+  S.activeWorkout.exercises[ei].sets.push({reps:"",weight:"",done:false});R();
+};
+window.cancelWorkout = () => {
+  clearInterval(S.awInterval);S.activeWorkout=null;sv();R();
+};
+window.startRest = startRest;
+window.skipRest  = skipRest;
+
+window.openEdit = id => {
+  const w=S.workouts.find(x=>x.id===id); if(!w)return;
+  S.editId=id; S.newEx=w.name; S.customEx=w.name;
+  S.useCustom=!PRESETS.includes(w.name);
+  S.newSets=w.sets.map(s=>({reps:String(s.reps),weight:String(s.weight)}));
+  S.modal="edit"; R();
+};
+
+window.SW = isEdit => {
   const s0=S.newSets[0]; if(!s0.reps||!s0.weight)return;
   const name=S.useCustom
     ?(document.getElementById("cex")?.value||S.customEx||"Custom")
     :(document.getElementById("es")?.value||S.newEx);
-  S.workouts.push({id:Date.now(),date:TODAY,name,sets:S.newSets.map(s=>({reps:+s.reps,weight:+s.weight}))});
-  S.newSets=[{reps:"",weight:""}]; S.customEx=""; S.useCustom=false; S.modal=null; sv(); R();
+  const sets=S.newSets.map(s=>({reps:+s.reps,weight:+s.weight}));
+  if(isEdit&&S.editId){
+    S.workouts=S.workouts.map(w=>w.id===S.editId?{...w,name,sets}:w);
+  } else {
+    S.workouts.push({id:Date.now(),date:TODAY,name,sets});
+  }
+  S.newSets=[{reps:"",weight:""}]; S.customEx=""; S.useCustom=false; S.editId=null; S.modal=null; sv(); R();
+};
+
+window.pickFood = name => {
+  S.newFood=name; S.foodSearch=""; R();
 };
 
 window.SF = () => {
-  const name=document.getElementById("fn")?.value||S.newFood;
-  const g=+(S.newGrams||100); if(!name)return;
-  S.foods.push({id:Date.now(),date:TODAY,name,
-    cal:Math.round(g*1.5),protein:Math.round(g*.2),
-    carbs:Math.round(g*.3),fat:Math.round(g*.05)});
+  const name=S.newFood;
+  const g=+(document.getElementById("fg")?.value||S.newGrams||100); if(!name)return;
+  const f=FOOD_DB[name]||{cal:150,protein:10,carbs:20,fat:5};
+  S.foods.push({id:Date.now(),date:TODAY,name,cal:Math.round(f.cal*g/100),protein:Math.round(f.protein*g/100),carbs:Math.round(f.carbs*g/100),fat:Math.round(f.fat*g/100)});
   S.newFood=""; S.modal=null; sv(); R();
 };
 
@@ -809,18 +1660,32 @@ window.SaveWt = () => {
   S.weights.push({date:TODAY,w:v}); S.newWt=""; S.modal=null; sv(); R();
 };
 
-window.PH = async (inp) => {
+window.SaveMeas = () => {
+  const m={date:TODAY,...Object.fromEntries(Object.entries(S.newMeas).filter(([k,v])=>v).map(([k,v])=>[k,+v]))};
+  if(Object.keys(m).length<=1)return;
+  S.measurements.push(m); S.newMeas={chest:"",waist:"",arms:"",hips:""}; S.modal=null; sv(); R();
+};
+
+window.saveKey = () => {
+  const v=document.getElementById("apiinp")?.value||S.apiKey;
+  S.apiKey=v.trim(); sv(); Mc(null);
+};
+
+window.clearAll = () => {
+  if(!confirm("Delete ALL your data? This cannot be undone."))return;
+  S.workouts=[]; S.foods=[]; S.weights=[]; S.measurements=[];
+  S.chat=[]; S.report=""; S.whOpen=false; S.aiMealPlan=null; S.aiWorkoutPlan=null;
+  sv(); Mc(null); R();
+};
+
+window.PH = async inp => {
   const file=inp.files[0]; if(!file)return;
   S.photoLoad=true; S.photoRes=null; R();
   const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(",")[1]);r.onerror=rej;r.readAsDataURL(file);});
   try{
-    const reply=await claude([{role:"user",content:[
-      {type:"image",source:{type:"base64",media_type:file.type||"image/jpeg",data:b64}},
-      {type:"text",text:`Identify all food items in this image. Return ONLY valid JSON (no markdown): {"items":[{"name":"","grams_estimated":0,"calories":0,"protein":0,"carbs":0,"fat":0}],"totals":{"calories":0,"protein":0,"carbs":0,"fat":0},"tip":""}`}
-    ]}]);
-    const clean=reply.replace(/```json\n?|```/g,"").trim();
-    S.photoRes=JSON.parse(clean);
-  }catch(e){S.photoRes={raw:"Could not analyze photo. Please try again or enter manually."};}
+    const reply=await gemini(`Identify all food items in this image. Return ONLY valid JSON (no markdown): {"items":[{"name":"","grams_estimated":0,"calories":0,"protein":0,"carbs":0,"fat":0}],"totals":{"calories":0,"protein":0,"carbs":0,"fat":0},"tip":""}`,null,b64,file.type||"image/jpeg");
+    S.photoRes=JSON.parse(reply.replace(/```json\n?|```/g,"").trim());
+  }catch(e){S.photoRes={raw:"Could not analyze photo. Please try again or search the food database manually."};}
   S.photoLoad=false; R();
 };
 
@@ -833,10 +1698,58 @@ window.AP = () => {
 
 window.doRep = async () => {
   S.repLoad=true; S.report=""; R();
-  S.report=await claude(
-    [{role:"user",content:`My fitness data: ${ctx()}\n\nGive me a personalized coach report:\n1. Analysis of my current progress based on the data\n2. Specific weight targets to aim for next session on each of my exercises\n3. Diet suggestions based on my nutrition data\n4. One motivational insight\nBe direct, specific, under 250 words. Use bullet points.`}],
-    "You are an expert personal trainer and nutritionist. Give precise, actionable advice based only on the user's data."
-  );
+  S.report=await gemini(`${ctx()}\n\nGive me a personalized coach report:\n• Progress analysis with specifics\n• Target weights for my next session on each exercise (be specific, use my recent numbers)\n• Diet adjustments based on my nutrition data and goals\n• One powerful motivational insight tailored to my situation\nBe direct, specific, conversational. Under 280 words. Use bullet points.`,
+    "You are an expert personal trainer and nutritionist. Always reference the user's actual data. Be encouraging but honest.");
+  S.repLoad=false; sv(); R();
+};
+
+window.doMealPlan = async () => {
+  S.aiMealLoad=true; S.aiMealPlan=null; R();
+  const reply=await gemini(`${ctx()}\n\nGenerate a one-day meal plan for me. Aim for ${S.calorieGoal}kcal total and ${S.proteinGoal}g protein. Include 5-6 meals/snacks appropriate for an Indian diet where possible. Return ONLY valid JSON (no markdown): [{"name":"meal name","grams":150,"calories":400,"protein":35,"carbs":40,"fat":10,"meal_type":"breakfast"}]`,
+    "You are a nutrition expert. Return only valid JSON array.");
+  try{S.aiMealPlan=JSON.parse(reply.replace(/```json\n?|```/g,"").trim());}
+  catch(e){S.aiMealPlan=null;}
+  S.aiMealLoad=false; R();
+};
+
+window.addMeal = i => {
+  const m=S.aiMealPlan[i]; if(!m)return;
+  S.foods.push({id:Date.now(),date:TODAY,name:m.name,cal:m.calories,protein:m.protein,carbs:m.carbs,fat:m.fat});
+  sv(); R();
+};
+
+window.addAllMeals = () => {
+  (S.aiMealPlan||[]).forEach(m=>{S.foods.push({id:Date.now()+Math.random(),date:TODAY,name:m.name,cal:m.calories,protein:m.protein,carbs:m.carbs,fat:m.fat});});
+  sv(); R();
+};
+
+window.doAiWorkout = async () => {
+  S.aiWorkoutLoad=true; S.aiWorkoutPlan=null; R();
+  const focus=document.getElementById("aw-focus")?.value||S.aiWorkoutFocus;
+  const reply=await gemini(`${ctx()}\n\nGenerate a workout for: ${focus}\nLevel: ${S.level}. Based on my history, suggest appropriate weights. Return ONLY valid JSON (no markdown): [{"name":"Exercise Name","sets":3,"reps":8,"weight":60,"tip":"brief form cue"}]`,
+    "You are a personal trainer. Return only a valid JSON array. Suggest realistic weights based on user's history.");
+  try{S.aiWorkoutPlan=JSON.parse(reply.replace(/```json\n?|```/g,"").trim());}
+  catch(e){S.aiWorkoutPlan=null;}
+  S.aiWorkoutLoad=false; R();
+};
+
+window.startAiWorkout = () => {
+  if(!S.aiWorkoutPlan)return;
+  const exes=S.aiWorkoutPlan.map(ex=>({
+    name:ex.name,
+    tip:ex.tip||TIPS[ex.name]||"Focus on form and controlled movement.",
+    sets:Array.from({length:ex.sets||3},()=>({reps:String(ex.reps||8),weight:String(ex.weight||""),done:false}))
+  }));
+  startWorkout(0,exes);
+  S.activeWorkout.templateName="AI: "+((document.getElementById("aw-focus")?.value)||S.aiWorkoutFocus);
+};
+
+window.doWeeklyReport = async () => {
+  S.repLoad=true; R();
+  const weekWorkouts=S.workouts.slice(-20);
+  const weekFoods=S.foods.slice(-50);
+  const prompt=`${ctx()}\n\nGenerate a weekly performance summary covering:\n• Total workouts this week and exercises hit\n• Best lifts and any new PRs\n• Average daily nutrition vs goals\n• Weight change trend\n• Top 2 things to focus on next week\n• One personalized insight\nBe encouraging, data-driven, and specific. Under 300 words.`;
+  S.report=await gemini(prompt,"You are an expert fitness coach doing a weekly review.");
   S.repLoad=false; sv(); R();
 };
 
@@ -845,10 +1758,8 @@ window.CH = async () => {
   if(!msg||S.chatLoad)return;
   S.chat.push({role:"user",content:msg}); S.chatIn=""; S.chatLoad=true; R();
   setTimeout(()=>document.getElementById("ce")?.scrollIntoView({behavior:"smooth"}),60);
-  const reply=await claude(
-    S.chat.map(m=>({role:m.role,content:m.content})),
-    `You are PATTA GHOBI's AI fitness coach. User data: ${ctx()}. Be concise and reference their actual numbers.`
-  );
+  const history=S.chat.slice(-8).map(m=>`${m.role==="user"?"User":"Coach"}: ${m.content}`).join("\n");
+  const reply=await gemini(msg,`You are PATTA GHOBI's expert AI fitness coach for ${S.name||"the user"}.\n${ctx()}\nRecent chat:\n${history}\nBe concise, friendly, reference actual data. Give actionable specific advice.`);
   S.chat.push({role:"assistant",content:reply}); S.chatLoad=false; sv(); R();
   setTimeout(()=>document.getElementById("ce")?.scrollIntoView({behavior:"smooth"}),100);
 };
@@ -858,13 +1769,21 @@ window.QA = q => {
   setTimeout(()=>{const el=document.getElementById("ci");if(el){el.value=q;el.focus();}},100);
 };
 
-// ── BOOT ──────────────────────────────────────────────────────────────────────
+// ─── BOOT ─────────────────────────────────────────────────────────────────────
 try{ld();}catch(e){}
-document.getElementById("boot").style.display="none";
-document.getElementById("hdr").style.display="";
-document.getElementById("nav").style.display="";
-document.getElementById("scr").style.display="";
-R();
+
+if(S.onboarded){
+  document.getElementById("boot").style.display="none";
+  document.getElementById("hdr").style.display="";
+  document.getElementById("nav").style.display="";
+  document.getElementById("scr").style.display="";
+  R();
+} else {
+  document.getElementById("boot").style.display="none";
+  document.getElementById("ob").style.display="flex";
+  rOnboarding();
+}
+
 if("serviceWorker"in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
 </script>
 </body>
